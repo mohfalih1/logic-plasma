@@ -12,6 +12,7 @@ import { createApp } from 'vue'
 
 // Plugins
 import { registerPlugins } from '@/plugins'
+//assets
 
 const app = createApp(App)
 
