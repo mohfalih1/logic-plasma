@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" color="red">
+  <v-app id="app" style="background: #F8F8F8;">
     <!-- <loginView/> -->
 
     <v-main>

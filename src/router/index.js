@@ -2,24 +2,42 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-  // {
-  //   path: "/",
-  //   component: () => import("@/layouts/default/Default.vue"),
-  //   children: [
-  //     {
-  //       path: "",
-  //       name: "Home",
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/login/loginView.vue"),
+  },
+  {
+    path: "/",
+    name: "homePageView",
+    component: () => import("@/views/homePage/homePageView"),
+  },
 
-  //       component: () => import("@/views/Home.vue"),
-  //     },
-  //     {
-  //       path: "/login",
-  //       name: "login",
-
-  //       component: () => import("@/views/login/loginView.vue"),
-  //     },
-  //   ],
-  // },
+  {
+    path: "/news",
+    name: "news",
+    component: () => import("@/views/news/newsView.vue"),
+  },
+  {
+    path: "/provinces",
+    name: "provinces",
+    component: () => import("@/views/provinces/provincesView.vue"),
+  },
+  {
+    path: "/donations",
+    name: "donations",
+    component: () => import("@/views/donations/donationsView.vue"),
+  },
+  {
+    path: "/chroni-diseases",
+    name: "chroniDiseases",
+    component: () => import("@/views/chronicDiseases/chronicDiseasesView.vue"),
+  },
+  {
+    path: "/import-export",
+    name: "importExport",
+    component: () => import("@/views/importExport/importExportView.vue"),
+  },
 ];
 
 const router = createRouter({

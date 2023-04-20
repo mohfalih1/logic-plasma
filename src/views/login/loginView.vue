@@ -60,31 +60,6 @@
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
     </div>
 
-    <!-- <v-card width="350" tile elevation="0" class="mt-0 pt-0" color="background">
-
-          <v-form  ref="form" class="mt-0">
-            <v-text-field
-              label="البريد الالكتروني"
-              append-icon="mdi-email"
-            ></v-text-field>
-            <v-text-field
-              label="كلمة المرور"
-              autocomplete
-            ></v-text-field>
-
-
-            <v-btn
-              class="mt-6"
-              large
-              rounded
-              block
-              style="    height: 50px !important;"
-              elevation="0"
-              color="primary"
-              fluid
-            >تسجيل دخول</v-btn>
-          </v-form>
-</v-card> -->
   </div>
 </template>
 <style scoped>
@@ -121,10 +96,11 @@ iframe {
   flex-direction: column;
 }
 .card {
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height:600px;
   display: flex;
   align-items: center;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 50px 0 rgba(238, 76, 76, 0.5);
   z-index: 10;
