@@ -32,7 +32,7 @@
           title="الاخبار"
         ></v-list-item>
         <br />
-        <v-list-item
+        <!-- <v-list-item
           active-class="secondary--text"
           router
           to="/provinces"
@@ -40,6 +40,16 @@
           prepend-icon="mdi-city-variant-outline"
           title="المحافظات"
         ></v-list-item>
+        <br /> -->
+        <v-list-item
+          active-class="secondary--text"
+          router
+          to="/donations"
+          class="bg-white rounded-lg text-primary"
+          prepend-icon="mdi-hand-heart-outline"
+          title="المتبرعين"
+        ></v-list-item>
+
         <br />
         <v-list-item
           active-class="secondary--text"
@@ -50,13 +60,22 @@
           title="الامراض المزمنة"
         ></v-list-item>
         <br />
+        <!-- <v-list-item
+          active-class="secondary--text"
+          router
+          to="/blood-group"
+          class="bg-white rounded-lg text-primary"
+          prepend-icon="mdi-heart-outline"
+          title="زمر الدم"
+        ></v-list-item>
+        <br /> -->
         <v-list-item
           active-class="secondary--text"
           router
-          to="/donations"
+          to="/notifications"
           class="bg-white rounded-lg text-primary"
-          prepend-icon="mdi-hand-heart-outline"
-          title="المتبرعين"
+          prepend-icon="mdi-bell-ring-outline"
+          title="الاشعارت"
         ></v-list-item>
         <br />
         <v-list-item

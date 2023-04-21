@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" style="background: #F8F8F8;">
+  <v-app id="app" style="background: #f8f8f8">
     <!-- <loginView/> -->
 
     <v-main>
@@ -18,11 +18,12 @@ import NavBar from "./components/NavBar.vue";
 import AppBar from "./components/AppBar.vue";
 </script>
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");
+
 * {
   direction: rtl;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");
 body {
   font-family: "Cairo", sans-serif;
 }

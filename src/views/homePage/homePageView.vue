@@ -13,22 +13,21 @@
       <div class="filter-icon">
         <v-icon size="40" icon="mdi-filter-outline"></v-icon>
       </div>
-      <div class="filters">
-      
-        <div class="select">
-          <v-select
-            clearable
-            variant="plain"
-            placeholder="المدينة"
-            no-data-text="لايوجد بيانات"
-          ></v-select>
-        </div>
- <label for="start-date">Start Date:</label>
-<input type="date" id="start-date">
+        <div class="filters">
+          <div class="select">
+            <v-select
+              clearable
+              variant="plain"
+              placeholder="المدينة"
+              no-data-text="لايوجد بيانات"
+            ></v-select>
+          </div>
+          <label for="start-date">Start Date:</label>
+          <input type="date" id="start-date" />
 
-<label for="end-date">End Date:</label>
-<input type="date" id="end-date">
-      </div>
+          <label for="end-date">End Date:</label>
+          <input type="date" id="end-date" />
+        </div>
       <!-- end filters -->
       <br />
       <!-- start card dononrs -->
@@ -136,21 +135,7 @@
   </v-card>
 </template>
 <script setup>
-// const startDateInput = document.getElementById('start-date');
-// const endDateInput = document.getElementById('end-date');
 
-// startDateInput.addEventListener('change', updateEndDateMin);
-// endDateInput.addEventListener('change', updateStartDateMax);
-
-// function updateEndDateMin() {
-//   const startDate = startDateInput.value;
-//   endDateInput.min = startDate;
-// }
-
-// function updateStartDateMax() {
-//   const endDate = endDateInput.value;
-//   startDateInput.max = endDate;
-// }
 </script>
 <style scoped>
 label {
@@ -165,10 +150,10 @@ input[type="date"] {
   font-size: 16px;
 }
 .filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 150px);
-  column-gap:1px;
-  row-gap: 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 150px);
+    column-gap: 1px;
+    row-gap: 1em;
 }
 .filter-icon {
   margin-bottom: 10px;

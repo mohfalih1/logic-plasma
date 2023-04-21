@@ -1,10 +1,15 @@
 <template>
-  <v-card   class="mt-7 mr-7 mb-0 ml-7 rounded-lg" elevation="5" width="97%" height="80px">
+  <v-card
+    class="mt-7 mr-7 mb-0 ml-7 rounded-lg"
+    elevation="5"
+    width="97%"
+    height="80px"
+  >
     <div class="app-bar">
       <div class="wlecome-name">
         <h4>أهلا مروان</h4>
 
-        <img src="../assets/Ellipse 1.png"/>
+        <img src="../assets/Ellipse 1.png" />
       </div>
       <div class="all-frame">
         <img
@@ -42,18 +47,18 @@
   box-shadow: none;
   padding: 8px 16px;
 }
-.wlecome-name{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 8px;
-    margin: 5px ;
+.wlecome-name {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+  margin: 5px;
 }
-.wlecome-name img{
-    width: 64px;
-    height: 64px;   
-    border: 1px solid  #C4C7C5;
-    border-radius: 50%; 
+.wlecome-name img {
+  width: 64px;
+  height: 64px;
+  border: 1px solid #c4c7c5;
+  border-radius: 50%;
 }
 .all-frame {
   display: flex;
