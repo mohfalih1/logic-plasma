@@ -201,15 +201,15 @@ input[type="date"] {
   width: 40px;
   height: 40px;
 }
-.select {
-  height: 52px;
-  border: 1px solid#BDBDBD;
-  border-radius: 8px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .select {
+    height: 52px;
+    border: 1px solid#BDBDBD;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 .svg {
   display: flex;
   justify-content: flex-end;

@@ -18,10 +18,21 @@ const routes = [
     name: "news",
     component: () => import("@/views/news/newsView.vue"),
   },
+
+  {
+    path: "/news/show",
+    name: "show",
+    component: () => import("@/views/news/show.vue"),
+  },
   {
     path: "/news/add",
     name: "add",
     component: () => import("@/views/news/add.vue"),
+  },
+  {
+    path: "/news/show/edit",
+    name: "edit",
+    component: () => import("@/views/news/edit.vue"),
   },
   // {
   //   path: "/provinces",
@@ -32,6 +43,11 @@ const routes = [
     path: "/donations",
     name: "donations",
     component: () => import("@/views/donations/donationsView.vue"),
+  },
+  {
+    path: "/donations/donations-show",
+    name: "showDonation",
+    component: () => import("@/views/donations/showDonation.vue"),
   },
   {
     path: "/chroni-diseases",

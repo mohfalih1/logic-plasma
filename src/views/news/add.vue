@@ -20,55 +20,52 @@
     </v-card-text>
     <div class="d-flex justify-center align-center h-75">
       <v-card elevation="0">
-        <div class="d-flex justify-space-between align-center">
-          <h4>fggfgfgf</h4>
+        <div
+          class="active-button d-flex justify-start align-start"
+          width="100%"
+        >
           <div>
-            <v-switch
-              v-model="model"
-              true-value="EN"
-              false-value="AR"
-              :label="`اللغة: ${model}`"
-              :color="primary"
-            ></v-switch>
+            <v-img
+              class="image-translate ma-0"
+              src="@/assets/Frame 88.svg"
+              width="50px"
+              height="36px"
+            ></v-img>
+          </div>
+          <div>
+            <v-btn class="lang-button" elevation="0" rounded="0">العربية</v-btn>
+            <v-btn class="ma-0" elevation="0" rounded="0">English</v-btn>
           </div>
         </div>
-        <br />
-        <div>
-          dmkfdfndnfdnfdnfdjfndnfdfjdnfkdndvdncdvndvdkcdnvdksvndcsksnv nsc sncsk
-        </div>
+        
 
         <br />
-        <v-img
-          src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-          class="news-image mx-auto"
-          cover
-          width="680px"
-          height="348px"
-        ></v-img>
+        <v-text-field
+          variant="plain"
+          class="h-50"
+          placeholder="عنوان الخبر..."
+        >
+        </v-text-field>
 
         <br />
+        <v-textarea
+        variant="plain"
+        label="محتوى الخبر..."
+        >
+
+        </v-textarea>
         <v-card-actions>
-          <v-btn
-            class="add-edit-button pa-5"
-            prepend-icon="mdi-square-edit-outline"
-            :color="primary"
-            variant="text"
-            >تعديل الخبر
+          <v-btn class="add-edit-button pa-5" :color="primary" variant="text">
+            نشر الخبر
           </v-btn>
+
           <v-btn
-            class="add-delete-button pa-5"
-            prepend-icon="mdi-trash-can-outline"
-            color="white"
-            variant="text"
-            >مسح الخبر
-          </v-btn>
-          <v-btn
-            prepend-icon="mdi-greater-than"
             to="/news"
             class="add-back-button pa-5"
             color="white"
             variant="text"
           >
+            <v-icon icon="mdi-greater-than"></v-icon>
             العودة
           </v-btn>
         </v-card-actions>
@@ -76,36 +73,23 @@
     </div>
   </v-card>
 </template>
-
 <script setup>
 import { primary } from "@/assets/style";
-import { ref, onMounted } from "vue";
-const model = ref("AR");
-onMounted(() => {
-  return model.value;
-});
 </script>
 <style scoped>
-.add-button {
-  width: 200px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 0px;
-
-  height: 36px;
-  margin: 0px;
-
-  /* mainColor */
-  background: #ff2c54;
-  border-radius: 8px;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0;
+.active-button {
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  margin: 10px;
+}
+.image-translate {
+  overflow: hidden;
+}
+.lang-button {
+  background-color: #ff2c54;
+  color: white;
 }
 </style>
