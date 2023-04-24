@@ -1,82 +1,119 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="store.dialog" persistent width="1024">
-      <!-- <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> Open Dialog </v-btn>
-      </template> -->
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">User Profile</span>
+    <v-dialog v-model="store.dialog" persistent width="664">
+      <v-card rounded="xl">
+        <v-card-title class="text-center text-primary">
+          <v-icon icon="mdi-hand-heart-outline"></v-icon>
+          <span> محمد قاسم احمد</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" required></v-text-field>
+              <v-col cols="6">
+                <v-card class="show-donations-card" rounded="0">
+                  <div>
+                    <h5>اسم المتبرع:محمد قاسم احمد</h5>
+                  </div>
+                  <div>
+                    <h5>اسم المدينة:بغداد</h5>
+                  </div>
+                  <div>
+                    <h5>نوع الزمرة:A+</h5>
+                  </div>
+                </v-card>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Legal middle name"
-                  hint="example of helper text only on focus"
-                ></v-text-field>
+              <v-col cols="6">
+                <v-card class="show-donations-card" rounded="0">
+                  <div>
+                    <h5>رقم الهاتف:+9647736434814</h5>
+                  </div>
+                  <div>
+                    <h5>نوع التبرع:دم</h5>
+                  </div>
+                  <div>
+                    <h5>هل يوجد مرض مزمن ؟</h5>
+                  </div>
+                </v-card>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
+              <v-col cols="12"
+                ><v-card class="show-donations-card">
+                  <div class="chip">
+                    <h5>نوع المرض المزمن:</h5>
+                    <v-chip :color="primary">السكري</v-chip>
+                    <v-chip :color="primary">امراض المفاصل</v-chip>
+                    <v-chip :color="primary">امراض الجهاز الهضمي</v-chip>
+                  </div>
+                </v-card>
               </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
+              <v-col cols="12"
+                ><v-card class="show-donations-card"
+                  ><div class="chip">
+                    <h5>العلاجات المستخدمة:</h5>
+                    <v-chip :color="primary">السكري</v-chip>
+                    <v-chip :color="primary">امراض المفاصل</v-chip>
+                  </div></v-card
+                >
               </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Password*"
-                  type="password"
-                  required
-                ></v-text-field>
+              <v-col cols="12"
+                ><v-card class="show-donations-card">
+                  <div class="chip">
+                    <h5>حسابات التواصل:</h5>
+                    <div class="sup-icon">
+                      <v-icon
+                        size="30"
+                        :color="primary"
+                        icon="mdi-whatsapp"
+                      ></v-icon>
+                    </div>
+                    <div class="sup-icon">
+                      <v-img
+                        :color="primary"
+                        src="@/assets/TelegramLogo.svg"
+                        width="30"
+                        height="30"
+                      ></v-img>
+                    </div>
+                    <div class="sup-icon">
+                      <v-img
+                        :color="primary"
+                        src="@/assets/viber-chat-app-svgrepo-com 1.svg"
+                        width="30"
+                        height="30"
+                      ></v-img>
+                    </div>
+                  </div>
+                </v-card>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
+              <v-col cols="6"
+                ><v-card class="show-donations-card">
+                <h5>مستند فحص الدم:</h5>  
+                <v-img width="292" height="172" src="@/assets/Plasma Logo Color Original 1.png">
+
+                </v-img>
+                </v-card>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="[
-                    'Skiing',
-                    'Ice hockey',
-                    'Soccer',
-                    'Basketball',
-                    'Hockey',
-                    'Reading',
-                    'Writing',
-                    'Coding',
-                    'Basejump',
-                  ]"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
+              <v-col cols="6">
+                <v-card class="show-donations-card"><h5> هوية المتبرع:</h5>  
+                <v-img width="292" height="172" src="@/assets/Plasma Logo Color Original 1.png">
+
+                </v-img></v-card
+              ></v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="closeDialog()">
-            Close
+          <v-btn class="add-delete-button" color="white" variant="text">
+            <v-icon icon="mdi-trash-can-outline" size="22"></v-icon>
+            حذف المتبرع
           </v-btn>
           <v-btn
-            color="blue-darken-1"
+            class="add-back-button"
+            color="white"
             variant="text"
-            @click="closeDialog()"
+            to="/donations"
           >
-            Save
+            <v-icon icon="mdi-greater-than"></v-icon>
+            العودة
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -85,6 +122,7 @@
 </template>
 <script setup>
 import { useCounterStore } from "@/store/app";
+import { primary } from "@/assets/style";
 import router from "@/router";
 const store = useCounterStore();
 function closeDialog() {
@@ -92,3 +130,24 @@ function closeDialog() {
   router.push("/donations");
 }
 </script>
+<style scoped>
+
+.chip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sup-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+  background: #ffc0cc;
+}
+</style>

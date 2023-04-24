@@ -13,11 +13,14 @@ import { createApp } from "vue";
 // Plugins
 import { registerPlugins } from "@/plugins";
 import { createPinia } from "pinia";
+
+
 //assets
 import "@/assets/css/main.css";
 const app = createApp(App);
 const pinia = createPinia();
 
 registerPlugins(app);
+
 app.use(pinia);
 app.mount("#app");

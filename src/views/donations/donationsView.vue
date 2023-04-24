@@ -12,7 +12,7 @@
     <v-card-text class="pa-0">
       <div class="header">
         <div class="show"><h3>عرض المتبرعين</h3></div>
-        <v-btn class="add" rounded="0" height="50" elevation="0">
+        <v-btn  @click="opnenAdd()" class="add" rounded="0" height="50" elevation="0">
           <v-icon icon="mdi-plus-circle-outline"></v-icon>
           <h3>اضافة متبرع</h3>
         </v-btn>
@@ -91,7 +91,7 @@
         <div>المحافظة:{{ item.city }}</div>
         <div>رقم الهاتف:{{ item.phoneNumber }}</div>
         <div>نوع التبرع:{{ item.typeBlood }}</div>
-        <div>زمرة الدم:{{ item.typeBlood }}</div>
+        <div>زمرة الدم:{{ item.typeGroup }}</div>
 
         <div class="news-date"></div>
 
@@ -116,6 +116,10 @@ const store = useCounterStore();
 function opnenShow() {
   store.dialog = true;
   router.push("/donations/donations-show");
+}
+function opnenAdd() {
+  store.dialog = true;
+  router.push("/donations/donations-add");
 }
 </script>
 <style scoped>
@@ -145,17 +149,5 @@ function opnenShow() {
   grid-template-columns: repeat(auto-fit, 262px);
   column-gap: 1px;
   row-gap: 1em;
-}
-.donations-card {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  padding: 8px;
-  gap: 8px;
-  width: 262px;
-  height: 250px;
-  background: #ffffff;
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
 }
 </style>

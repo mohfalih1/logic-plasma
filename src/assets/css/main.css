@@ -1,3 +1,28 @@
+/* .............. Golbal Style start..............  */
+
+/* ..............Golbal Style end..............  */
+/* ..............home page start..............  */
+.donors-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  gap: 16px;
+
+  width: 207px;
+  height: 130px;
+
+  background: #ffffff;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  border: 1;
+  flex: none;
+  order: 4;
+  flex-grow: 0;
+}
+/* .....................home page end................  */
+/* .......................news start.................  */
 .header {
   width: 100%;
   height: 60px;
@@ -29,31 +54,6 @@
   background-color: #c72342;
 }
 
-.donors-card {
-  /* Frame 78 */
-
-  /* Auto layout */
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  gap: 16px;
-
-  width: 207px;
-  height: 130px;
-
-
-    background: #ffffff;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 16px;
-  border: 1;
-  /* Inside auto layout */
-  flex: none;
-  order: 4;
-  flex-grow: 0;
-}
 .grid-news {
   display: grid;
   justify-content: space-around;
@@ -85,8 +85,6 @@
 
   border-radius: 8px;
 
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   align-self: stretch;
@@ -98,15 +96,12 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  /* identical to box height, or 143% */
 
   display: flex;
   align-items: center;
   text-align: right;
 
   color: #3a3a3a;
-
-  /* Inside auto layout */
 
   flex: none;
   order: 0;
@@ -119,15 +114,12 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  /* identical to box height, or 133% */
 
   display: flex;
   align-items: center;
   text-align: right;
 
   color: #3a3a3a;
-
-  /* Inside auto layout */
 
   flex: none;
   order: 0;
@@ -139,17 +131,11 @@
   justify-content: center;
   align-items: center;
   padding: 8px 0px;
-
   width: 246px;
   height: 36px;
   margin: 0px;
-
-  /* mainColor */
   background: #ff2c54;
   border-radius: 8px;
-
-  /* Inside auto layout */
-
   flex: none;
   order: 2;
   align-self: stretch;
@@ -183,3 +169,42 @@
   background: #56ccf2;
   order: 3;
 }
+/* ..................donations start...............  */
+
+.donations-card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 8px;
+  gap: 8px;
+  width: 262px;
+  height: 250px;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+}
+
+.show-donations-card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 8px;
+  gap: 8px;
+  width: auto;
+  height: auto;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+}
+/* ..................donations end ..................... */
+
+/* ..................chronic Diseases star..............  */
+
+/* ..................chronic Diseases end...............  */
+
+/*.................... notifications start............... */
+
+/* ....................notifications end................  */
+
+/* .....................Expot impprt start............... */
+
+/* ......................Export import  end.............  */
