@@ -88,5 +88,68 @@ export const useCounterStore = defineStore("counter", () => {
       typeGroup: "A+",
     },
   ]);
-  return { date, donations, dialog };
+  const chronic = [
+    {
+      arabic: "أمراض القلب الأوعية الدموية",
+      english: "Cardiovascular Disease",
+    },
+    {
+      arabic: "السكري",
+      english: "Diabetes",
+    },
+    {
+      arabic: "السرطان",
+      english: "Cancer",
+    },
+    {
+      arabic: "أمراض الجهاز التنفسي",
+      english: "Respiratory System Diseases",
+    },
+    {
+      arabic: "أمراض القلب الأوعية الدموية",
+      english: "Cardiovascular Disease",
+    },
+    {
+      arabic: "السكري",
+      english: "Diabetes",
+    },
+    {
+      arabic: "السرطان",
+      english: "Cancer",
+    },
+    {
+      arabic: "أمراض الجهاز التنفسي",
+      english: "Respiratory System Diseases",
+    },
+    {
+      arabic: "أمراض القلب الأوعية الدموية",
+      english: "Cardiovascular Disease",
+    },
+    {
+      arabic: "السكري",
+      english: "Diabetes",
+    },
+    {
+      arabic: "السرطان",
+      english: "Cancer",
+    },
+    {
+      arabic: "أمراض الجهاز التنفسي",
+      english: "Respiratory System Diseases",
+    },
+    {
+      arabic: "أمراض القلب الأوعية الدموية",
+      english: "Cardiovascular Disease",
+    },
+    {
+      arabic: "السكري",
+      english: "Diabetes",
+    },
+    {
+      arabic: "السرطان",
+      english: "Cancer",
+    },
+
+  ];
+  return { date, donations, dialog, chronic };
 });
