@@ -21,7 +21,6 @@ const app = createApp(App);
 const pinia = createPinia();
 
 registerPlugins(app);
-
 app.use(pinia);
 app.use(VueApexCharts);
 app.mount("#app");

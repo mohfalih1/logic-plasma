@@ -41,6 +41,18 @@
 
         <br />
         <v-textarea variant="plain" label="محتوى الخبر..."> </v-textarea>
+        <br />
+        <v-card class="drag-box" >
+         <v-file-input
+         class="drag-box-content"
+         variant="plain"
+    v-model="file"
+    accept="image/*"
+    @change="uploadFile"
+    show-size
+    prepend-icon="mdi-image-plus-outline"
+  ></v-file-input>
+        </v-card>
         <v-card-actions>
           <v-btn class="add-edit-button pa-5" :color="primary" variant="text">
             نشر الخبر
@@ -62,8 +74,34 @@
 </template>
 <script setup>
 import { primary } from "@/assets/style";
+import { ref } from "vue";
+const file=ref(null)
+async function uploadFile() {
+      const formData = new FormData();
+      formData.append("file", this.file);
+
+      // Send formData to server for upload
+      // Here, you can use axios or any other HTTP library to send the form data to your server
+
+      console.log("File uploaded successfully!");
+    };
+
 </script>
 <style scoped>
+.drag-box {
+  position: relative;
+  width: 400px;
+  height: 200px;
+  background-color: pink;
+}
+
+.drag-box-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
 .active-button {
   border: 1px solid #ffffff;
   border-radius: 10px;

@@ -17,18 +17,26 @@
         </div>
         <div class="select-don-home">
           <v-select
+            v-model="query.bloodGroup"
             clearable
             variant="plain"
             placeholder="زمرة الدم"
             no-data-text="لايوجد بيانات"
+            :items="bloodGroups"
+            item-title="name"
+            item-value="value"
           ></v-select>
         </div>
         <div class="select-don-home">
           <v-select
+            v-model="query.donorType"
             clearable
             variant="plain"
             placeholder="نوع التبرع"
             no-data-text="لايوجد بيانات"
+            :items="donorTypes"
+            item-title="name"
+            item-value="value"
           ></v-select>
         </div>
         <div class="select-don-home">
@@ -41,26 +49,39 @@
         </div>
         <div class="select-don-home">
           <v-select
+            v-model="query.subscribersType"
             clearable
             variant="plain"
             placeholder="نوع المستخدم"
             no-data-text="لايوجد بيانات"
+            :items="subscribersType"
+            item-title="name"
+            item-value="value"
           ></v-select>
         </div>
+            
         <div class="select-don-home">
+
           <v-select
             clearable
             variant="plain"
             placeholder=" التاريخ"
             no-data-text="لايوجد بيانات"
           ></v-select>
+
         </div>
+  
+
         <div class="select-don-home">
           <v-select
+            v-model="query.HaveChronicDisease"
             clearable
             variant="plain"
             placeholder=" المرض المزمن"
             no-data-text="لايوجد بيانات"
+            :items="ChronicDisease"
+            item-title="name"
+            item-value="value"
           ></v-select>
         </div>
         <div class="select-don-home">
@@ -106,7 +127,7 @@
             <v-sheet class="pa-2 ma-2">
               <div class="donors-card">
                 <div>
-                  <h2>5600</h2>
+                  <h2>{{ statistics.totalStatisticsForDoners }}</h2>
                   <br />
                   <h6>مجموع عدد المتبرعين</h6>
                 </div>
@@ -123,7 +144,7 @@
             <v-sheet class="pa-2 ma-2">
               <div class="donors-card">
                 <div>
-                  <h2>5600</h2>
+                  <h2>{{ statistics.totalStatisticsForRecipients }}</h2>
                   <br />
                   <h6>مجموع عدد المستفيدين</h6>
                 </div>
@@ -140,7 +161,7 @@
             <v-sheet class="pa-2 ma-2">
               <div class="donors-card">
                 <div>
-                  <h2>30</h2>
+                  <h2>{{ statistics.totalStatisticsForHaveChronicDisease }}</h2>
                   <br />
                   <h6>العدد الكلي للامراض المزمنة</h6>
                 </div>
@@ -158,6 +179,7 @@
         </v-row>
         <!-- end donors-card  -->
 
+        <!-- start type Boold  -->
         <v-row no-gutters>
           <v-col>
             <v-sheet class="pa-2 ma-2">
@@ -165,7 +187,7 @@
                 <div class="con">
                   <h2>+A</h2>
                   <br />
-                  <h6>1200</h6>
+                  <h6>{{ statistics.aPositive }}</h6>
                 </div>
                 <div class="red-img">
                   <v-img width="100" src="@/assets/Group.svg"></v-img>
@@ -179,7 +201,7 @@
                 <div class="con">
                   <h2>+O</h2>
                   <br />
-                  <h6>1200</h6>
+                  <h6>{{ statistics.oPositive }}</h6>
                 </div>
                 <div class="red-img">
                   <v-img width="100" src="@/assets/Group.svg"></v-img>
@@ -193,9 +215,8 @@
                 <div class="con">
                   <h2>+B</h2>
                   <br />
-                  <h6>1200</h6>
+                  <h6>{{ statistics.bPositive }}</h6>
                 </div>
-
                 <div class="red-img">
                   <v-img width="100" src="@/assets/Group.svg"></v-img>
                 </div>
@@ -208,7 +229,7 @@
                 <div class="con">
                   <h2>+AB</h2>
                   <br />
-                  <h6>1200</h6>
+                  <h6>{{ statistics.abPositive }}</h6>
                 </div>
 
                 <div class="red-img">
@@ -218,25 +239,66 @@
             </v-sheet>
           </v-col>
         </v-row>
-
         <v-row no-gutters>
           <v-col>
-            <v-sheet class="pa-2 ma-2"> </v-sheet>
+            <v-sheet class="pa-2 ma-2">
+              <div class="group-card">
+                <div class="con">
+                  <h2>-A</h2>
+                  <br />
+                  <h6>{{ statistics.aNegative }}</h6>
+                </div>
+                <div class="red-img">
+                  <v-img width="100" src="@/assets/Group.svg"></v-img>
+                </div>
+              </div>
+            </v-sheet>
           </v-col>
           <v-col>
-            <v-sheet class="pa-2 ma-2"> </v-sheet>
+            <v-sheet class="pa-2 ma-2">
+              <div class="group-card">
+                <div class="con">
+                  <h2>-O</h2>
+                  <br />
+                  <h6>{{ statistics.oNegative }}</h6>
+                </div>
+                <div class="red-img">
+                  <v-img width="100" src="@/assets/Group.svg"></v-img>
+                </div>
+              </div>
+            </v-sheet>
           </v-col>
           <v-col>
-            <v-sheet class="pa-2 ma-2"> </v-sheet>
+            <v-sheet class="pa-2 ma-2">
+              <div class="group-card">
+                <div class="con">
+                  <h2>-B</h2>
+                  <br />
+                  <h6>{{ statistics.bNegative }}</h6>
+                </div>
+                <div class="red-img">
+                  <v-img width="100" src="@/assets/Group.svg"></v-img>
+                </div>
+              </div>
+            </v-sheet>
           </v-col>
           <v-col>
-            <v-sheet class="pa-2 ma-2"> </v-sheet>
+            <v-sheet class="pa-2 ma-2">
+              <div class="group-card">
+                <div class="con">
+                  <h2>-AB</h2>
+                  <br />
+                  <h6>{{ statistics.abNegative }}</h6>
+                </div>
+                <div class="red-img">
+                  <v-img width="100" src="@/assets/Group.svg"></v-img>
+                </div>
+              </div>
+            </v-sheet>
           </v-col>
         </v-row>
       </v-container>
-      <!-- start card dononrs -->
-      <div class="card-grid"></div>
-      <!-- end card dononrs -->
+      <!-- end type Boold  -->
     </v-card-text>
 
     <!-- <div class="svg">
@@ -245,18 +307,63 @@
   </v-card>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { primary } from "@/assets/style";
+import axios from "@/server/axios ";
+import { stringifyQuery } from "vue-router";
+onMounted(() => {
+  getStatistics();
+  getStatisticsForGraph();
+});
+
+const statisticsGraph = ref({});
+const year = ref(2023);
+function getStatisticsForGraph() {
+  axios
+    .get(`Admin/GetStatisticsForGraph?year=${year.value}`)
+    .then((res) => {
+      statisticsGraph.value = res.data;
+      console.log(
+        "ddddddddddddddd" +
+          JSON.stringify(statisticsGraph.value, null, 2) +
+          "dddddddddddddddd"
+      );
+
+      if (
+        statisticsGraph.value.subscribersBloodByMonth &&
+        series.value[0] &&
+        series.value[0].data
+      ) {
+        statisticsGraph.value.subscribersBloodByMonth.forEach((item) => {
+          series.value[0].data.push(item.count);
+        });
+      }
+
+      if (
+        statisticsGraph.value.subscribersPlasmaByMonth &&
+        series.value[1] &&
+        series.value[1].data
+      ) {
+        statisticsGraph.value.subscribersPlasmaByMonth.forEach((item) => {
+          series.value[1].data.push(item.count);
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 const series = ref([
   {
     name: " دم ",
-    data: [28, 29, 33, 36, 32, 32, 33],
+    data: [],
   },
   {
     name: " بلازما",
-    data: [12, 11, 14, 18, 17, 13, 13],
+    data: [],
   },
 ]);
+
 const chartOptions = ref({
   chart: {
     height: 350,
@@ -328,6 +435,75 @@ const chartOptions = ref({
     offsetX: -5,
   },
 });
+
+// ................API................
+const statistics = ref([]);
+const query = ref({
+  bloodGroup: null,
+  donorType: null,
+  governorate: null,
+  subscribersType: null,
+  DateFrom: null,
+  DateTo: null,
+  HaveChronicDisease: null,
+  TypeChronicDisease: null,
+});
+function getStatistics() {
+  const filteredQuery = Object.entries(query.value)
+    .filter(([key, value]) => value !== null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+  axios
+    .get(`Admin/GetStatistics?${filteredQuery}`)
+    .then((res) => {
+      statistics.value = res.data;
+      console.log(statistics.value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+// ...............filters ............
+const bloodGroups = ref([
+  {
+    name: "A+",
+    value: 0,
+  },
+  { name: "A-", value: 1 },
+  { name: "B+", value: 2 },
+  { name: "B-", value: 3 },
+  { name: "AB+", value: 4 },
+  { name: "AB-", value: 5 },
+  { name: "O+", value: 6 },
+  { name: "O-", value: 7 },
+]);
+const donorTypes = ref([
+  { name: "دم", value: 0 },
+  { name: "بلازما", value: 1 },
+]);
+const subscribersType = ref([
+  { name: "متبرع", value: 0 },
+  { name: "مستفيد", value: 1 },
+]);
+
+const ChronicDisease = ref([
+  { name: "يوجد", value: true },
+  { name: "لا يوجد", value: false },
+]);
+watch(() => {
+  if (
+    query.value.bloodGroup ||
+    query.value.donorType ||
+    query.value.HaveChronicDisease
+  ) {
+    getStatistics();
+  } else {
+    getStatistics();
+
+  }
+  
+});
 </script>
 
 <style scoped>
@@ -395,7 +571,7 @@ const chartOptions = ref({
 }
 .group-card h6 {
   font-size: 28px;
-  font-weight: bold;
+  font-weight: 400;
   color: red;
 }
 .con {
