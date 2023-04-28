@@ -24,7 +24,7 @@
       <div class="filter-icon">
         <v-icon size="40" icon="mdi-filter-outline"></v-icon>
       </div>
-      <div class="select">
+      <div class="select-don-home">
         <v-text-field
           clearable
           append-icon="mdi-magnify"
@@ -33,7 +33,7 @@
           no-data-text="لايوجد بيانات"
         ></v-text-field>
       </div>
-      <div class="select">
+      <div class="select-don-home">
         <v-select
           clearable
           variant="plain"
@@ -41,7 +41,7 @@
           no-data-text="لايوجد بيانات"
         ></v-select>
       </div>
-      <div class="select">
+      <div class="select-don-home">
         <v-select
           clearable
           variant="plain"
@@ -49,7 +49,7 @@
           no-data-text="لايوجد بيانات"
         ></v-select>
       </div>
-      <div class="select">
+      <div class="select-don-home">
         <v-select
           clearable
           variant="plain"
@@ -57,7 +57,7 @@
           no-data-text="لايوجد بيانات"
         ></v-select>
       </div>
-      <div class="select">
+      <div class="select-don-home">
         <v-select
           clearable
           variant="plain"
@@ -65,7 +65,7 @@
           no-data-text="لايوجد بيانات"
         ></v-select>
       </div>
-      <div class="select">
+      <div class="select-don-home">
         <v-select
           clearable
           variant="plain"
@@ -133,16 +133,7 @@ function opnenAdd() {
 .filter-icon {
   margin: 5px;
 }
-.select {
-  height: 52px;
-  border: 1px solid#BDBDBD;
-  border-radius: 8px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 5px;
-}
+
 .grid-donations {
   display: grid;
   justify-content: space-around;

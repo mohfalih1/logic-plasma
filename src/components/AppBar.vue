@@ -46,6 +46,8 @@
   flex-direction: row-reverse;
   box-shadow: none;
   padding: 8px 16px;
+    background: #ffffff;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
 }
 .wlecome-name {
   display: flex;

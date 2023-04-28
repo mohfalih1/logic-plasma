@@ -1,7 +1,13 @@
 /* .............. Golbal Style start..............  */
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");
+* {
+  direction: rtl;
 
+  font-family: "Cairo", sans-serif;
+}
 /* ..............Golbal Style end..............  */
 /* ..............home page start..............  */
+
 .donors-card {
   display: flex;
   flex-direction: row;
@@ -9,10 +15,8 @@
   align-items: center;
   padding: 8px;
   gap: 16px;
-
   width: 207px;
   height: 130px;
-
   background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
@@ -234,10 +238,69 @@
   background: #ffc0cc;
   border-radius: 8px;
 }
+
+/* start chronic && notification */
+.grid-donations {
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(auto-fit, 262px);
+  column-gap: 1px;
+  row-gap: 1em;
+}
+
+.select-don-home {
+  height: 52px;
+  border: 1px solid#BDBDBD;
+  background-color: #ffff;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+}
+
+.back-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+  width: 119px;
+  height: 37px;
+  border-radius: 8px;
+  background: #56ccf2;
+}
+.delete-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+  width: 119px;
+  height: 37px;
+  border-radius: 8px;
+  background: #ff2c54;
+}
+
+/* end chronic && notification */
 /* ..................chronic Diseases end...............  */
 
 /*.................... notifications start............... */
-
+.select-content {
+  background: #f2f2f2;
+  border-radius: 8px;
+  position: relative;
+  padding-right: 10px;
+  padding-top: 0;
+  margin: 0;
+  height: 145px;
+}
+.rounded {
+  border-radius: 16px;
+}
 /* ....................notifications end................  */
 
 /* .....................Expot impprt start............... */

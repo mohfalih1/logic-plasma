@@ -20,10 +20,7 @@
     </v-card-text>
     <div class="d-flex justify-center align-center h-75">
       <v-card elevation="0">
-        <div
-          class="active-button d-flex justify-start align-start"
-          width="100%"
-        >
+        <div class="active-button" width="100%">
           <div>
             <v-img
               class="image-translate ma-0"
@@ -37,23 +34,13 @@
             <v-btn class="ma-0" elevation="0" rounded="0">English</v-btn>
           </div>
         </div>
-        
 
         <br />
-        <v-text-field
-          variant="plain"
-          class="h-50"
-          placeholder="عنوان الخبر..."
-        >
+        <v-text-field variant="plain" class="h-50" placeholder="عنوان الخبر...">
         </v-text-field>
 
         <br />
-        <v-textarea
-        variant="plain"
-        label="محتوى الخبر..."
-        >
-
-        </v-textarea>
+        <v-textarea variant="plain" label="محتوى الخبر..."> </v-textarea>
         <v-card-actions>
           <v-btn class="add-edit-button pa-5" :color="primary" variant="text">
             نشر الخبر
@@ -84,6 +71,9 @@ import { primary } from "@/assets/style";
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   margin: 10px;
+  display: flex;
+  justify-content: start;
+  align-items: start;
 }
 .image-translate {
   overflow: hidden;

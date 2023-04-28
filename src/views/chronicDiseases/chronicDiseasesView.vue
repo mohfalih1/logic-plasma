@@ -13,7 +13,7 @@
       <div class="header">
         <div class="show"><h3>عرض الامراض المزمنة</h3></div>
         <v-btn
-          @click="dialog = true"
+          @click="addDialog = true"
           class="add"
           rounded="0"
           height="50"
@@ -41,11 +41,21 @@
         <br />
         <v-card-actions class="pa-0 mb-0">
           <div class="d-flex ma-0">
-            <v-btn class="chronic-edit-button" color="white" variant="text">
+            <v-btn
+              @click="editDialog = true"
+              class="chronic-edit-button"
+              color="white"
+              variant="text"
+            >
               <v-icon icon="mdi-square-edit-outline" size="22"></v-icon>
               تعديل
             </v-btn>
-            <v-btn class="chronic-delte-button" color="red" variant="text">
+            <v-btn
+              @click="deleteDialog = true"
+              class="chronic-delte-button"
+              color="red"
+              variant="text"
+            >
               <v-icon icon="mdi-trash-can-outline" size="22"></v-icon>
               حذف
             </v-btn>
@@ -57,7 +67,7 @@
 
   <!-- start add chronic -->
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent width="262">
+    <v-dialog v-model="addDialog" persistent width="262">
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary pb-0">
           <span> اضافة مرض مزمن</span>
@@ -91,26 +101,120 @@
             </v-form>
           </v-container>
         </v-card-text>
+        <v-card-actions class="d-flex align-center justify-center">
+          <div class="d-flex align-center justify-center my-1">
+            <v-btn class="delete-button" color="white" variant="text">
+              اضافة
+            </v-btn>
+            <v-btn
+              @click="addDialog = false"
+              class="back-button"
+              color="white"
+              variant="text"
+            >
+              <v-icon icon="mdi-greater-than" size="20"></v-icon>
+              العودة
+            </v-btn>
+          </div>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
   <!-- end add chronic -->
+
+  <!-- start edit chronic -->
+  <v-row justify="center">
+    <v-dialog v-model="editDialog" persistent width="262">
+      <v-card rounded="xl">
+        <v-card-title class="text-center text-primary pb-0">
+          <span> تعديل المرض المزمن</span>
+        </v-card-title>
+        <v-card-text class="pa-0">
+          <v-container>
+            <v-form>
+              <v-col cols="12">
+                <div class="select">
+                  <v-icon color="red" icon="mdi-virus-outline"></v-icon>
+                  <v-text-field
+                    class="text-center"
+                    clearable
+                    variant="plain"
+                    type="text"
+                  ></v-text-field>
+                </div>
+              </v-col>
+              <v-col cols="12">
+                <div class="select">
+                  <v-text-field
+                    clearable
+                    variant="plain"
+                    type="text"
+                  ></v-text-field>
+                  <v-icon color="red" icon="mdi-virus-outline"></v-icon>
+                </div>
+              </v-col>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-card-actions class="d-flex align-center justify-center">
+          <div class="d-flex align-center justify-center my-1">
+            <v-btn class="delete-button" color="white" variant="text">
+              حفظ
+            </v-btn>
+            <v-btn
+              @click="editDialog = false"
+              class="back-button"
+              color="white"
+              variant="text"
+            >
+              <v-icon icon="mdi-greater-than" size="20"></v-icon>
+              العودة
+            </v-btn>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+  <!-- end edit chronic -->
+  <!-- start delete chronic -->
+  <v-row justify="center">
+    <v-dialog v-model="deleteDialog" persistent width="262">
+      <v-card rounded="xl">
+        <v-card-title class="text-center text-primary pb-0">
+          <span> حذف المرض المزمن</span>
+        </v-card-title>
+        <v-card-text> هل انت متأكد من حذف المرض ؟ </v-card-text>
+        <v-card-actions class="d-flex align-center justify-center">
+          <div class="d-flex align-center justify-center my-1">
+            <v-btn class="delete-button" color="white" variant="text">
+              حذف
+            </v-btn>
+            <v-btn
+              @click="deleteDialog = false"
+              class="back-button"
+              color="white"
+              variant="text"
+            >
+              <v-icon icon="mdi-greater-than" size="20"></v-icon>
+              العودة
+            </v-btn>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+  <!-- end delete chronic -->
 </template>
 <script setup>
 import { primary } from "@/assets/style";
 import { useCounterStore } from "@/store/app";
 import { ref } from "vue";
 const store = useCounterStore();
-const dialog = ref(false);
+const addDialog = ref(false);
+const editDialog = ref(false);
+const deleteDialog = ref(false);
 </script>
 <style scoped>
-.grid-donations {
-  display: grid;
-  justify-content: space-around;
-  grid-template-columns: repeat(auto-fit, 262px);
-  column-gap: 1px;
-  row-gap: 1em;
-}
 .select {
   height: 40px;
   background: #f2f2f2;

@@ -17,6 +17,7 @@
           <v-form class="form">
             <div>
               <v-text-field
+                v-model="loginData.email"
                 class="bg-white rounded-lg pa-0"
                 variant="plain"
                 placeholder="البريد الالكتروني"
@@ -25,6 +26,7 @@
               ></v-text-field>
               <br />
               <v-text-field
+                v-model="loginData.password"
                 class="bg-white rounded-lg pa-0"
                 variant="plain"
                 placeholder="الرمز السري"
@@ -32,11 +34,11 @@
                 prepend-inner-icon="mdi-key"
               ></v-text-field>
               <br />
-              <!-- <v-alert  dismissible
-                 type="error"
+              <v-alert v-if="error" dismissible type="error"
                 >اسم المستخدم او كلمة المرور خطأ</v-alert
-              > -->
+              >
               <v-btn
+                @click="login()"
                 class="mt-6 pa-1"
                 large
                 rounded
@@ -59,9 +61,32 @@
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
     </div>
-
   </div>
 </template>
+<script setup>
+import axios from "@/server/axios";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const error = ref(false);
+const loginData = ref({
+  email: "",
+  password: "",
+});
+function login() {
+  axios
+    .post("Admin/Login", loginData.value)
+    .then((res) => {
+      localStorage.setItem("token", res.data.token);
+      console.log(res);
+      router.push("/");
+    })
+    .catch((err) => {
+      console.log(err);
+      error.value = true;
+    });
+}
+</script>
 <style scoped>
 * {
   margin: 0;
@@ -97,7 +122,7 @@ iframe {
 }
 .card {
   width: 600px;
-  height:600px;
+  height: 600px;
   display: flex;
   align-items: center;
   padding: 30px;

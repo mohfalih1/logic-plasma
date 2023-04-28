@@ -151,5 +151,15 @@ export const useCounterStore = defineStore("counter", () => {
     },
 
   ];
-  return { date, donations, dialog, chronic };
+  const notifications = [
+    { title: "عنوان الاشعار", content: "محتوى الاشعار الخاص بالتطبيق" },
+    { title: "عنوان الاشعار", content: "محتوى الاشعار الخاص بالتطبيق" },
+    { title: "عنوان الاشعار", content: "محتوى الاشعار الخاص بالتطبيق" },
+    { title: "عنوان الاشعار", content: "محتوى الاشعار الخاص بالتطبيق" },
+    { title: "عنوان الاشعار", content: "محتوى الاشعار الخاص بالتطبيق" },
+    { title: "عنوان الاشعار", content: "محتوى الاشعار الخاص بالتطبيق" },
+    { title: "عنوان الاشعار", content: "محتوى الاشعار الخاص بالتطبيق" },
+    { title: "عنوان الاشعار", content: "محتوى الاشعار الخاص بالتطبيق" },
+  ];
+  return { date, donations, dialog, chronic, notifications };
 });
