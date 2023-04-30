@@ -15,6 +15,34 @@
   background-color: #ff2c54;
   border-radius: 10px;
 }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.pagination button {
+  padding: 1rem;
+  background-color:#ff2c54;
+  border-radius: 50%;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.pagination .current {
+  background-color: #ffc0cc;
+}
+.pagination button:hover {
+  opacity: 0.6;
+}
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 /* ..............Golbal Style end..............  */
 /* ..............home page start..............  */
 

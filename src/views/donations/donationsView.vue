@@ -3,7 +3,7 @@
     class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
     elevation="5"
     width="98.8%"
-    height="90vh"
+    height="auto"
   >
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-hand-heart-outline"></v-icon>
@@ -12,7 +12,13 @@
     <v-card-text class="pa-0">
       <div class="header">
         <div class="show"><h3>عرض المتبرعين</h3></div>
-        <v-btn  @click="opnenAdd()" class="add" rounded="0" height="50" elevation="0">
+        <v-btn
+          @click="opnenAdd()"
+          class="add"
+          rounded="0"
+          height="50"
+          elevation="0"
+        >
           <v-icon icon="mdi-plus-circle-outline"></v-icon>
           <h3>اضافة متبرع</h3>
         </v-btn>
@@ -78,27 +84,21 @@
     <br />
 
     <div class="grid-donations ma-5">
-      <v-card
-        class="donations-card"
-        v-for="item in store.donations"
-        :key="item.name"
-      >
+      <v-card class="donations-card" v-for="item in donations" :key="item.id">
         <div class="news-title">
           <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
           {{ item.name }}
         </div>
         <br />
-        <div>المحافظة:{{ item.city }}</div>
-        <div>رقم الهاتف:{{ item.phoneNumber }}</div>
-        <div>نوع التبرع:{{ item.typeBlood }}</div>
-        <div>زمرة الدم:{{ item.typeGroup }}</div>
-
-        <div class="news-date"></div>
-
+        <div>المحافظة:{{ item.governorate }}</div>
+        <div>رقم الهاتف:{{ item.phone }}</div>
+        <div>نوع التبرع:{{ item.donorType===0 ?'دم':'بلازما' }}</div>
+        <div>زمرة الدم:{{bloodGroups[item?.bloodGroup]?.name  }}</div>
         <v-card-actions class="pa-0">
           <v-btn
             @click="opnenShow()"
             class="news-button"
+            :to="`/donations/${item.id}`"
             color="white"
             variant="text"
             >عرض المتبرع
@@ -109,18 +109,48 @@
   </v-card>
 </template>
 <script setup>
-import { ref } from "vue";
-import { useCounterStore } from "@/store/app";
+import { ref, onMounted } from "vue";
 import router from "@/router";
+import axios from "@/server/axios";
+import { useCounterStore } from "@/store/app";
 const store = useCounterStore();
+onMounted(() => {
+  getDoner();
+});
 function opnenShow() {
   store.dialog = true;
-  router.push("/donations/donations-show");
 }
 function opnenAdd() {
   store.dialog = true;
   router.push("/donations/donations-add");
 }
+const donations = ref([]);
+const numberOfPage = ref(4);
+const numberOfItemPerPage = ref(15);
+function getDoner() {
+  axios
+    .get(`Admin/GetDoner?numberOfPage=${numberOfPage.value}&numberOfItemPerPage=${numberOfItemPerPage.value}`)
+    .then((res) => {
+      donations.value = res.data;
+      console.log(donations.value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+const bloodGroups = ref([
+  {
+    name: "A+",
+    value: 0,
+  },
+  { name: "A-", value: 1 },
+  { name: "B+", value: 2 },
+  { name: "B-", value: 3 },
+  { name: "AB+", value: 4 },
+  { name: "AB-", value: 5 },
+  { name: "O+", value: 6 },
+  { name: "O-", value: 7 },
+]);
 </script>
 <style scoped>
 .filters {

@@ -1,4 +1,5 @@
 <template>
+  <loader v-if="isLoading" />
   <v-card
     class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
     elevation="5"
@@ -27,20 +28,20 @@
     <div class="grid-donations ma-5">
       <v-card
         class="chronic-card pb-0"
-        v-for="item in store.notifications"
-        :key="item.title"
+        v-for="item in notification"
+        :key="item.id"
       >
         <div class="news-title">
           <v-icon icon="mdi-bell-ring-outline" class="ml-2"></v-icon>
-          {{ item.title }}
+          {{ item.titleArabic }}
         </div>
         <div class="news-title">
-          {{ item.content }}
+          {{ item.decArabic }}
         </div>
         <v-card-actions class="pa-0 mb-0">
           <div class="d-flex ma-0">
             <v-btn
-              @click="sendDialog = true"
+              @click="showModel(item, 1)"
               class="chronic-edit-button"
               color="white"
               variant="text"
@@ -49,7 +50,7 @@
               ارسال للجميع
             </v-btn>
             <v-btn
-              @click="deleteDialog = true"
+              @click="showModel(item, 2)"
               class="chronic-delte-button"
               color="red"
               variant="text"
@@ -97,6 +98,7 @@
                 <div class="select">
                   <v-icon color="red" icon="mdi-bell-ring-outline "></v-icon>
                   <v-text-field
+                    v-model="addNotific.titleAr"
                     clearable
                     variant="plain"
                     placeholder="اضافة شعار.."
@@ -107,6 +109,7 @@
               <v-col cols="12">
                 <div class="select-content">
                   <v-textarea
+                    v-model="addNotific.decArabic"
                     clearable
                     variant="plain"
                     label="محتوى الشعار.."
@@ -119,7 +122,12 @@
         </v-card-text>
         <v-card-actions class="d-flex align-center justify-center pt-0">
           <div class="d-flex align-center justify-center my-1">
-            <v-btn class="delete-button" color="white" variant="text">
+            <v-btn
+              @click="addNotification()"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
               اضافة
             </v-btn>
             <v-btn
@@ -187,7 +195,12 @@
         <v-card-text> هل انت متأكد من حذف الاشعار ؟ </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
-            <v-btn class="delete-button" color="white" variant="text">
+            <v-btn
+              @click="deleteNotifications(selectedItem.id)"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
               حذف
             </v-btn>
             <v-btn
@@ -207,12 +220,84 @@
   <!-- start delete notification  -->
 </template>
 <script setup>
-import { useCounterStore } from "@/store/app";
-import { ref } from "vue";
-const store = useCounterStore();
+import Loader from "@/components/Loader.vue";
+import { ref, onMounted, reactive } from "vue";
+import axios from "@/server/axios";
+const isLoading = ref(false);
 const addDialog = ref(false);
 const sendDialog = ref(false);
 const deleteDialog = ref(false);
+const selectedItem = ref();
+onMounted(() => {
+  getNotification();
+});
+const showModel = (item, type) => {
+  selectedItem.value = item;
+  type == 1 ? (sendDialog.value = true) : (deleteDialog.value = true);
+  // editChron.value.nameArabic = item.nameArabic;
+  // editChron.value.nameEnglish = item.nameEnglish;
+};
+const notification = ref([]);
+const numberOfPage = ref(1);
+const numberOfItemPerPage = ref(10);
+function getNotification() {
+  isLoading.value = true;
+  axios
+    .get(
+      `Admin/GetNotifications?numberOfPage=${numberOfPage.value}&numberOfItemPerPage=${numberOfItemPerPage.value}`
+    )
+    .then((res) => {
+      notification.value = res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+}
+const addNotific = reactive({
+  titleEn: "",
+  titleAr: "",
+  decEnglish: "",
+  decArabic: "",
+});
+function addNotification() {
+  const formData = new FormData();
+  formData.append("titleEn", addNotific.titleEn);
+  formData.append("titleAr", addNotific.titleAr);
+  formData.append("decEnglish", addNotific.decEnglish);
+  formData.append("decArabic", addNotific.decArabic);
+  isLoading.value = true;
+  axios
+    .post("Admin/AddNotification", formData)
+    .then((res) => {
+      getNotification();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+      addDialog.value = false;
+    });
+}
+
+function deleteNotifications(id) {
+  isLoading.value = true;
+  axios
+    .put(`Admin/DeleteNotifications?id=${id}`)
+    .then((res) => {
+      getNotification();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+      deleteDialog.value = false;
+    });
+}
 </script>
 <style scoped>
 .active-button {

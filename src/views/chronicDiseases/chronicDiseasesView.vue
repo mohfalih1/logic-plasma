@@ -1,9 +1,10 @@
 <template>
+  <Loader v-if="isLoading" />
   <v-card
     class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
     elevation="5"
     width="98.8%"
-    height="83vh"
+    height="auto"
   >
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-virus-outline"></v-icon>
@@ -27,22 +28,22 @@
     <div class="grid-donations ma-5">
       <v-card
         class="chronic-card pb-0"
-        v-for="item in store.chronic"
-        :key="item.arabic"
+        v-for="item in chronicDiseases"
+        :key="item.id"
       >
         <div class="news-title">
           <v-icon icon="mdi-virus-outline" class="ml-2"></v-icon>
-          {{ item.arabic }}
+          {{ item.nameArabic }}
         </div>
         <div class="news-title">
           <v-icon icon="mdi-virus-outline" class="ml-2"></v-icon>
-          {{ item.english }}
+          {{ item.nameEnglish }}
         </div>
         <br />
         <v-card-actions class="pa-0 mb-0">
           <div class="d-flex ma-0">
             <v-btn
-              @click="editDialog = true"
+              @click="showModel(item, 1)"
               class="chronic-edit-button"
               color="white"
               variant="text"
@@ -51,7 +52,7 @@
               تعديل
             </v-btn>
             <v-btn
-              @click="deleteDialog = true"
+              @click="showModel(item, 2)"
               class="chronic-delte-button"
               color="red"
               variant="text"
@@ -79,6 +80,7 @@
                 <div class="select">
                   <v-icon color="red" icon="mdi-virus-outline"></v-icon>
                   <v-text-field
+                    v-model="addChron.nameArabic"
                     class="text-center"
                     clearable
                     variant="plain"
@@ -90,6 +92,7 @@
               <v-col cols="12">
                 <div class="select">
                   <v-text-field
+                    v-model="addChron.nameEnglish"
                     clearable
                     variant="plain"
                     placeholder="Enter chronic disease..."
@@ -103,7 +106,12 @@
         </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
-            <v-btn class="delete-button" color="white" variant="text">
+            <v-btn
+              @click="addChronicDiseas()"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
               اضافة
             </v-btn>
             <v-btn
@@ -136,6 +144,7 @@
                 <div class="select">
                   <v-icon color="red" icon="mdi-virus-outline"></v-icon>
                   <v-text-field
+                  v-model="editChron.nameArabic"
                     class="text-center"
                     clearable
                     variant="plain"
@@ -146,6 +155,7 @@
               <v-col cols="12">
                 <div class="select">
                   <v-text-field
+                  v-model="editChron.nameEnglish"
                     clearable
                     variant="plain"
                     type="text"
@@ -158,7 +168,12 @@
         </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
-            <v-btn class="delete-button" color="white" variant="text">
+            <v-btn
+              @click="UpdateChronicDisease(selectedItem.id)"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
               حفظ
             </v-btn>
             <v-btn
@@ -186,7 +201,7 @@
         <v-card-text> هل انت متأكد من حذف المرض ؟ </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
-            <v-btn class="delete-button" color="white" variant="text">
+            <v-btn @click="deleteChronicDisease(selectedItem.id)" class="delete-button" color="white" variant="text">
               حذف
             </v-btn>
             <v-btn
@@ -206,13 +221,94 @@
   <!-- end delete chronic -->
 </template>
 <script setup>
+import Loader from "@/components/Loader.vue";
 import { primary } from "@/assets/style";
-import { useCounterStore } from "@/store/app";
-import { ref } from "vue";
-const store = useCounterStore();
+import { ref, onMounted } from "vue";
+import axios from "@/server/axios";
+const isLoading = ref(false);
 const addDialog = ref(false);
 const editDialog = ref(false);
 const deleteDialog = ref(false);
+const numberOfPage = ref(1);
+const numberOfItemPerPage = ref(25);
+const chronicDiseases = ref([]);
+const selectedItem = ref();
+const showModel = (item, type) => {
+  selectedItem.value = item;
+  type == 1 ? (editDialog.value = true) : (deleteDialog.value = true);
+  editChron.value.nameArabic = item.nameArabic;
+  editChron.value.nameEnglish = item.nameEnglish;
+};
+onMounted(() => {
+  getChronicDiseases();
+});
+function getChronicDiseases() {
+  isLoading.value = true;
+  axios
+    .get(
+      `Admin/GetChronicDisease?numberOfPage=${numberOfPage.value}&numberOfItemPerPage=${numberOfItemPerPage.value}`
+    )
+    .then((res) => {
+      chronicDiseases.value = res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+}
+const addChron = ref({
+  nameArabic: "",
+  nameEnglish: "",
+});
+function addChronicDiseas() {
+  isLoading.value = true;
+  axios
+    .post("Admin/AddChronicDisease", addChron.value)
+    .then((res) => {
+      addDialog.value = false;
+      getChronicDiseases();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+}
+const editChron = ref({
+  nameArabic: "",
+  nameEnglish: "",
+});
+function UpdateChronicDisease(id) {
+  isLoading.value = true;
+  axios
+    .put(`Admin/UpdateChronicDisease?id=${id}`, editChron.value).then((res) => {
+      editDialog.value = false;
+      getChronicDiseases();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+};
+function deleteChronicDisease(id) {
+  isLoading.value = true;
+  axios
+    .put(`Admin/DeleteChronicDisease?id=${id}`).then((res) => {
+      deleteDialog.value = false;
+      getChronicDiseases();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+}; 
 </script>
 <style scoped>
 .select {

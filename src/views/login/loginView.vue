@@ -1,4 +1,5 @@
 <template>
+   <Loader v-if="isLoading"/>
   <div class="contenier">
     <div class="boold-1">
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
@@ -64,26 +65,33 @@
   </div>
 </template>
 <script setup>
+import Loader from "@/components/Loader.vue";
 import axios from "@/server/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+
 const router = useRouter();
 const error = ref(false);
+const isLoading=ref(false);
 const loginData = ref({
   email: "",
   password: "",
 });
 function login() {
+  isLoading.value=true;
   axios
     .post("Admin/Login", loginData.value)
     .then((res) => {
       localStorage.setItem("token", res.data.token);
       console.log(res);
       router.push("/");
+     
     })
     .catch((err) => {
       console.log(err);
       error.value = true;
+    }).finally(()=>{
+       isLoading.value=false;
     });
 }
 </script>

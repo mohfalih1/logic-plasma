@@ -1,4 +1,5 @@
 <template>
+  <Loader v-if="isLoading" />
   <v-card
     class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
     elevation="5"
@@ -41,10 +42,14 @@
         </div>
         <div class="select-don-home">
           <v-select
+            v-model="query.governorate"
             clearable
             variant="plain"
             placeholder="المدينة"
             no-data-text="لايوجد بيانات"
+            :items="governorates"
+            item-title="nameArabic"
+            item-value="id"
           ></v-select>
         </div>
         <div class="select-don-home">
@@ -59,18 +64,16 @@
             item-value="value"
           ></v-select>
         </div>
-            
-        <div class="select-don-home">
 
+        <div class="select-don-home">
           <v-select
+            v-model="query.DateFrom"
             clearable
             variant="plain"
             placeholder=" التاريخ"
             no-data-text="لايوجد بيانات"
           ></v-select>
-
         </div>
-  
 
         <div class="select-don-home">
           <v-select
@@ -86,10 +89,14 @@
         </div>
         <div class="select-don-home">
           <v-select
+          v-model="query.TypeChronicDisease"
             clearable
             variant="plain"
             placeholder="نوع المرض المزمن"
             no-data-text="لايوجد بيانات"
+            :items="typeChronicDisease"
+            item-title="nameArabic"
+            item-value="id"
           ></v-select>
         </div>
       </div>
@@ -307,47 +314,80 @@
   </v-card>
 </template>
 <script setup>
+import Loader from "@/components/Loader.vue";
 import { ref, onMounted, watch } from "vue";
 import { primary } from "@/assets/style";
 import axios from "@/server/axios ";
-import { stringifyQuery } from "vue-router";
+const isLoading = ref(false);
 onMounted(() => {
   getStatistics();
-  getStatisticsForGraph();
+  getStatsGraph();
+  getGovernorates();
+  getChronicDisease();
 });
 
-const statisticsGraph = ref({});
-const year = ref(2023);
-function getStatisticsForGraph() {
+// ................API................
+const statistics = ref([]);
+const query = ref({
+  bloodGroup: null,
+  donorType: null,
+  governorate: null,
+  subscribersType: null,
+  DateFrom: null,
+  DateTo: null,
+  HaveChronicDisease: null,
+  TypeChronicDisease: null,
+});
+function getStatistics() {
+  const filteredQuery = Object.entries(query.value)
+    .filter(([key, value]) => value !== null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
   axios
-    .get(`Admin/GetStatisticsForGraph?year=${year.value}`)
+    .get(`Admin/GetStatistics?${filteredQuery}`)
     .then((res) => {
-      statisticsGraph.value = res.data;
-      console.log(
-        "ddddddddddddddd" +
-          JSON.stringify(statisticsGraph.value, null, 2) +
-          "dddddddddddddddd"
-      );
+      statistics.value = res.data;
+      console.log(statistics.value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+const year = ref(2023);
 
-      if (
-        statisticsGraph.value.subscribersBloodByMonth &&
-        series.value[0] &&
-        series.value[0].data
-      ) {
-        statisticsGraph.value.subscribersBloodByMonth.forEach((item) => {
-          series.value[0].data.push(item.count);
-        });
-      }
-
-      if (
-        statisticsGraph.value.subscribersPlasmaByMonth &&
-        series.value[1] &&
-        series.value[1].data
-      ) {
-        statisticsGraph.value.subscribersPlasmaByMonth.forEach((item) => {
-          series.value[1].data.push(item.count);
-        });
-      }
+const statisticsGraph = ref([]);
+function getStatsGraph() {
+  isLoading.value = true;
+  axios.get(`Admin/GetStatisticsForGraph?year=${year.value}`).then((res) => {
+    statisticsGraph.value = res.data;
+    series.value[0].data = statisticsGraph.value.subscribersBloodByMonth.map(
+      (item) => item.count
+    );
+    series.value[1].data = statisticsGraph.value.subscribersPlasmaByMonth.map(
+      (item) => item.count
+    );
+    isLoading.value = false;
+  });
+}
+const governorates = ref([]);
+function getGovernorates() {
+  axios
+    .get(`Admin/GetGovernoratesForStatistics`)
+    .then((res) => {
+      governorates.value = res.data;
+      console.log(governorates.value + "fffffffffffffff");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+const typeChronicDisease = ref([]);
+function getChronicDisease() {
+  axios
+    .get(`Admin/GetChronicDiseaseForStatistics`)
+    .then((res) => {
+      typeChronicDisease.value = res.data;
+      console.log(typeChronicDisease.value + "fffffffffffffff");
     })
     .catch((err) => {
       console.log(err);
@@ -416,16 +456,11 @@ const chartOptions = ref({
       "Nov",
       "Dec",
     ],
-    // title: {
-    //   text: "Month",
-    // },
   },
   yaxis: {
     title: {
       text: "",
     },
-    min: 5,
-    max: 40,
   },
   legend: {
     position: "top",
@@ -435,34 +470,6 @@ const chartOptions = ref({
     offsetX: -5,
   },
 });
-
-// ................API................
-const statistics = ref([]);
-const query = ref({
-  bloodGroup: null,
-  donorType: null,
-  governorate: null,
-  subscribersType: null,
-  DateFrom: null,
-  DateTo: null,
-  HaveChronicDisease: null,
-  TypeChronicDisease: null,
-});
-function getStatistics() {
-  const filteredQuery = Object.entries(query.value)
-    .filter(([key, value]) => value !== null)
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
-  axios
-    .get(`Admin/GetStatistics?${filteredQuery}`)
-    .then((res) => {
-      statistics.value = res.data;
-      console.log(statistics.value);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
 
 // ...............filters ............
 const bloodGroups = ref([
@@ -500,9 +507,7 @@ watch(() => {
     getStatistics();
   } else {
     getStatistics();
-
   }
-  
 });
 </script>
 

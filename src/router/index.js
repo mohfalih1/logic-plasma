@@ -60,7 +60,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/donations/donations-show",
+      path: "/donations/:id",
       name: "showDonation",
       component: () => import("@/views/donations/showDonation.vue"),
     },

@@ -40,9 +40,8 @@
         </v-text-field>
 
         <br />
-        <v-textarea variant="plain" label="محتوى الخبر..."> </v-textarea>
-        <br />
-        <v-card class="drag-box" >
+        <v-textarea variant="plain"  label="محتوى الخبر..."> </v-textarea>
+        <v-card class="drag-box mb-3" >
          <v-file-input
          class="drag-box-content"
          variant="plain"
@@ -90,9 +89,9 @@ async function uploadFile() {
 <style scoped>
 .drag-box {
   position: relative;
-  width: 400px;
+  width: 425px;
   height: 200px;
-  background-color: pink;
+  background-color: #FFC0CC;
 }
 
 .drag-box-content {
