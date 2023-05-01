@@ -3,7 +3,7 @@
     <!-- <loginView/> -->
 
     <v-main>
-      <NavBar v-if="!isSidebar" style="direction: ltr;" />
+      <NavBar v-if="!isSidebar" style="direction: ltr" />
       <AppBar v-if="!isSidebar" />
       <v-container>
         <router-view />

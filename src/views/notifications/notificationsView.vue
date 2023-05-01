@@ -1,11 +1,6 @@
 <template>
   <loader v-if="isLoading" />
-  <v-card
-    class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
-    elevation="5"
-    width="98.8%"
-    height="83vh"
-  >
+  <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-bell-ring-outline"></v-icon>
       <h2>الاشعارات</h2>
@@ -233,7 +228,9 @@ onMounted(() => {
 });
 const showModel = (item, type) => {
   selectedItem.value = item;
-  type == 1 ? (sendDialog.value = true) : (deleteDialog.value = true);
+  type == 1
+    ? sendNotification(selectedItem.value.id)
+    : (deleteDialog.value = true);
   // editChron.value.nameArabic = item.nameArabic;
   // editChron.value.nameEnglish = item.nameEnglish;
 };
@@ -296,6 +293,22 @@ function deleteNotifications(id) {
     .finally(() => {
       isLoading.value = false;
       deleteDialog.value = false;
+    });
+}
+function sendNotification(id) {
+  isLoading.value = true;
+  axios
+    .post(`Admin/SendNotification?ID=${id}`)
+    .then((res) => {
+      getNotification();
+      console.log(id);
+      sendDialog.value = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
     });
 }
 </script>

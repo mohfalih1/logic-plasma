@@ -29,7 +29,7 @@ const router = createRouter({
     },
 
     {
-      path: "/news/show",
+      path: "/news/:id",
       name: "show",
       component: () => import("@/views/news/show.vue"),
       meta: {

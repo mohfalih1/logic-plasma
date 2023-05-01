@@ -1,11 +1,6 @@
 <template>
   <Loader v-if="isLoading" />
-  <v-card
-    class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
-    elevation="5"
-    width="98.8%"
-    height="90vh"
-  >
+  <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-newspaper-variant-outline"></v-icon>
       <h2>الاخبار</h2>
@@ -19,8 +14,10 @@
         </v-btn>
       </div>
     </v-card-text>
+    
     <div class="grid-news ma-5">
       <v-card class="news-card" v-for="item in blog" :key="item.id">
+
         <v-img
           :src="item.image"
           lazy-src="@\assets\plasmaLogo.png"
@@ -32,12 +29,12 @@
 
         <div class="news-date">
           <v-icon icon="mdi-calendar-outline"> </v-icon
-          ><span>{{ item.updateDate }}</span>
+          ><span>{{ dayjs(item.updateDate).format("YYYY/MM/DD, HH:MM A") }}</span>
         </div>
 
         <v-card-actions class="pa-0">
           <v-btn
-            to="/news/show"
+            :to="`/news/${item.id}`"
             class="news-button"
             color="white"
             variant="text"
@@ -54,34 +51,35 @@
         :disabled="blog.length < 10"
         @click="nextPage"
       >
-        {{ numberOfPaPage + 1 }}
+        {{ numberOfPage + 1 }}
       </button>
-      <button class="current">{{ numberOfPaPage }}</button>
+      <button class="current">{{ numberOfPage }}</button>
       <button
-        v-if="numberOfPaPage != 1"
-        :disabled="numberOfPaPage <= 1"
+        v-if="numberOfPage != 1"
+        :disabled="numberOfPage <= 1"
         @click="previousPage"
       >
-        {{ numberOfPaPage - 1 }}
+        {{ numberOfPage - 1 }}
       </button>
-      <button :disabled="numberOfPaPage <= 1" @click="previousPage">></button>
+      <button :disabled="numberOfPage <= 1" @click="previousPage">></button>
     </v-container>
     <!-- pagination  -->
   </v-card>
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
+import dayjs from "dayjs";
 import { ref, onMounted } from "vue";
 import axios from "@/server/axios";
 const isLoading = ref(false);
-const numberOfPaPage = ref(1);
+const numberOfPage = ref(1);
 const numberOfItemPerPage = ref(10);
 const blog = ref({});
 function getBlog() {
   isLoading.value = true;
   axios
     .get(
-      `Admin/GetBlog?numberOfPage=${numberOfPaPage.value}&numberOfItemPerPage=${numberOfItemPerPage.value}`
+      `Admin/GetBlog?numberOfPage=${numberOfPage.value}&numberOfItemPerPage=${numberOfItemPerPage.value}`
     )
     .then((res) => {
       blog.value = res.data;
@@ -89,19 +87,19 @@ function getBlog() {
       isLoading.value = false;
     })
     .catch((res) => {
-      console.log(res);
+      console.log(res); 
     });
 }
 
 // .............pagination.............
 function nextPage() {
-  numberOfPaPage.value++;
-  showLoader.value = true;
+  numberOfPage.value++;
+  isLoading.value = true;
   getBlog();
 }
 function previousPage() {
-  numberOfPaPage.value--;
-  showLoader.value = true;
+  numberOfPage.value--;
+  isLoading.value = true;
   getBlog();
 }
 onMounted(() => {

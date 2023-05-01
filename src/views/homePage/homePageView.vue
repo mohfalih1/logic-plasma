@@ -1,10 +1,7 @@
 <template>
   <Loader v-if="isLoading" />
   <v-card
-    class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
-    elevation="5"
-    width="98.8%"
-    height="auto"
+  class="card-temp"
     ><v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-speedometer"></v-icon>
       <h2>الاحصائيات</h2>
@@ -510,8 +507,8 @@ watch(() => {
   }
 });
 </script>
-
 <style scoped>
+
 .filters {
   display: grid;
   grid-template-columns: 3% repeat(7, 13.4%);

@@ -1,10 +1,6 @@
 <template>
-  <v-card
-    class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
-    elevation="5"
-    width="98.8%"
-    height="100vh"
-  >
+  <Loader v-if="isLoading" />
+  <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-newspaper-variant-outline"></v-icon>
       <h2>الاخبار</h2>
@@ -36,24 +32,38 @@
         </div>
 
         <br />
-        <v-text-field variant="plain" class="h-50" placeholder="عنوان الخبر...">
+        <v-text-field
+          v-model="addBlo.TitleArabic"
+          variant="plain"
+          class="h-50"
+          placeholder="عنوان الخبر..."
+        >
         </v-text-field>
 
         <br />
-        <v-textarea variant="plain"  label="محتوى الخبر..."> </v-textarea>
-        <v-card class="drag-box mb-3" >
-         <v-file-input
-         class="drag-box-content"
-         variant="plain"
-    v-model="file"
-    accept="image/*"
-    @change="uploadFile"
-    show-size
-    prepend-icon="mdi-image-plus-outline"
-  ></v-file-input>
+        <v-textarea
+          v-model="addBlo.ContentArabic"
+          variant="plain"
+          label="محتوى الخبر..."
+        >
+        </v-textarea>
+        <v-card class="drag-box mb-3">
+          <v-file-input
+            class="drag-box-content"
+            variant="plain"
+            v-model="addBlo.ImageFile"
+            accept="image/*"
+            show-size
+            prepend-icon="mdi-image-plus-outline"
+          ></v-file-input>
         </v-card>
         <v-card-actions>
-          <v-btn class="add-edit-button pa-5" :color="primary" variant="text">
+          <v-btn
+            @click="addBlog()"
+            class="add-edit-button pa-5"
+            :color="primary"
+            variant="text"
+          >
             نشر الخبر
           </v-btn>
 
@@ -72,26 +82,51 @@
   </v-card>
 </template>
 <script setup>
+import Loader from "@/components/Loader.vue";
 import { primary } from "@/assets/style";
-import { ref } from "vue";
-const file=ref(null)
-async function uploadFile() {
-      const formData = new FormData();
-      formData.append("file", this.file);
+import { ref, reactive } from "vue";
+import axios from "@/server/axios";
+import router from "@/router";
+const isLoading = ref(false);
+const addBlo = reactive({
+  TitleArabic: "",
+  TitleEnglish: "a",
+  ImageFile: null,
+  ContentArabic: "",
+  ContentEnglish: "sscmskacjbacjsna",
+});
 
-      // Send formData to server for upload
-      // Here, you can use axios or any other HTTP library to send the form data to your server
-
-      console.log("File uploaded successfully!");
-    };
-
+function addBlog() {
+  const formData = new FormData();
+  formData.append("TitleArabic", addBlo.TitleArabic);
+  formData.append("TitleEnglish", addBlo.TitleEnglish);
+  formData.append(
+    "ImageFile",
+    addBlo.ImageFile ? addBlo.ImageFile[0] : addBlo.ImageFile
+  );
+  formData.append("ContentArabic", addBlo.ContentArabic);
+  formData.append("ContentEnglish", addBlo.ContentEnglish);
+  isLoading.value = true;
+  axios
+    .post(`Admin/AddBlog`, formData)
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+      router.push("/news");
+    });
+}
 </script>
 <style scoped>
 .drag-box {
   position: relative;
   width: 425px;
   height: 200px;
-  background-color: #FFC0CC;
+  background-color: #ffc0cc;
 }
 
 .drag-box-content {

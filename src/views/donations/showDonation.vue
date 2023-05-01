@@ -148,7 +148,7 @@ import { useCounterStore } from "@/store/app";
 import { primary } from "@/assets/style";
 import { ref, onMounted } from "vue";
 import router from "@/router";
-import axiosInstance from "@/server/axios";
+import axios from "@/server/axios";
 const store = useCounterStore();
 
 const donorId = router.currentRoute.value.params.id;
@@ -159,7 +159,7 @@ function closeDialog() {
 
 const donor = ref({});
 function getDonor() {
-  axiosInstance.get(`/Admin/GetDonerById?ID=${donorId}`).then((res) => {
+  axios.get(`/Admin/GetDonerById?ID=${donorId}`).then((res) => {
     donor.value = res.data;
   });
 }

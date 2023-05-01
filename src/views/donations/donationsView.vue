@@ -1,10 +1,5 @@
 <template>
-  <v-card
-    class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
-    elevation="5"
-    width="98.8%"
-    height="auto"
-  >
+  <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-hand-heart-outline"></v-icon>
       <h2>المتبرعين</h2>
@@ -92,8 +87,8 @@
         <br />
         <div>المحافظة:{{ item.governorate }}</div>
         <div>رقم الهاتف:{{ item.phone }}</div>
-        <div>نوع التبرع:{{ item.donorType===0 ?'دم':'بلازما' }}</div>
-        <div>زمرة الدم:{{bloodGroups[item?.bloodGroup]?.name  }}</div>
+        <div>نوع التبرع:{{ item.donorType === 0 ? "دم" : "بلازما" }}</div>
+        <div>زمرة الدم:{{ bloodGroups[item?.bloodGroup]?.name }}</div>
         <v-card-actions class="pa-0">
           <v-btn
             @click="opnenShow()"
@@ -129,7 +124,9 @@ const numberOfPage = ref(4);
 const numberOfItemPerPage = ref(15);
 function getDoner() {
   axios
-    .get(`Admin/GetDoner?numberOfPage=${numberOfPage.value}&numberOfItemPerPage=${numberOfItemPerPage.value}`)
+    .get(
+      `Admin/GetDoner?numberOfPage=${numberOfPage.value}&numberOfItemPerPage=${numberOfItemPerPage.value}`
+    )
     .then((res) => {
       donations.value = res.data;
       console.log(donations.value);

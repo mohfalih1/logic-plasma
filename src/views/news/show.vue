@@ -1,10 +1,6 @@
 <template>
-  <v-card
-    class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
-    elevation="5"
-    width="98.8%"
-    height="100vh"
-  >
+  <Loader v-if="isLoading" />
+  <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-newspaper-variant-outline"></v-icon>
       <h2>الاخبار</h2>
@@ -18,10 +14,10 @@
         </v-btn>
       </div>
     </v-card-text>
-    <div class="d-flex justify-center align-center h-75">
-      <v-card elevation="0">
-        <div class="d-flex justify-space-between align-center">
-          <h4>fggfgfgf</h4>
+    <v-card class="d-flex justify-center align-center flex-row" elevation="0">
+      <div class="god-content">
+        <div class="content">
+          <h4>{{ blog.titleArabic }}</h4>
           <div>
             <v-switch
               v-model="model"
@@ -33,13 +29,14 @@
           </div>
         </div>
         <br />
-        <div>
-          dmkfdfndnfdnfdnfdjfndnfdfjdnfkdndvdncdvndvdkcdnvdksvndcsksnv nsc sncsk
-        </div>
+        <p>
+          {{ blog.contentArabic }}
+        </p>
 
         <br />
         <v-img
-          src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+          :src="blog.image"
+          lazy-src="@\assets\plasmaLogo.png"
           class="news-image mx-auto"
           cover
           width="680px"
@@ -52,7 +49,12 @@
             <v-icon icon="mdi-square-edit-outline" size="22"></v-icon>
             تعديل الخبر
           </v-btn>
-          <v-btn class="add-delete-button pa-5" color="white" variant="text">
+          <v-btn
+            @click="deleteBlog()"
+            class="add-delete-button pa-5"
+            color="white"
+            variant="text"
+          >
             <v-icon icon="mdi-trash-can-outline" size="22"></v-icon>
             مسح الخبر
           </v-btn>
@@ -66,20 +68,73 @@
             العودة
           </v-btn>
         </v-card-actions>
-      </v-card>
-    </div>
+      </div>
+    </v-card>
   </v-card>
 </template>
 
 <script setup>
+import Loader from "@/components/Loader.vue";
 import { primary } from "@/assets/style";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
+import router from "@/router";
+import axios from "@/server/axios";
+const isLoading = ref(true);
 const model = ref("AR");
+const blog = ref({});
+const donorId = router.currentRoute.value.params.id;
+
+function getBlogById() {
+  axios
+    .get(`Admin/GetBlogByID?ID=${donorId}`)
+    .then((res) => {
+      blog.value = res.data;
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+}
+
+function deleteBlog() {
+  axios
+    .put(`Admin/DeleteBlog?ID=${donorId}`)
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+      router.push("/news");
+    });
+}
 onMounted(() => {
+  getBlogById();
   return model.value;
 });
 </script>
 <style scoped>
+.god-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 40%;
+  min-width: 70ch;
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 0;
+}
 .add-button {
   width: 200px;
   display: flex;
@@ -87,16 +142,10 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   padding: 8px 0px;
-
   height: 36px;
   margin: 0px;
-
-  /* mainColor */
   background: #ff2c54;
   border-radius: 8px;
-
-  /* Inside auto layout */
-
   flex: none;
   order: 2;
   align-self: stretch;

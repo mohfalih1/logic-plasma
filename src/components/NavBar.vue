@@ -84,7 +84,7 @@
           to="/import-export"
           class="bg-white rounded-lg text-primary"
           prepend-icon="mdi-export-variant"
-          title="استيراد / تصدير"
+          title="رفع / تنزيل البيانات"
         ></v-list-item>
       </v-list>
 

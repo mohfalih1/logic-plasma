@@ -1,11 +1,6 @@
 <template>
   <Loader v-if="isLoading" />
-  <v-card
-    class="mr-3 mb-7 ml-7 mt-1 rounded-lg"
-    elevation="5"
-    width="98.8%"
-    height="auto"
-  >
+  <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-virus-outline"></v-icon>
       <h2>الامراض المزمنة</h2>
@@ -144,7 +139,7 @@
                 <div class="select">
                   <v-icon color="red" icon="mdi-virus-outline"></v-icon>
                   <v-text-field
-                  v-model="editChron.nameArabic"
+                    v-model="editChron.nameArabic"
                     class="text-center"
                     clearable
                     variant="plain"
@@ -155,7 +150,7 @@
               <v-col cols="12">
                 <div class="select">
                   <v-text-field
-                  v-model="editChron.nameEnglish"
+                    v-model="editChron.nameEnglish"
                     clearable
                     variant="plain"
                     type="text"
@@ -201,7 +196,12 @@
         <v-card-text> هل انت متأكد من حذف المرض ؟ </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
-            <v-btn @click="deleteChronicDisease(selectedItem.id)" class="delete-button" color="white" variant="text">
+            <v-btn
+              @click="deleteChronicDisease(selectedItem.id)"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
               حذف
             </v-btn>
             <v-btn
@@ -275,6 +275,7 @@ function addChronicDiseas() {
     })
     .finally(() => {
       isLoading.value = false;
+      addChron.value = {};
     });
 }
 const editChron = ref({
@@ -284,7 +285,8 @@ const editChron = ref({
 function UpdateChronicDisease(id) {
   isLoading.value = true;
   axios
-    .put(`Admin/UpdateChronicDisease?id=${id}`, editChron.value).then((res) => {
+    .put(`Admin/UpdateChronicDisease?id=${id}`, editChron.value)
+    .then((res) => {
       editDialog.value = false;
       getChronicDiseases();
     })
@@ -294,11 +296,12 @@ function UpdateChronicDisease(id) {
     .finally(() => {
       isLoading.value = false;
     });
-};
+}
 function deleteChronicDisease(id) {
   isLoading.value = true;
   axios
-    .put(`Admin/DeleteChronicDisease?id=${id}`).then((res) => {
+    .put(`Admin/DeleteChronicDisease?id=${id}`)
+    .then((res) => {
       deleteDialog.value = false;
       getChronicDiseases();
     })
@@ -308,7 +311,7 @@ function deleteChronicDisease(id) {
     .finally(() => {
       isLoading.value = false;
     });
-}; 
+}
 </script>
 <style scoped>
 .select {

@@ -1,10 +1,4 @@
 <template>
-  <v-card
-    class="mt-7 mr-7 mb-0 ml-7 rounded-lg"
-    elevation="5"
-    width="97%"
-    height="80px"
-  >
     <div class="app-bar">
       <div class="wlecome-name">
         <h4>أهلا مروان</h4>
@@ -26,7 +20,6 @@
         />
       </div>
     </div>
-  </v-card>
   <!-- <div class="app-bar">
      <v-list-item
           
@@ -38,16 +31,18 @@
 </template>
 <style scoped>
 .app-bar {
-  width: 100%;
-  height: 100%;
+  width: 97%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: row-reverse;
   box-shadow: none;
   padding: 8px 16px;
-    background: #ffffff;
+  background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+  margin: 7px 27px 0px 7px;
+  border-radius: 8px;
+  height: 80px;
 }
 .wlecome-name {
   display: flex;
