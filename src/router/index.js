@@ -102,6 +102,14 @@ const router = createRouter({
         requiresAuth: true,
       },
     },
+    {
+      path: "/import-export/export",
+      name: "export",
+      component: () => import("@/views/importExport/exportView.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
   ],
 });
 router.beforeEach((to, from, next) => {

@@ -1,4 +1,5 @@
 <template>
+  <Loader v-if="isLoading" />
   <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-hand-heart-outline"></v-icon>
@@ -101,13 +102,37 @@
         </v-card-actions>
       </v-card>
     </div>
+    <!-- pagination  -->
+    <v-container class="pagination">
+      <button :disabled="donations.length < 10" @click="nextPage">&lt;</button>
+      <button
+        v-if="donations.length >= 10"
+        :disabled="donations.length < 10"
+        @click="nextPage"
+      >
+        {{ numberOfPage + 1 }}
+      </button>
+      <button class="current">{{ numberOfPage }}</button>
+      <button
+        v-if="numberOfPage != 1"
+        :disabled="numberOfPage <= 1"
+        @click="previousPage"
+      >
+        {{ numberOfPage - 1 }}
+      </button>
+      <button :disabled="numberOfPage <= 1" @click="previousPage">></button>
+    </v-container>
+
+    <!-- pagination  -->
   </v-card>
 </template>
 <script setup>
+import Loader from "@/components/Loader.vue";
 import { ref, onMounted } from "vue";
 import router from "@/router";
 import axios from "@/server/axios";
 import { useCounterStore } from "@/store/app";
+const isLoading = ref(false);
 const store = useCounterStore();
 onMounted(() => {
   getDoner();
@@ -120,12 +145,13 @@ function opnenAdd() {
   router.push("/donations/donations-add");
 }
 const donations = ref([]);
-const numberOfPage = ref(4);
-const numberOfItemPerPage = ref(15);
+const numberOfPage = ref(1);
+const numberOfItemPerPage = ref(10);
 function getDoner() {
+  isLoading.value=true;
   axios
     .get(
-      `Admin/GetDoner?numberOfPage=${numberOfPage.value}&numberOfItemPerPage=${numberOfItemPerPage.value}`
+      `Admin/GetDoner?numberOfPage=${numberOfPage.value}&NumberOfItemPerPage=${numberOfItemPerPage.value}`
     )
     .then((res) => {
       donations.value = res.data;
@@ -133,6 +159,8 @@ function getDoner() {
     })
     .catch((err) => {
       console.log(err);
+    }).finally(()=>{
+      isLoading.value=false;
     });
 }
 const bloodGroups = ref([
@@ -148,6 +176,20 @@ const bloodGroups = ref([
   { name: "O+", value: 6 },
   { name: "O-", value: 7 },
 ]);
+// .............pagination.............
+function nextPage() {
+  numberOfPage.value++;
+  isLoading.value = true;
+  getDoner();
+}
+function previousPage() {
+  numberOfPage.value--;
+  isLoading.value = true;
+  getDoner();
+}
+onMounted(() => {
+  getDoner();
+});
 </script>
 <style scoped>
 .filters {

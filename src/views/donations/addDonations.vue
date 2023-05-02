@@ -36,35 +36,44 @@
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
-                    <v-text-field
+                    <v-select
                       v-model="form.Governorate"
                       clearable
                       variant="plain"
                       placeholder="اسم المدينة"
                       type="text"
-                    ></v-text-field>
+                      :items="governorates"
+                      item-title="nameArabic"
+                      item-value="id"
+                    ></v-select>
                   </div>
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
-                    <v-text-field
+                    <v-select
                       v-model="form.DonorType"
                       clearable
                       variant="plain"
                       placeholder="نوع التبرع"
                       type="text"
-                    ></v-text-field>
+                      :items="donorTypes"
+                      item-title="name"
+                      item-value="value"
+                    ></v-select>
                   </div>
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
-                    <v-text-field
+                    <v-select
                       v-model="form.BloodGroup"
                       clearable
                       variant="plain"
                       placeholder="نوع الزمرة"
                       type="text"
-                    ></v-text-field>
+                      :items="bloodGroups"
+                      item-title="name"
+                      item-value="value"
+                    ></v-select>
                   </div>
                 </v-col>
                 <v-col cols="6">
@@ -83,48 +92,75 @@
                 <v-col cols="12">
                   <div class="select">
                     <v-select
+                      v-if="form.HasChronicDisease"
                       v-model="form.ChronicDiseaseId"
                       clearable
                       variant="plain"
                       placeholder="هل هناك امراض مزمنة؟"
                       type="text"
                       no-data-text="لا يوجد بيانات "
+                      :items="typeChronicDisease"
+                      item-title="nameArabic"
+                      item-value="id"
                     ></v-select></div
                 ></v-col>
-                <v-col cols="12">
+                <v-col cols="6">
+                  <div class="select">
+                    <v-select
+                      v-model="form.TakingAnyMedication"
+                      clearable
+                      variant="plain"
+                      placeholder="هل يوجد علاجات مستخدمة ؟"
+                      type="text"
+                      no-data-text="لا يوجد بيانات "
+                      :items="isAnyMedications"
+                      item-title="name"
+                      item-value="value"
+                    ></v-select>
+                  </div>
+                </v-col>
+                <v-col cols="6">
                   <div class="select">
                     <v-text-field
+                      v-if="form.TakingAnyMedication"
+                      v-model="form.Medications"
                       clearable
                       variant="plain"
                       placeholder="العلاجات المستخدمة "
                       type="text"
                       no-data-text="لا يوجد بيانات "
-                    ></v-text-field></div
-                ></v-col>
+                    ></v-text-field>
+                  </div>
+                </v-col>
                 <v-col cols="12">
                   <div class="chip">
                     <h5>حسابات التواصل:</h5>
                     <div class="d-flex">
                       <v-checkbox
+                        v-model="form.Whatsapp"
                         :color="!select ? 'primary' : 'white'"
                         label="واتساب"
                         class="d-flex algin-center"
                       ></v-checkbox>
                       <v-checkbox
+                        v-model="form.Telegram"
                         :color="!select ? 'primary' : 'white'"
                         label="تلجرام"
                         class="d-flex algin-center"
                       ></v-checkbox>
                       <v-checkbox
+                        v-model="form.Viber"
                         :color="!select ? 'primary' : 'white'"
                         label="فايبر"
                         class="d-flex algin-center"
                       ></v-checkbox>
-                    </div></div
-                ></v-col>
+                    </div>
+                  </div>
+                </v-col>
                 <v-col cols="6">
                   <div class="select-file">
                     <v-file-input
+                      v-model="form.ImageLinkBloodTest"
                       clearable
                       variant="plain"
                       prepend-icon="mdi-file-image-plus"
@@ -135,6 +171,7 @@
                 <v-col cols="6">
                   <div class="select-file">
                     <v-file-input
+                      v-model="form.ImageLinkDonorID"
                       clearable
                       variant="plain"
                       prepend-icon="mdi-file-image-plus"
@@ -175,9 +212,40 @@ import { useCounterStore } from "@/store/app";
 import { primary } from "@/assets/style";
 import router from "@/router";
 import axios from "@/server/axios";
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
+
 const isLoading = ref(false);
 const store = useCounterStore();
+const governorates = ref([]);
+function getGovernorates() {
+  axios
+    .get(`Admin/GetGovernoratesForStatistics`)
+    .then((res) => {
+      governorates.value = res.data;
+      console.log(governorates.value + "fffffffffffffff");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+const typeChronicDisease = ref([]);
+function getChronicDisease() {
+  axios
+    .get(`Admin/GetChronicDiseaseForStatistics`)
+    .then((res) => {
+      typeChronicDisease.value = res.data;
+      console.log(typeChronicDisease.value + "fffffffffffffff");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+onMounted(() => {
+  getChronicDisease();
+  getGovernorates();
+});
 const form = reactive({
   Name: null,
   Phone: null,
@@ -212,19 +280,17 @@ function addSubscribers() {
   );
   formData.append("Name", form.Name);
   formData.append("Phone", form.Phone);
-  formData.append("Phone", form.Whatsapp);
-  formData.append("Phone", form.Telegram);
-  formData.append("Phone", form.Governorate);
-  formData.append("Phone", form.BloodGroup);
-  formData.append("Phone", form.IsCheckForNotitifiction);
-  formData.append("Phone", form.HasChronicDisease);
-  formData.append("Phone", form.ChronicDiseaseId);
-  formData.append("Phone", form.TakingAnyMedication);
-  formData.append("Phone", form.Medications);
-  formData.append("Phone", form.Latitude);
-  formData.append("Phone", form.DonorType);
-  formData.append("Phone", form.SubscribersType);
-  formData.append("Phone", form.IsHasLocation);
+  formData.append("Whatsapp", form.Whatsapp);
+  formData.append("Telegram", form.Telegram);
+  formData.append("Governorate", form.Governorate);
+  formData.append("BloodGroup", form.BloodGroup);
+  formData.append("IsCheckForNotitifiction", form.IsCheckForNotitifiction);
+  formData.append("HasChronicDisease", form.HasChronicDisease);
+  formData.append("ChronicDiseaseId", form.ChronicDiseaseId);
+  formData.append("TakingAnyMedication", form.TakingAnyMedication);
+  formData.append("Medications", form.Medications);
+  formData.append("DonorType", form.DonorType);
+  formData.append("SubscribersType", form.SubscribersType);
   axios
     .post("Admin/AddSubscribers", formData)
     .then((res) => {
@@ -259,8 +325,31 @@ async function validate() {
   if (valid.value) {
     isLoading.value = false;
     addSubscribers();
+    router.push("/donations");
   }
 }
+
+const isAnyMedications = ref([
+  { name: "يوجد", value: true },
+  { name: "لا يوجد", value: false },
+]);
+const donorTypes = ref([
+  { name: "دم", value: 0 },
+  { name: "بلازما", value: 1 },
+]);
+const bloodGroups = ref([
+  {
+    name: "A+",
+    value: 0,
+  },
+  { name: "A-", value: 1 },
+  { name: "B+", value: 2 },
+  { name: "B-", value: 3 },
+  { name: "AB+", value: 4 },
+  { name: "AB-", value: 5 },
+  { name: "O+", value: 6 },
+  { name: "O-", value: 7 },
+]);
 </script>
 <style scoped>
 .chip {

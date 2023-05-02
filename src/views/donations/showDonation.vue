@@ -163,7 +163,11 @@ function getDonor() {
     donor.value = res.data;
   });
 }
-
+function deleteSubscribers(){
+  axios.delete(`Admin/DeleteSubscribers?id=${donorId}`).then((res) => {
+    closeDialog();
+  });
+}
 onMounted(() => {
   getDonor();
 });
