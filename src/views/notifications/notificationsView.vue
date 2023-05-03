@@ -20,9 +20,9 @@
         </v-btn>
       </div>
     </v-card-text>
-    <div class="grid-donations ma-5">
+    <div class="grid-notifications mx-5 mt-5 mb-0">
       <v-card
-        class="chronic-card pb-0"
+        class="notifications-card pb-0"
         v-for="item in notification"
         :key="item.id"
       >
@@ -57,6 +57,30 @@
         </v-card-actions>
       </v-card>
     </div>
+    <!-- pagination  -->
+    <v-container class="pagination">
+      <button :disabled="notification.length < 10" @click="nextPage">
+        &lt;
+      </button>
+      <button
+        v-if="notification.length >= 10"
+        :disabled="notification.length < 10"
+        @click="nextPage"
+      >
+        {{ numberOfPage + 1 }}
+      </button>
+      <button class="current">{{ numberOfPage }}</button>
+      <button
+        v-if="numberOfPage != 1"
+        :disabled="numberOfPage <= 1"
+        @click="previousPage"
+      >
+        {{ numberOfPage - 1 }}
+      </button>
+      <button :disabled="numberOfPage <= 1" @click="previousPage">></button>
+    </v-container>
+
+    <!-- pagination  -->
   </v-card>
 
   <!-- start add notification  -->
@@ -74,7 +98,7 @@
                   <div>
                     <v-img
                       class="image-translate ma-0"
-                      src="@/assets/Frame 88.svg"
+                      src="@/assets/Frame88.svg"
                       width="50px"
                       height="36px"
                     ></v-img>
@@ -236,7 +260,7 @@ const showModel = (item, type) => {
 };
 const notification = ref([]);
 const numberOfPage = ref(1);
-const numberOfItemPerPage = ref(10);
+const numberOfItemPerPage = ref(20);
 function getNotification() {
   isLoading.value = true;
   axios
@@ -254,9 +278,9 @@ function getNotification() {
     });
 }
 const addNotific = reactive({
-  titleEn: "",
+  titleEn: "dd",
   titleAr: "",
-  decEnglish: "",
+  decEnglish: "ss",
   decArabic: "",
 });
 function addNotification() {
@@ -311,8 +335,39 @@ function sendNotification(id) {
       isLoading.value = false;
     });
 }
+// .............pagination.............
+function nextPage() {
+  numberOfPage.value++;
+  isLoading.value = true;
+  getNotification();
+}
+function previousPage() {
+  numberOfPage.value--;
+  isLoading.value = true;
+  getNotification();
+}
 </script>
 <style scoped>
+.grid-notifications {
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(5, 20%);
+  grid-template-rows: repeat(3, 27%);
+  column-gap: 1px;
+  row-gap: 1em;
+  height: 80vh;
+}
+.notifications-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px 5px;
+  width: 262px;
+  height: 200px;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+}
 .active-button {
   border: 1px solid #ffffff;
   border-radius: 10px;

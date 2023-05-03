@@ -14,10 +14,9 @@
         </v-btn>
       </div>
     </v-card-text>
-    
+
     <div class="grid-news ma-5">
       <v-card class="news-card" v-for="item in blog" :key="item.id">
-
         <v-img
           :src="item.image"
           lazy-src="@\assets\plasmaLogo.png"
@@ -29,7 +28,9 @@
 
         <div class="news-date">
           <v-icon icon="mdi-calendar-outline"> </v-icon
-          ><span>{{ dayjs(item.updateDate).format("YYYY/MM/DD, HH:MM A") }}</span>
+          ><span>{{
+            dayjs(item.updateDate).format("YYYY/MM/DD, HH:MM A")
+          }}</span>
         </div>
 
         <v-card-actions class="pa-0">
@@ -43,26 +44,29 @@
         </v-card-actions>
       </v-card>
     </div>
+
     <!-- pagination  -->
-    <v-container class="pagination">
-      <button :disabled="blog.length < 10" @click="nextPage">&lt;</button>
-      <button
-        v-if="blog.length >= 10"
-        :disabled="blog.length < 10"
-        @click="nextPage"
-      >
-        {{ numberOfPage + 1 }}
-      </button>
-      <button class="current">{{ numberOfPage }}</button>
-      <button
-        v-if="numberOfPage != 1"
-        :disabled="numberOfPage <= 1"
-        @click="previousPage"
-      >
-        {{ numberOfPage - 1 }}
-      </button>
-      <button :disabled="numberOfPage <= 1" @click="previousPage">></button>
-    </v-container>
+    <div class="pag">
+      <v-container class="pagination">
+        <button :disabled="blog.length < 10" @click="nextPage">&lt;</button>
+        <button
+          v-if="blog.length >= 10"
+          :disabled="blog.length < 10"
+          @click="nextPage"
+        >
+          {{ numberOfPage + 1 }}
+        </button>
+        <button class="current">{{ numberOfPage }}</button>
+        <button
+          v-if="numberOfPage != 1"
+          :disabled="numberOfPage <= 1"
+          @click="previousPage"
+        >
+          {{ numberOfPage - 1 }}
+        </button>
+        <button :disabled="numberOfPage <= 1" @click="previousPage">></button>
+      </v-container>
+    </div>
     <!-- pagination  -->
   </v-card>
 </template>
@@ -87,7 +91,7 @@ function getBlog() {
       isLoading.value = false;
     })
     .catch((res) => {
-      console.log(res); 
+      console.log(res);
     });
 }
 
@@ -106,4 +110,6 @@ onMounted(() => {
   getBlog();
 });
 </script>
-<style></style>
+<style scoped>
+
+</style>

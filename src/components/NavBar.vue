@@ -90,12 +90,63 @@
 
       <template v-slot:append>
         <div class="pa-2 mb-10">
-          <v-btn block color="secondary"> تسجيل الخروج </v-btn>
+          <v-btn
+            @click="isLogOutDialog = true"
+            rounded="lg"
+            block
+            color="secondary"
+          >
+            تسجيل الخروج
+          </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
   </v-card>
+
+  <!-- start log out   -->
+  <v-row justify="center">
+    <v-dialog v-model="isLogOutDialog" persistent width="262">
+      <v-card rounded="xl">
+        <v-card-title class="text-center text-primary pb-0">
+          <span>  تسجيل الخروج</span>
+        </v-card-title>
+        <v-card-text> هل انت متأكد من تسجيل الخروج ؟ </v-card-text>
+        <v-card-actions class="d-flex align-center justify-center">
+          <div class="d-flex align-center justify-center my-1">
+            <v-btn
+              @click="logout()"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
+              تسجيل الخروج
+            </v-btn>
+            <v-btn
+              @click="isLogOutDialog = false"
+              class="back-button"
+              color="white"
+              variant="text"
+            >
+              الغاء
+            </v-btn>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+  <!-- start log out  -->
 </template>
+<script setup>
+import { ref } from "vue";
+import router from "@/router";
+
+const isLogOutDialog = ref(false);
+const logout = () => {
+
+  localStorage.removeItem("token");
+  router.push("/login");
+};
+</script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");

@@ -20,7 +20,7 @@
           <div>
             <v-img
               class="image-translate ma-0"
-              src="@/assets/Frame 88.svg"
+              src="@/assets/Frame88.svg"
               width="50px"
               height="36px"
             ></v-img>

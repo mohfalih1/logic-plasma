@@ -28,6 +28,7 @@
       </div>
       <div class="select-don-home">
         <v-text-field
+          v-model="filter.search"
           clearable
           append-icon="mdi-magnify"
           variant="plain"
@@ -37,6 +38,7 @@
       </div>
       <div class="select-don-home">
         <v-select
+          v-model="filter.governorate"
           clearable
           variant="plain"
           placeholder="المدينة"
@@ -45,6 +47,7 @@
       </div>
       <div class="select-don-home">
         <v-select
+          v-model="filter.donorType"
           clearable
           variant="plain"
           placeholder="نوع التبرع"
@@ -53,6 +56,7 @@
       </div>
       <div class="select-don-home">
         <v-select
+          v-model="filter.bloodGroup"
           clearable
           variant="plain"
           placeholder="نوع الزمرة"
@@ -61,6 +65,7 @@
       </div>
       <div class="select-don-home">
         <v-select
+          v-model="filter.HaveChronicDisease"
           clearable
           variant="plain"
           placeholder="امراض مزمنة"
@@ -69,6 +74,7 @@
       </div>
       <div class="select-don-home">
         <v-select
+          v-model="filter.TypeChronicDisease"
           clearable
           variant="plain"
           placeholder="نوع المرض المزمن"
@@ -79,7 +85,7 @@
     <!-- end filters -->
     <br />
 
-    <div class="grid-donations ma-5">
+    <div class="grid-donations mt-5 mr-5 ml-1">
       <v-card class="donations-card" v-for="item in donations" :key="item.id">
         <div class="news-title">
           <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
@@ -128,7 +134,7 @@
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive, watch } from "vue";
 import router from "@/router";
 import axios from "@/server/axios";
 import { useCounterStore } from "@/store/app";
@@ -144,14 +150,29 @@ function opnenAdd() {
   store.dialog = true;
   router.push("/donations/donations-add");
 }
+
+const filter = reactive({
+  bloodGroup: null,
+  donorType: null,
+  governorate: null,
+  HaveChronicDisease: null,
+  TypeChronicDisease: null,
+  search: null,
+});
+
 const donations = ref([]);
+
 const numberOfPage = ref(1);
 const numberOfItemPerPage = ref(10);
 function getDoner() {
-  isLoading.value=true;
+  isLoading.value = true;
+  const filteredQuery = Object.entries(filter)
+    .filter(([key, value]) => value !== null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
   axios
     .get(
-      `Admin/GetDoner?numberOfPage=${numberOfPage.value}&NumberOfItemPerPage=${numberOfItemPerPage.value}`
+      `Admin/GetDoner?${filteredQuery}&numberOfPage=${numberOfPage.value}&NumberOfItemPerPage=${numberOfItemPerPage.value}`
     )
     .then((res) => {
       donations.value = res.data;
@@ -159,8 +180,9 @@ function getDoner() {
     })
     .catch((err) => {
       console.log(err);
-    }).finally(()=>{
-      isLoading.value=false;
+    })
+    .finally(() => {
+      isLoading.value = false;
     });
 }
 const bloodGroups = ref([
@@ -187,15 +209,26 @@ function previousPage() {
   isLoading.value = true;
   getDoner();
 }
-onMounted(() => {
-  getDoner();
+watch(() => {
+  if (
+    filter.HaveChronicDisease ||
+    filter.TypeChronicDisease ||
+    filter.bloodGroup ||
+    filter.donorType ||
+    filter.governorate ||
+    filter.search
+  ) {
+    getDoner();
+  } else {
+    getDoner();
+  }
 });
 </script>
 <style scoped>
 .filters {
   display: grid;
   grid-template-columns: 3% repeat(6, 16%);
-  grid-template-rows: repeat(auto-fit, 50px);
+  grid-template-rows: repeat(auto-fit, 40px);
   column-gap: 1px;
   row-gap: 1em;
 }
@@ -206,8 +239,10 @@ onMounted(() => {
 .grid-donations {
   display: grid;
   justify-content: space-around;
-  grid-template-columns: repeat(auto-fit, 262px);
+  grid-template-columns: repeat(5, 20%);
+  grid-template-rows: repeat(2, 40%);
   column-gap: 1px;
   row-gap: 1em;
+  height: 70vh;
 }
 </style>

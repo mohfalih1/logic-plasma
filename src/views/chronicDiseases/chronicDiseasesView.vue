@@ -20,7 +20,7 @@
         </v-btn>
       </div>
     </v-card-text>
-    <div class="grid-donations ma-5">
+    <div class="grid-chron mt-5 mr-5 ml-1">
       <v-card
         class="chronic-card pb-0"
         v-for="item in chronicDiseases"
@@ -59,6 +59,30 @@
         </v-card-actions>
       </v-card>
     </div>
+    <!-- pagination  -->
+    <v-container class="pagination">
+      <button :disabled="chronicDiseases.length < 10" @click="nextPage">
+        &lt;
+      </button>
+      <button
+        v-if="chronicDiseases.length >= 10"
+        :disabled="chronicDiseases.length < 10"
+        @click="nextPage"
+      >
+        {{ numberOfPage + 1 }}
+      </button>
+      <button class="current">{{ numberOfPage }}</button>
+      <button
+        v-if="numberOfPage != 1"
+        :disabled="numberOfPage <= 1"
+        @click="previousPage"
+      >
+        {{ numberOfPage - 1 }}
+      </button>
+      <button :disabled="numberOfPage <= 1" @click="previousPage">></button>
+    </v-container>
+
+    <!-- pagination  -->
   </v-card>
 
   <!-- start add chronic -->
@@ -229,9 +253,6 @@ const isLoading = ref(false);
 const addDialog = ref(false);
 const editDialog = ref(false);
 const deleteDialog = ref(false);
-const numberOfPage = ref(1);
-const numberOfItemPerPage = ref(25);
-const chronicDiseases = ref([]);
 const selectedItem = ref();
 const showModel = (item, type) => {
   selectedItem.value = item;
@@ -242,6 +263,9 @@ const showModel = (item, type) => {
 onMounted(() => {
   getChronicDiseases();
 });
+const numberOfPage = ref(1);
+const numberOfItemPerPage = ref(15);
+const chronicDiseases = ref([]);
 function getChronicDiseases() {
   isLoading.value = true;
   axios
@@ -312,6 +336,18 @@ function deleteChronicDisease(id) {
       isLoading.value = false;
     });
 }
+
+// .............pagination.............
+function nextPage() {
+  numberOfPage.value++;
+  isLoading.value = true;
+  getChronicDiseases();
+}
+function previousPage() {
+  numberOfPage.value--;
+  isLoading.value = true;
+  getChronicDiseases();
+}
 </script>
 <style scoped>
 .select {
@@ -322,5 +358,15 @@ function deleteChronicDisease(id) {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.grid-chron {
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(5, 20%);
+  grid-template-rows: repeat(3, 27%);
+  column-gap: 1px;
+  row-gap: 1em;
+  height: 70vh;
 }
 </style>

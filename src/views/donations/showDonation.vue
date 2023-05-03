@@ -84,15 +84,16 @@
                     <div v-if="donor.viber === true" class="sup-icon">
                       <v-img
                         :color="primary"
-                        src="@/assets/viber-chat-app-svgrepo-com 1.svg"
+                        src="@/assets/viber-chat-app-svgrepo-com1.svg"
                         width="30"
                         height="30"
                       ></v-img>
                     </div>
                     <div
                       v-if="
-                        (donor.whatsapp===false && donor.telegram===false && donor.viber===false) 
-                        
+                        donor.whatsapp === false &&
+                        donor.telegram === false &&
+                        donor.viber === false
                       "
                     >
                       لا يوجد حسابات للتواصل
@@ -142,6 +143,68 @@
       </v-card>
     </v-dialog>
   </v-row>
+
+   <!-- start edit chronic -->
+  <v-row justify="center">
+    <v-dialog v-model="editDialog" persistent width="262">
+      <v-card rounded="xl">
+        <v-card-title class="text-center text-primary pb-0">
+          <span> تعديل المرض المزمن</span>
+        </v-card-title>
+        <v-card-text class="pa-0">
+          <v-container>
+            <v-form>
+              <v-col cols="12">
+                <div class="select">
+                  <v-icon color="red" icon="mdi-virus-outline"></v-icon>
+                  <v-text-field
+                    v-model="editChron.nameArabic"
+                    class="text-center"
+                    clearable
+                    variant="plain"
+                    type="text"
+                  ></v-text-field>
+                </div>
+              </v-col>
+              <v-col cols="12">
+                <div class="select">
+                  <v-text-field
+                    v-model="editChron.nameEnglish"
+                    clearable
+                    variant="plain"
+                    type="text"
+                  ></v-text-field>
+                  <v-icon color="red" icon="mdi-virus-outline"></v-icon>
+                </div>
+              </v-col>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-card-actions class="d-flex align-center justify-center">
+          <div class="d-flex align-center justify-center my-1">
+            <v-btn
+              @click="UpdateChronicDisease(selectedItem.id)"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
+              حفظ
+            </v-btn>
+            <v-btn
+              @click="editDialog = false"
+              class="back-button"
+              color="white"
+              variant="text"
+            >
+              <v-icon icon="mdi-greater-than" size="20"></v-icon>
+              العودة
+            </v-btn>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+  <!-- end edit chronic -->
 </template>
 <script setup>
 import { useCounterStore } from "@/store/app";
@@ -163,13 +226,14 @@ function getDonor() {
     donor.value = res.data;
   });
 }
-function deleteSubscribers(){
+function deleteSubscribers() {
   axios.delete(`Admin/DeleteSubscribers?id=${donorId}`).then((res) => {
     closeDialog();
   });
 }
 onMounted(() => {
   getDonor();
+  return donorId;
 });
 
 const bloodGroups = ref([

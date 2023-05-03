@@ -1,25 +1,25 @@
 <template>
-    <div class="app-bar">
-      <div class="wlecome-name">
-        <h4>أهلا مروان</h4>
+  <div class="app-bar">
+    <div class="wlecome-name">
+      <h4>أهلا مروان</h4>
 
-        <img src="../assets/Ellipse 1.png" />
-      </div>
-      <div class="all-frame">
-        <img
-          class="frame-1"
-          src="../assets/Frame (1).png"
-          height="49"
-          width="49"
-        />
-        <img
-          class="frame-2"
-          src="../assets/Frame (1).png"
-          height="49"
-          width="49"
-        />
-      </div>
+      <img src="@/assets/Ellipse1.png" />
     </div>
+    <div class="all-frame">
+      <img
+        class="frame-1"
+        src="@/assets/Frame(1).png"
+        height="49"
+        width="49"
+      />
+      <img
+        class="frame-2"
+        src="@/assets/Frame(1).png"
+        height="49"
+        width="49"
+      />
+    </div>
+  </div>
   <!-- <div class="app-bar">
      <v-list-item
           
@@ -40,7 +40,7 @@
   padding: 8px 16px;
   background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
-  margin: 7px 27px 0px 7px;
+  margin: 40px 27px 0px 7px;
   border-radius: 8px;
   height: 80px;
 }

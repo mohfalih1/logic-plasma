@@ -31,4 +31,9 @@ export default defineConfig({
     port: 3000,
     host: true,
   },
+  build: {
+    rollupOptions: {
+      external: ["src/assets/Ellipse1.png", "src/assets/Frame(1).png"],
+    },
+  },
 });

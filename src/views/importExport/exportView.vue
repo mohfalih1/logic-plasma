@@ -71,16 +71,6 @@
 
       <div class="select-don-home">
         <v-select
-          v-model="filter.DateFrom"
-          clearable
-          variant="plain"
-          placeholder=" التاريخ"
-          no-data-text="لايوجد بيانات"
-        ></v-select>
-      </div>
-
-      <div class="select-don-home">
-        <v-select
           v-model="filter.HaveChronicDisease"
           clearable
           variant="plain"
@@ -103,7 +93,18 @@
           item-value="id"
         ></v-select>
       </div>
-    </div>
+      <fieldset class="select-don-home">
+        <legend>من</legend>
+        <input v-model="filter.DateFrom" type="date" />
+      </fieldset>
+  <fieldset class="select-don-home">
+        <legend>الى</legend>
+        <input v-model="filter.DateTo" type="date" />
+      </fieldset>
+      </div>
+
+   
+   
     <!-- end filters -->
     <v-card-actions class="pa-5 mb-5">
       <div class="d-flex ma-0">
@@ -128,8 +129,6 @@
       </div>
     </v-card-actions>
   </v-card>
-
-  <template />
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
@@ -139,6 +138,8 @@ import { watch } from "vue";
 import { ref, reactive, onMounted } from "vue";
 
 const isLoading = ref(false);
+
+
 onMounted(() => {
   getChronicDisease();
   getGovernorates();
@@ -228,8 +229,8 @@ watch(() => {
 <style scoped>
 .filters {
   display: grid;
-  grid-template-columns: 3% repeat(8, 13.5%);
-  grid-template-rows: repeat(auto-fit, 50px);
+  grid-template-columns: 3% repeat(8, 12%);
+  grid-template-rows: repeat(1, 50px);
   column-gap: 1px;
   row-gap: 1em;
   margin-right: 15px;

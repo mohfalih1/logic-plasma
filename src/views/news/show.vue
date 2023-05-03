@@ -45,7 +45,12 @@
 
         <br />
         <v-card-actions>
-          <v-btn class="add-edit-button pa-5" :color="primary" variant="text">
+          <v-btn
+            @click="isEditDialog = true"
+            class="add-edit-button pa-5"
+            :color="primary"
+            variant="text"
+          >
             <v-icon icon="mdi-square-edit-outline" size="22"></v-icon>
             تعديل الخبر
           </v-btn>
@@ -71,6 +76,63 @@
       </div>
     </v-card>
   </v-card>
+  <!-- start edit news -->
+  <v-row justify="center">
+    <v-dialog v-model="isEditDialog" persistent width="350">
+      <v-card rounded="xl">
+        <v-card-title class="text-center text-primary pb-0">
+          <span> تعديل الخبر</span>
+        </v-card-title>
+        <v-card-text class="pa-0">
+          <v-container>
+            <v-form>
+              <div >
+                <v-text-field
+                class="select"
+                  variant="plain"
+                  label="عنوان الخبر..."
+                >
+                </v-text-field>
+              </div>
+
+              <br />
+              <div>
+                <v-textarea class="select" variant="plain" label="محتوى الخبر...">
+                </v-textarea>
+              </div>
+              <br>
+              <div>
+              <v-file-input
+                class="select"
+                variant="plain"
+                accept="image/*"
+                show-size
+                prepend-icon="mdi-image-plus-outline"
+              ></v-file-input>
+              </div>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-card-actions class="d-flex align-center justify-center">
+          <div class="d-flex align-center justify-center my-1">
+            <v-btn class="delete-button" color="white" variant="text">
+              حفظ
+            </v-btn>
+            <v-btn
+              @click="isEditDialog = false"
+              class="back-button"
+              color="white"
+              variant="text"
+            >
+              <v-icon icon="mdi-greater-than" size="20"></v-icon>
+              العودة
+            </v-btn>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+  <!-- end edit news -->
 </template>
 
 <script setup>
@@ -80,6 +142,7 @@ import { ref, onMounted, reactive } from "vue";
 import router from "@/router";
 import axios from "@/server/axios";
 const isLoading = ref(true);
+const isEditDialog = ref(false);
 const model = ref("AR");
 const blog = ref({});
 const donorId = router.currentRoute.value.params.id;
@@ -115,10 +178,17 @@ function deleteBlog() {
 }
 onMounted(() => {
   getBlogById();
-  return model.value;
+  return model.value, donorId;
 });
 </script>
 <style scoped>
+.select {
+  height: 100%;
+  background: #f2f2f2;
+  border-radius: 8px;
+  padding: 10px;
+
+}
 .god-content {
   display: flex;
   align-items: center;

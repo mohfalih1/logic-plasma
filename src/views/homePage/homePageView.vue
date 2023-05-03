@@ -1,7 +1,6 @@
 <template>
   <Loader v-if="isLoading" />
-  <v-card
-  class="card-temp"
+  <v-card class="card-temp"
     ><v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-speedometer"></v-icon>
       <h2>الاحصائيات</h2>
@@ -64,16 +63,6 @@
 
         <div class="select-don-home">
           <v-select
-            v-model="query.DateFrom"
-            clearable
-            variant="plain"
-            placeholder=" التاريخ"
-            no-data-text="لايوجد بيانات"
-          ></v-select>
-        </div>
-
-        <div class="select-don-home">
-          <v-select
             v-model="query.HaveChronicDisease"
             clearable
             variant="plain"
@@ -86,7 +75,7 @@
         </div>
         <div class="select-don-home">
           <v-select
-          v-model="query.TypeChronicDisease"
+            v-model="query.TypeChronicDisease"
             clearable
             variant="plain"
             placeholder="نوع المرض المزمن"
@@ -96,7 +85,18 @@
             item-value="id"
           ></v-select>
         </div>
+
+        <fieldset class="select-don-home">
+          <legend>من</legend>
+          <input v-model="query.DateFrom" type="date" />
+        </fieldset>
+
+        <fieldset class="select-don-home">
+          <legend>الى</legend>
+          <input v-model="query.DateTo" type="date" />
+        </fieldset>
       </div>
+
       <!-- end filters -->
       <!-- <label for="start-date">Start Date:</label>
           <input type="date" id="start-date" />
@@ -104,10 +104,9 @@
           <label for="end-date">End Date:</label>
           <input type="date" id="end-date" /> -->
       <!-- end filters -->
-      <br />
 
       <v-container>
-        <v-row no-gutters>
+        <v-row no-gutters class="mt-0">
           <!-- start graph-card  -->
 
           <v-col cols="9">
@@ -314,7 +313,7 @@
 import Loader from "@/components/Loader.vue";
 import { ref, onMounted, watch } from "vue";
 import { primary } from "@/assets/style";
-import axios from "@/server/axios ";
+import axios from "@/server/axios";
 const isLoading = ref(false);
 onMounted(() => {
   getStatistics();
@@ -425,7 +424,7 @@ const chartOptions = ref({
     curve: "smooth",
   },
   title: {
-    text: "الاحصائيات",
+    text: " الاحصائيات ",
     align: "top",
   },
   grid: {
@@ -499,7 +498,9 @@ watch(() => {
   if (
     query.value.bloodGroup ||
     query.value.donorType ||
-    query.value.HaveChronicDisease
+    query.value.HaveChronicDisease ||
+    query.value.DateFrom ||
+    query.value.DateTo
   ) {
     getStatistics();
   } else {
@@ -508,11 +509,9 @@ watch(() => {
 });
 </script>
 <style scoped>
-
 .filters {
   display: grid;
-  grid-template-columns: 3% repeat(7, 13.4%);
-  grid-template-rows: repeat(auto-fit, 50px);
+  grid-template-columns: 3% repeat(8, 12%);
   column-gap: 1px;
   row-gap: 1em;
 }
@@ -586,16 +585,5 @@ watch(() => {
   margin-right: 220px;
   margin-top: -53px;
   width: 100%;
-}
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input[type="date"] {
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 16px;
 }
 </style>
