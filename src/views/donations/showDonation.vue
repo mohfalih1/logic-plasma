@@ -4,7 +4,7 @@
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary">
           <v-icon icon="mdi-hand-heart-outline"></v-icon>
-          <span> محمد قاسم احمد</span>
+          <span>{{ donor.name }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -144,7 +144,7 @@
     </v-dialog>
   </v-row>
 
-   <!-- start edit chronic -->
+  <!-- start edit chronic -->
   <v-row justify="center">
     <v-dialog v-model="editDialog" persistent width="262">
       <v-card rounded="xl">
@@ -214,7 +214,7 @@ import router from "@/router";
 import axios from "@/server/axios";
 const store = useCounterStore();
 
-const donorId = router.currentRoute.value.params.id;
+const donorId = ref(router.currentRoute.value.params.id);
 function closeDialog() {
   store.dialog = false;
   router.push("/donations");
@@ -222,18 +222,17 @@ function closeDialog() {
 
 const donor = ref({});
 function getDonor() {
-  axios.get(`/Admin/GetDonerById?ID=${donorId}`).then((res) => {
+  axios.get(`/Admin/GetDonerById?ID=${donorId.value}`).then((res) => {
     donor.value = res.data;
   });
 }
 function deleteSubscribers() {
-  axios.delete(`Admin/DeleteSubscribers?id=${donorId}`).then((res) => {
+  axios.delete(`Admin/DeleteSubscribers?id=${donorId.value}`).then((res) => {
     closeDialog();
   });
 }
 onMounted(() => {
   getDonor();
-  return donorId;
 });
 
 const bloodGroups = ref([

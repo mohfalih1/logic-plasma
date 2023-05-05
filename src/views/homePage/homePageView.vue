@@ -315,6 +315,7 @@ import { ref, onMounted, watch } from "vue";
 import { primary } from "@/assets/style";
 import axios from "@/server/axios";
 const isLoading = ref(false);
+const hi = ref("الاحصائيات");
 onMounted(() => {
   getStatistics();
   getStatsGraph();
@@ -424,9 +425,10 @@ const chartOptions = ref({
     curve: "smooth",
   },
   title: {
-    text: " الاحصائيات ",
+    text: "الاحصائيات",
     align: "top",
   },
+
   grid: {
     borderColor: "#e7e7e7",
     row: {
@@ -509,6 +511,7 @@ watch(() => {
 });
 </script>
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");
 .filters {
   display: grid;
   grid-template-columns: 3% repeat(8, 12%);
@@ -528,6 +531,7 @@ watch(() => {
 }
 .apex-chart {
   width: 100%;
+  font-family: "Cairo", sans-serif;
 }
 .donors-card {
   display: flex;

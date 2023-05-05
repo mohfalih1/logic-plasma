@@ -32,7 +32,7 @@
           clearable
           append-icon="mdi-magnify"
           variant="plain"
-          placeholder="بحث.."
+          placeholder="بحث اسم او رقم هاتف"
           no-data-text="لايوجد بيانات"
         ></v-text-field>
       </div>
@@ -43,6 +43,9 @@
           variant="plain"
           placeholder="المدينة"
           no-data-text="لايوجد بيانات"
+          :items="governorates"
+          item-title="nameArabic"
+          item-value="id"
         ></v-select>
       </div>
       <div class="select-don-home">
@@ -52,6 +55,9 @@
           variant="plain"
           placeholder="نوع التبرع"
           no-data-text="لايوجد بيانات"
+          :items="donorTypes"
+          item-title="name"
+          item-value="value"
         ></v-select>
       </div>
       <div class="select-don-home">
@@ -61,6 +67,9 @@
           variant="plain"
           placeholder="نوع الزمرة"
           no-data-text="لايوجد بيانات"
+          :items="bloodGroups"
+          item-title="name"
+          item-value="value"
         ></v-select>
       </div>
       <div class="select-don-home">
@@ -70,6 +79,9 @@
           variant="plain"
           placeholder="امراض مزمنة"
           no-data-text="لايوجد بيانات"
+          :items="ChronicDisease"
+          item-title="name"
+          item-value="value"
         ></v-select>
       </div>
       <div class="select-don-home">
@@ -79,6 +91,9 @@
           variant="plain"
           placeholder="نوع المرض المزمن"
           no-data-text="لايوجد بيانات"
+          :items="typeChronicDisease"
+          item-title="nameArabic"
+          item-value="id"
         ></v-select>
       </div>
     </div>
@@ -100,7 +115,7 @@
           <v-btn
             @click="opnenShow()"
             class="news-button"
-            :to="`/donations/${item.id}`"
+            :to="`/donations/${item.id}`" 
             color="white"
             variant="text"
             >عرض المتبرع
@@ -142,6 +157,8 @@ const isLoading = ref(false);
 const store = useCounterStore();
 onMounted(() => {
   getDoner();
+  getGovernorates();
+  getChronicDisease();
 });
 function opnenShow() {
   store.dialog = true;
@@ -150,7 +167,29 @@ function opnenAdd() {
   store.dialog = true;
   router.push("/donations/donations-add");
 }
-
+const governorates = ref([]);
+function getGovernorates() {
+  axios
+    .get(`Admin/GetGovernoratesForStatistics`)
+    .then((res) => {
+      governorates.value = res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+const typeChronicDisease = ref([]);
+function getChronicDisease() {
+  axios
+    .get(`Admin/GetChronicDiseaseForStatistics`)
+    .then((res) => {
+      typeChronicDisease.value = res.data;
+      console.log(typeChronicDisease.value + "fffffffffffffff");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 const filter = reactive({
   bloodGroup: null,
   donorType: null,
@@ -185,6 +224,7 @@ function getDoner() {
       isLoading.value = false;
     });
 }
+// ...............filters ............
 const bloodGroups = ref([
   {
     name: "A+",
@@ -197,6 +237,15 @@ const bloodGroups = ref([
   { name: "AB-", value: 5 },
   { name: "O+", value: 6 },
   { name: "O-", value: 7 },
+]);
+const donorTypes = ref([
+  { name: "دم", value: 0 },
+  { name: "بلازما", value: 1 },
+]);
+
+const ChronicDisease = ref([
+  { name: "يوجد", value: true },
+  { name: "لا يوجد", value: false },
 ]);
 // .............pagination.............
 function nextPage() {

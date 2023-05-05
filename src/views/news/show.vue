@@ -17,7 +17,9 @@
     <v-card class="d-flex justify-center align-center flex-row" elevation="0">
       <div class="god-content">
         <div class="content">
-          <h4>{{ blog.titleArabic }}</h4>
+          <h4 class="ma-5">
+            {{ model === "AR" ? blog.titleArabic : blog.titleEnglish }}
+          </h4>
           <div>
             <v-switch
               v-model="model"
@@ -30,7 +32,7 @@
         </div>
         <br />
         <p>
-          {{ blog.contentArabic }}
+          {{ model === "AR" ? blog.contentArabic : blog.contentEnglish }}
         </p>
 
         <br />
@@ -46,7 +48,7 @@
         <br />
         <v-card-actions>
           <v-btn
-            @click="isEditDialog = true"
+            @click="showModel(blog, 1)"
             class="add-edit-button pa-5"
             :color="primary"
             variant="text"
@@ -78,7 +80,7 @@
   </v-card>
   <!-- start edit news -->
   <v-row justify="center">
-    <v-dialog v-model="isEditDialog" persistent width="350">
+    <v-dialog v-model="isEditDialog" persistent width="450">
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary pb-0">
           <span> تعديل الخبر</span>
@@ -86,9 +88,12 @@
         <v-card-text class="pa-0">
           <v-container>
             <v-form>
-              <div >
+              <h5>تعديل الخبر باللغة العربية:</h5>
+              <br />
+              <div>
                 <v-text-field
-                class="select"
+                  v-model="editNews.TitleArabic"
+                  class="select"
                   variant="plain"
                   label="عنوان الخبر..."
                 >
@@ -97,25 +102,59 @@
 
               <br />
               <div>
-                <v-textarea class="select" variant="plain" label="محتوى الخبر...">
+                <v-textarea
+                  v-model="editNews.ContentArabic"
+                  class="select"
+                  variant="plain"
+                  label="محتوى الخبر..."
+                >
                 </v-textarea>
               </div>
-              <br>
+              <br />
+              <h5>تعديل الخبر باللغة الانكليزية:</h5>
+              <br />
               <div>
-              <v-file-input
-                class="select"
-                variant="plain"
-                accept="image/*"
-                show-size
-                prepend-icon="mdi-image-plus-outline"
-              ></v-file-input>
+                <v-text-field
+                  v-model="editNews.TitleEnglish"
+                  class="select"
+                  variant="plain"
+                  label="عنوان الخبر..."
+                >
+                </v-text-field>
+              </div>
+
+              <br />
+              <div>
+                <v-textarea
+                  v-model="editNews.ContentEnglish"
+                  class="select"
+                  variant="plain"
+                  label="محتوى الخبر..."
+                >
+                </v-textarea>
+              </div>
+              <br />
+              <div class="select-image">
+                <v-file-input
+                  v-model="editNews.ImageFile"
+                  variant="plain"
+                  accept="image/*"
+                  show-size
+                  prepend-icon="mdi-image-plus-outline"
+                  label="اختر صورة جديدة"
+                ></v-file-input>
               </div>
             </v-form>
           </v-container>
         </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
-            <v-btn class="delete-button" color="white" variant="text">
+            <v-btn
+              @click="updateNews()"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
               حفظ
             </v-btn>
             <v-btn
@@ -145,11 +184,19 @@ const isLoading = ref(true);
 const isEditDialog = ref(false);
 const model = ref("AR");
 const blog = ref({});
-const donorId = router.currentRoute.value.params.id;
-
+const donorId = ref(router.currentRoute.value.params.id);
+const selectedItem = ref();
+const showModel = (item, type) => {
+  selectedItem.value = item;
+  type == 1 ? (isEditDialog.value = true) : "";
+  editNews.TitleArabic = item.titleArabic;
+  editNews.ContentArabic = item.contentArabic;
+  editNews.TitleEnglish = item.titleEnglish;
+  editNews.ContentEnglish = item.contentEnglish;
+};
 function getBlogById() {
   axios
-    .get(`Admin/GetBlogByID?ID=${donorId}`)
+    .get(`Admin/GetBlogByID?ID=${donorId.value}`)
     .then((res) => {
       blog.value = res.data;
       console.log(res.data);
@@ -164,7 +211,7 @@ function getBlogById() {
 
 function deleteBlog() {
   axios
-    .put(`Admin/DeleteBlog?ID=${donorId}`)
+    .put(`Admin/DeleteBlog?ID=${donorId.value}`)
     .then((res) => {
       console.log(res.data);
     })
@@ -176,9 +223,43 @@ function deleteBlog() {
       router.push("/news");
     });
 }
+const editNews = reactive({
+  TitleArabic: "",
+  TitleEnglish: "",
+  ImageFile: null,
+  ContentArabic: "",
+  ContentEnglish: "",
+});
+function updateNews() {
+  isLoading.value = true;
+  const formData = new FormData();
+  formData.append("TitleArabic", editNews.TitleArabic);
+  formData.append("TitleEnglish", editNews.TitleEnglish);
+  formData.append(
+    "ImageFile",
+    editNews.ImageFile === null ? blog.value.image[1] : editNews.ImageFile[0]
+  );
+  formData.append("ContentArabic", editNews.ContentArabic);
+  formData.append("ContentEnglish", editNews.ContentEnglish);
+  axios
+    .put(`Admin/UpdateBlog?id=${donorId.value}`, formData)
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+      router.push("/news");
+    });
+}
+
 onMounted(() => {
   getBlogById();
-  return model.value, donorId;
+  return;
+
+  model.value, donorId;
 });
 </script>
 <style scoped>
@@ -186,8 +267,16 @@ onMounted(() => {
   height: 100%;
   background: #f2f2f2;
   border-radius: 8px;
-  padding: 10px;
-
+}
+.select-image {
+  height: 100%;
+  background: #f2f2f2;
+  border-radius: 8px;
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 .god-content {
   display: flex;

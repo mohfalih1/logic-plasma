@@ -85,16 +85,16 @@
 
   <!-- start add notification  -->
   <v-row justify="center">
-    <v-dialog v-model="addDialog" persistent width="300">
+    <v-dialog v-model="addDialog" persistent width="400">
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary pb-0">
-          <span> اضافة شعار جديد</span>
+          <span> اضافة اشعار جديد</span>
         </v-card-title>
         <v-card-text class="pa-0">
           <v-container>
             <v-form>
               <v-col>
-                <div class="active-button" width="100%">
+                <!-- <div class="active-button" width="100%">
                   <div>
                     <v-img
                       class="image-translate ma-0"
@@ -111,16 +111,18 @@
                       >English</v-btn
                     >
                   </div>
-                </div>
+                </div> -->
               </v-col>
               <v-col cols="12">
+                <h5>اضافة اشعار باللغة العربية:</h5>
+                <br />
                 <div class="select">
                   <v-icon color="red" icon="mdi-bell-ring-outline "></v-icon>
                   <v-text-field
                     v-model="addNotific.titleAr"
                     clearable
                     variant="plain"
-                    placeholder="اضافة شعار.."
+                    placeholder="اضافة اشعار.."
                     type="text"
                   ></v-text-field>
                 </div>
@@ -131,7 +133,32 @@
                     v-model="addNotific.decArabic"
                     clearable
                     variant="plain"
-                    label="محتوى الشعار.."
+                    label="محتوى الاشعار.."
+                    type="text"
+                  ></v-textarea>
+                </div>
+              </v-col>
+              <v-col cols="12">
+                <h5>اضافة اشعار باللغة الانكليزية:</h5>
+                <br />
+                <div class="select">
+                  <v-icon color="red" icon="mdi-bell-ring-outline "></v-icon>
+                  <v-text-field
+                    v-model="addNotific.titleEn"
+                    clearable
+                    variant="plain"
+                    placeholder="اضافة اشعار.."
+                    type="text"
+                  ></v-text-field>
+                </div>
+              </v-col>
+              <v-col cols="12">
+                <div class="select-content">
+                  <v-textarea
+                    v-model="addNotific.decEnglish"
+                    clearable
+                    variant="plain"
+                    label="محتوى الاشعار.."
                     type="text"
                   ></v-textarea>
                 </div>
@@ -278,9 +305,9 @@ function getNotification() {
     });
 }
 const addNotific = reactive({
-  titleEn: "dd",
+  titleEn: "",
   titleAr: "",
-  decEnglish: "ss",
+  decEnglish: "",
   decArabic: "",
 });
 function addNotification() {

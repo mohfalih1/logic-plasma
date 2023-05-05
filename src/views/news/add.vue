@@ -17,7 +17,7 @@
     <div class="d-flex justify-center align-center h-75">
       <v-card elevation="0">
         <div class="active-button" width="100%">
-          <div>
+          <!-- <div>
             <v-img
               class="image-translate ma-0"
               src="@/assets/Frame88.svg"
@@ -28,38 +28,67 @@
           <div>
             <v-btn class="lang-button" elevation="0" rounded="0">العربية</v-btn>
             <v-btn class="ma-0" elevation="0" rounded="0">English</v-btn>
-          </div>
+          </div> -->
         </div>
-
+        <h4>اضف خبر باللغة العربية:</h4>
         <br />
-        <v-text-field
-          v-model="addBlo.TitleArabic"
-          variant="plain"
-          class="h-50"
-          placeholder="عنوان الخبر..."
-        >
-        </v-text-field>
-
-        <br />
-        <v-textarea
-          v-model="addBlo.ContentArabic"
-          variant="plain"
-          label="محتوى الخبر..."
-        >
-        </v-textarea>
-        <v-card class="drag-box mb-3">
-          <v-file-input
-            class="drag-box-content"
+        <v-form ref="validForm">
+          <v-text-field
+            v-model="addBlo.TitleArabic"
             variant="plain"
-            v-model="addBlo.ImageFile"
-            accept="image/*"
-            show-size
-            prepend-icon="mdi-image-plus-outline"
-          ></v-file-input>
-        </v-card>
+            class="h-50"
+            clearable=""
+            label="عنوان الخبر..."
+            :rules="titleRule"
+          >
+          </v-text-field>
+          <br />
+          <v-textarea
+            v-model="addBlo.ContentArabic"
+            variant="plain"
+            clearable=""
+            label="محتوى الخبر..."
+            :rules="contentRule"
+          >
+          </v-textarea>
+          <br />
+          <h4>اضف خبر باللغة الانكليزية:</h4>
+
+          <v-text-field
+            v-model="addBlo.TitleEnglish"
+            :rules="titleRule"
+            clearable=""
+            variant="plain"
+            class="h-50"
+            label="عنوان الخبر..."
+          >
+          </v-text-field>
+
+          <br />
+          <v-textarea
+            v-model="addBlo.ContentEnglish"
+            :rules="contentRule"
+            clearable=""
+            variant="plain"
+            label="محتوى الخبر..."
+          >
+          </v-textarea>
+          <v-card class="drag-box mb-3">
+            <v-file-input
+              class="drag-box-content"
+              variant="plain"
+              :rules="imageRule"
+              v-model="addBlo.ImageFile"
+              accept="image/*"
+              show-size
+              prepend-icon="mdi-image-plus-outline"
+            >
+            </v-file-input>
+          </v-card>
+        </v-form>
         <v-card-actions>
           <v-btn
-            @click="addBlog()"
+            @click="validate()"
             class="add-edit-button pa-5"
             :color="primary"
             variant="text"
@@ -89,11 +118,11 @@ import axios from "@/server/axios";
 import router from "@/router";
 const isLoading = ref(false);
 const addBlo = reactive({
-  TitleArabic: "",
-  TitleEnglish: "a",
+  TitleArabic: null,
+  TitleEnglish: null,
   ImageFile: null,
-  ContentArabic: "",
-  ContentEnglish: "sscmskacjbacjsna",
+  ContentArabic: null,
+  ContentEnglish: null,
 });
 
 function addBlog() {
@@ -120,6 +149,22 @@ function addBlog() {
       router.push("/news");
     });
 }
+const validForm = ref();
+const valid = ref(true);
+
+const titleRule = ref([(v) => !!v || "العنوان مطلوب"]);
+const contentRule = ref([(v) => !!v || "المحتوى مطلوب"]);
+const imageRule = ref([(v) => !!v || " الصورة مطلوبة"]);
+
+async function validate() {
+  valid.value = await validForm.value.validate();
+
+  if (valid.value) {
+    isLoading.value = false;
+    addBlog();
+    router.push("/news");
+  }
+}
 </script>
 <style scoped>
 .drag-box {
@@ -136,17 +181,7 @@ function addBlog() {
   transform: translate(-50%, -50%);
   text-align: center;
 }
-.active-button {
-  border: 1px solid #ffffff;
-  border-radius: 10px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  margin: 10px;
-  display: flex;
-  justify-content: start;
-  align-items: start;
-}
+
 .image-translate {
   overflow: hidden;
 }
