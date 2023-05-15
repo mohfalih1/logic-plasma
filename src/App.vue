@@ -1,6 +1,5 @@
 <template>
   <v-app id="app" style="background: #f8f8f8">
-    <!-- <loginView/> -->
 
     <v-main>
       <NavBar v-if="!isSidebar" style="direction: ltr" />
@@ -13,7 +12,6 @@
 </template>
 
 <script setup>
-// import loginView from './views/login/loginView.vue';
 import NavBar from "./components/NavBar.vue";
 import AppBar from "./components/AppBar.vue";
 import { computed } from "vue";

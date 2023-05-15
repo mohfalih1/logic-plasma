@@ -85,7 +85,6 @@
             >
             </v-file-input>
           </v-card>
-        </v-form>
         <v-card-actions>
           <v-btn
             @click="validate()"
@@ -106,6 +105,8 @@
             العودة
           </v-btn>
         </v-card-actions>
+        </v-form>
+
       </v-card>
     </div>
   </v-card>

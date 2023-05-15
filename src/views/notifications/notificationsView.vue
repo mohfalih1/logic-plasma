@@ -57,6 +57,8 @@
         </v-card-actions>
       </v-card>
     </div>
+    <br>
+    <br>
     <!-- pagination  -->
     <v-container class="pagination">
       <button :disabled="notification.length < 10" @click="nextPage">
@@ -86,33 +88,14 @@
   <!-- start add notification  -->
   <v-row justify="center">
     <v-dialog v-model="addDialog" persistent width="400">
-      <v-card rounded="xl">
-        <v-card-title class="text-center text-primary pb-0">
-          <span> اضافة اشعار جديد</span>
-        </v-card-title>
-        <v-card-text class="pa-0">
-          <v-container>
-            <v-form>
-              <v-col>
-                <!-- <div class="active-button" width="100%">
-                  <div>
-                    <v-img
-                      class="image-translate ma-0"
-                      src="@/assets/Frame88.svg"
-                      width="50px"
-                      height="36px"
-                    ></v-img>
-                  </div>
-                  <div class="d-flex">
-                    <v-btn class="lang-button" elevation="0" rounded="0"
-                      >العربية</v-btn
-                    >
-                    <v-btn class="ma-0" elevation="0" rounded="0"
-                      >English</v-btn
-                    >
-                  </div>
-                </div> -->
-              </v-col>
+      <v-form ref="validForm">
+        <v-card rounded="xl">
+          <v-card-title class="text-center text-primary pb-0">
+            <span> اضافة اشعار جديد</span>
+          </v-card-title>
+
+          <v-card-text class="pa-0">
+            <v-container>
               <v-col cols="12">
                 <h5>اضافة اشعار باللغة العربية:</h5>
                 <br />
@@ -120,6 +103,7 @@
                   <v-icon color="red" icon="mdi-bell-ring-outline "></v-icon>
                   <v-text-field
                     v-model="addNotific.titleAr"
+                    :rules="titleRule"
                     clearable
                     variant="plain"
                     placeholder="اضافة اشعار.."
@@ -131,6 +115,7 @@
                 <div class="select-content">
                   <v-textarea
                     v-model="addNotific.decArabic"
+                    :rules="contentRule"
                     clearable
                     variant="plain"
                     label="محتوى الاشعار.."
@@ -145,6 +130,7 @@
                   <v-icon color="red" icon="mdi-bell-ring-outline "></v-icon>
                   <v-text-field
                     v-model="addNotific.titleEn"
+                    :rules="titleRule"
                     clearable
                     variant="plain"
                     placeholder="اضافة اشعار.."
@@ -156,6 +142,7 @@
                 <div class="select-content">
                   <v-textarea
                     v-model="addNotific.decEnglish"
+                    :rules="contentRule"
                     clearable
                     variant="plain"
                     label="محتوى الاشعار.."
@@ -163,31 +150,31 @@
                   ></v-textarea>
                 </div>
               </v-col>
-            </v-form>
-          </v-container>
-        </v-card-text>
-        <v-card-actions class="d-flex align-center justify-center pt-0">
-          <div class="d-flex align-center justify-center my-1">
-            <v-btn
-              @click="addNotification()"
-              class="delete-button"
-              color="white"
-              variant="text"
-            >
-              اضافة
-            </v-btn>
-            <v-btn
-              @click="addDialog = false"
-              class="back-button"
-              color="white"
-              variant="text"
-            >
-              <v-icon icon="mdi-greater-than" size="20"></v-icon>
-              العودة
-            </v-btn>
-          </div>
-        </v-card-actions>
-      </v-card>
+            </v-container>
+          </v-card-text>
+          <v-card-actions class="d-flex align-center justify-center pt-0">
+            <div class="d-flex align-center justify-center my-1">
+              <v-btn
+                @click="validate()"
+                class="delete-button"
+                color="white"
+                variant="text"
+              >
+                اضافة
+              </v-btn>
+              <v-btn
+                @click="addDialog = false"
+                class="back-button"
+                color="white"
+                variant="text"
+              >
+                <v-icon icon="mdi-greater-than" size="20"></v-icon>
+                العودة
+              </v-btn>
+            </div>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-dialog>
   </v-row>
 
@@ -287,7 +274,7 @@ const showModel = (item, type) => {
 };
 const notification = ref([]);
 const numberOfPage = ref(1);
-const numberOfItemPerPage = ref(20);
+const numberOfItemPerPage = ref(12);
 function getNotification() {
   isLoading.value = true;
   axios
@@ -321,13 +308,13 @@ function addNotification() {
     .post("Admin/AddNotification", formData)
     .then((res) => {
       getNotification();
+      addDialog.value = false;
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
       isLoading.value = false;
-      addDialog.value = false;
     });
 }
 
@@ -373,16 +360,32 @@ function previousPage() {
   isLoading.value = true;
   getNotification();
 }
+
+// .............validation.............
+const validForm = ref();
+const valid = ref(true);
+
+const titleRule = ref([(v) => !!v || "العنوان مطلوب"]);
+const contentRule = ref([(v) => !!v || "المحتوى مطلوب"]);
+
+async function validate() {
+  valid.value = await validForm.value.validate();
+
+  if (valid.value) {
+    isLoading.value = false;
+    addNotification();
+  }
+}
 </script>
 <style scoped>
 .grid-notifications {
   display: grid;
   justify-content: space-around;
-  grid-template-columns: repeat(5, 20%);
-  grid-template-rows: repeat(3, 27%);
+  grid-template-columns: repeat(4, 20%);
+  grid-template-rows: repeat(3,35%);
   column-gap: 1px;
   row-gap: 1em;
-  height: 80vh;
+  height: 90vh;
 }
 .notifications-card {
   display: flex;

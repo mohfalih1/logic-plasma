@@ -48,53 +48,57 @@
         </tr>
       </table>
     </div>
-    <div class="filters">
-      <div class="select-don-home">
-        <v-select
-          v-model="query.governorate"
-          clearable
-          variant="plain"
-          placeholder="المدينة"
-          no-data-text="لايوجد بيانات"
-          :items="governorates"
-          item-title="nameArabic"
-          item-value="id"
-        ></v-select>
+    <v-form ref="validForm">
+      <div class="filters">
+        <div class="select-don-home">
+          <v-select
+            v-model="query.governorate"
+            :rules="goverRules"
+            clearable
+            variant="plain"
+            placeholder="المدينة"
+            no-data-text="لايوجد بيانات"
+            :items="governorates"
+            item-title="nameArabic"
+            item-value="id"
+          ></v-select>
+        </div>
+        <div class="select-don-home">
+          <v-select
+            v-model="query.donorType"
+            :rules="typeRules"
+            clearable
+            variant="plain"
+            placeholder="نوع التبرع"
+            no-data-text="لايوجد بيانات"
+            :items="donorTypes"
+            item-title="name"
+            item-value="value"
+          ></v-select>
+        </div>
       </div>
-      <div class="select-don-home">
-        <v-select
-          v-model="query.donorType"
-          clearable
-          variant="plain"
-          placeholder="نوع التبرع"
-          no-data-text="لايوجد بيانات"
-          :items="donorTypes"
-          item-title="name"
-          item-value="value"
-        ></v-select>
-      </div>
-    </div>
-    <v-card-actions class="pa-5 mb-5">
-      <div class="d-flex ma-0">
-        <v-btn
-          @click="isuplaodDialog = true"
-          class="import-delte-button"
-          color="red"
-          variant="text"
-        >
-          <v-icon icon="mdi-tray-arrow-up" size="22"></v-icon>
-          رفع البيانات المتبرعين
-        </v-btn>
-        <v-btn
-          @click="downloadTemplate()"
-          class="import-edit-button"
-          color="white"
-          variant="text"
-        >
-          تنزيل القالب
-        </v-btn>
-      </div>
-    </v-card-actions>
+      <v-card-actions class="pa-5 mb-5">
+        <div class="d-flex ma-0">
+          <v-btn
+            @click="isuplaodDialog = true"
+            class="import-delte-button"
+            color="red"
+            variant="text"
+          >
+            <v-icon icon="mdi-tray-arrow-up" size="22"></v-icon>
+            رفع البيانات المتبرعين
+          </v-btn>
+          <v-btn
+            @click="downloadTemplate()"
+            class="import-edit-button"
+            color="white"
+            variant="text"
+          >
+            تنزيل القالب
+          </v-btn>
+        </div>
+      </v-card-actions>
+    </v-form>
   </v-card>
   <!--start uplaodDialog  -->
   <v-row justify="center">
@@ -118,7 +122,7 @@
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
             <v-btn
-              @click="uploadExcelFileForDoner()"
+              @click="validate()"
               class="delete-button"
               color="white"
               variant="text"
@@ -140,6 +144,19 @@
     </v-dialog>
   </v-row>
   <!--end uplaodDialog  -->
+  <!--start snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="snackbar">
+      <p v-if="file">تم رفع الفايل بنجاح</p>
+      <p v-else>يجب اختيار ملف</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end snackbar  -->
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
@@ -149,6 +166,7 @@ import { downloadExcelFile } from "@/utils/download-excel";
 import { ref, reactive, onMounted } from "vue";
 const isLoading = ref(false);
 const isuplaodDialog = ref(false);
+const snackbar = ref(false);
 
 onMounted(() => {
   getGovernorates();
@@ -195,7 +213,22 @@ const donorTypes = ref([
   { name: "دم", value: 0 },
   { name: "بلازما", value: 1 },
 ]);
+const validForm = ref();
+const valid = ref(true);
 
+const goverRules = ref([(v) => !!v || "يرجى تحديد المحافظة"]);
+const typeRules = ref([(v) => !!v || "يرجى تحديد نوع التبرع"]);
+
+async function validate() {
+  valid.value = await validForm.value.validate();
+
+  if (valid.value) {
+    uploadExcelFileForDoner();
+    isuplaodDialog.value = false;
+    isLoading.value = false;
+    snackbar.value = true;
+  }
+}
 </script>
 <style scoped>
 .filters {

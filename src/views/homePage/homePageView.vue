@@ -109,7 +109,7 @@
         <v-row no-gutters class="mt-0">
           <!-- start graph-card  -->
 
-          <v-col cols="9">
+          <v-col cols="8">
             <v-sheet class="pa-2 ma-2" width="100%">
               <div id="chart" class="graph-card">
                 <apexchart
@@ -126,7 +126,7 @@
           <!-- end graph-card  -->
           <!-- start donors-card  -->
 
-          <v-col>
+          <v-col cols="3">
             <v-sheet class="pa-2 ma-2">
               <div class="donors-card">
                 <div>
@@ -184,7 +184,7 @@
 
         <!-- start type Boold  -->
         <v-row no-gutters>
-          <v-col>
+          <v-col cols="4">
             <v-sheet class="pa-2 ma-2">
               <div class="group-card">
                 <div class="con">
@@ -198,7 +198,7 @@
               </div>
             </v-sheet>
           </v-col>
-          <v-col>
+          <v-col cols="4">
             <v-sheet class="pa-2 ma-2">
               <div class="group-card">
                 <div class="con">
@@ -212,7 +212,7 @@
               </div>
             </v-sheet>
           </v-col>
-          <v-col>
+          <v-col cols="4">
             <v-sheet class="pa-2 ma-2">
               <div class="group-card">
                 <div class="con">
@@ -226,7 +226,9 @@
               </div>
             </v-sheet>
           </v-col>
-          <v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
             <v-sheet class="pa-2 ma-2">
               <div class="group-card">
                 <div class="con">
@@ -241,9 +243,7 @@
               </div>
             </v-sheet>
           </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col>
+          <v-col cols="4">
             <v-sheet class="pa-2 ma-2">
               <div class="group-card">
                 <div class="con">
@@ -257,7 +257,7 @@
               </div>
             </v-sheet>
           </v-col>
-          <v-col>
+          <v-col cols="4">
             <v-sheet class="pa-2 ma-2">
               <div class="group-card">
                 <div class="con">
@@ -271,7 +271,9 @@
               </div>
             </v-sheet>
           </v-col>
-          <v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
             <v-sheet class="pa-2 ma-2">
               <div class="group-card">
                 <div class="con">
@@ -285,7 +287,7 @@
               </div>
             </v-sheet>
           </v-col>
-          <v-col>
+          <v-col cols="4">
             <v-sheet class="pa-2 ma-2">
               <div class="group-card">
                 <div class="con">
@@ -511,6 +513,14 @@ watch(() => {
 });
 </script>
 <style scoped>
+.parent {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");
 .filters {
   display: grid;

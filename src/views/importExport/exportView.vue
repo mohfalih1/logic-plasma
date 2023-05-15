@@ -15,119 +15,116 @@
       </div>
     </v-card-text>
     <!-- start filters -->
+      <div class="filters">
+        <div class="filter-icon">
+          <v-icon size="40" icon="mdi-filter-outline"></v-icon>
+        </div>
+        <div class="select-don-home">
+          <v-select
+            v-model="filter.bloodGroup"
+            clearable
+            variant="plain"
+            placeholder="زمرة الدم"
+            no-data-text="لايوجد بيانات"
+            :items="bloodGroups"
+            item-title="name"
+            item-value="value"
+          ></v-select>
+        </div>
+        <div class="select-don-home">
+          <v-select
+            v-model="filter.donorType"
+            clearable
+            variant="plain"
+            placeholder="نوع التبرع"
+            no-data-text="لايوجد بيانات"
+            :items="donorTypes"
+            item-title="name"
+            item-value="value"
+          ></v-select>
+        </div>
+        <div class="select-don-home">
+          <v-select
+            v-model="filter.governorate"
+            clearable
+            variant="plain"
+            placeholder="المدينة"
+            no-data-text="لايوجد بيانات"
+            :items="governorates"
+            item-title="nameArabic"
+            item-value="id"
+          ></v-select>
+        </div>
+        <div class="select-don-home">
+          <v-select
+            v-model="filter.subscribersType"
+            clearable
+            variant="plain"
+            placeholder="نوع المستخدم"
+            no-data-text="لايوجد بيانات"
+            :items="subscribersType"
+            item-title="name"
+            item-value="value"
+          ></v-select>
+        </div>
 
-    <div class="filters">
-      <div class="filter-icon">
-        <v-icon size="40" icon="mdi-filter-outline"></v-icon>
-      </div>
-      <div class="select-don-home">
-        <v-select
-          v-model="filter.bloodGroup"
-          clearable
-          variant="plain"
-          placeholder="زمرة الدم"
-          no-data-text="لايوجد بيانات"
-          :items="bloodGroups"
-          item-title="name"
-          item-value="value"
-        ></v-select>
-      </div>
-      <div class="select-don-home">
-        <v-select
-          v-model="filter.donorType"
-          clearable
-          variant="plain"
-          placeholder="نوع التبرع"
-          no-data-text="لايوجد بيانات"
-          :items="donorTypes"
-          item-title="name"
-          item-value="value"
-        ></v-select>
-      </div>
-      <div class="select-don-home">
-        <v-select
-          v-model="filter.governorate"
-          clearable
-          variant="plain"
-          placeholder="المدينة"
-          no-data-text="لايوجد بيانات"
-          :items="governorates"
-          item-title="nameArabic"
-          item-value="id"
-        ></v-select>
-      </div>
-      <div class="select-don-home">
-        <v-select
-          v-model="filter.subscribersType"
-          clearable
-          variant="plain"
-          placeholder="نوع المستخدم"
-          no-data-text="لايوجد بيانات"
-          :items="subscribersType"
-          item-title="name"
-          item-value="value"
-        ></v-select>
+        <div class="select-don-home">
+          <v-select
+            v-model="filter.HaveChronicDisease"
+            clearable
+            variant="plain"
+            placeholder=" المرض المزمن"
+            no-data-text="لايوجد بيانات"
+            :items="ChronicDisease"
+            item-title="name"
+            item-value="value"
+          ></v-select>
+        </div>
+        <div class="select-don-home">
+          <v-select
+            v-model="filter.TypeChronicDisease"
+            clearable
+            variant="plain"
+            placeholder="نوع المرض المزمن"
+            no-data-text="لايوجد بيانات"
+            :items="typeChronicDiseases"
+            item-title="nameArabic"
+            item-value="id"
+          ></v-select>
+        </div>
+        <fieldset class="select-don-home">
+          <legend>من</legend>
+          <input v-model="filter.DateFrom" type="date" />
+        </fieldset>
+        <fieldset class="select-don-home">
+          <legend>الى</legend>
+          <input v-model="filter.DateTo" type="date" />
+        </fieldset>
       </div>
 
-      <div class="select-don-home">
-        <v-select
-          v-model="filter.HaveChronicDisease"
-          clearable
-          variant="plain"
-          placeholder=" المرض المزمن"
-          no-data-text="لايوجد بيانات"
-          :items="ChronicDisease"
-          item-title="name"
-          item-value="value"
-        ></v-select>
-      </div>
-      <div class="select-don-home">
-        <v-select
-          v-model="filter.TypeChronicDisease"
-          clearable
-          variant="plain"
-          placeholder="نوع المرض المزمن"
-          no-data-text="لايوجد بيانات"
-          :items="typeChronicDiseases"
-          item-title="nameArabic"
-          item-value="id"
-        ></v-select>
-      </div>
-      <fieldset class="select-don-home">
-        <legend>من</legend>
-        <input v-model="filter.DateFrom" type="date" />
-      </fieldset>
-  <fieldset class="select-don-home">
-        <legend>الى</legend>
-        <input v-model="filter.DateTo" type="date" />
-      </fieldset>
-      </div>
-
-   
-   
-    <!-- end filters -->
-    <v-card-actions class="pa-5 mb-5">
-      <div class="d-flex ma-0">
-        <v-btn
-          @click="downloadExcelFiles(clearFilter)"
-          class="import-delte-button"
-          color="red"
-          variant="text"
-        >
-          <v-icon icon="mdi-export" size="22"></v-icon>
-          تنزيل بيانات المتبرعين
-        </v-btn>
-        <v-btn
-          to="/import-export"
-          class="import-edit-button"
-          color="white"
-          variant="text"
-        >
-          <v-icon icon="mdi-greater-than"></v-icon>
-          العودة
-        </v-btn>
-      </div>
-    </v-card-actions>
+      <!-- end filters -->
+      <v-card-actions class="pa-5 mb-5">
+        <div class="d-flex ma-0">
+          <v-btn
+            @click="downloadExcelFiles(clearFilter)"
+            class="import-delte-button"
+            color="red"
+            variant="text"
+          >
+            <v-icon icon="mdi-export" size="22"></v-icon>
+            تنزيل بيانات المتبرعين
+          </v-btn>
+          <v-btn
+            to="/import-export"
+            class="import-edit-button"
+            color="white"
+            variant="text"
+          >
+            <v-icon icon="mdi-greater-than"></v-icon>
+            العودة
+          </v-btn>
+        </div>
+      </v-card-actions>
   </v-card>
 </template>
 <script setup>
@@ -138,7 +135,6 @@ import { watch } from "vue";
 import { ref, reactive, onMounted } from "vue";
 
 const isLoading = ref(false);
-
 
 onMounted(() => {
   getChronicDisease();
@@ -225,6 +221,8 @@ const ChronicDisease = ref([
 watch(() => {
   filter;
 });
+
+
 </script>
 <style scoped>
 .filters {

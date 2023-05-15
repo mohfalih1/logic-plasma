@@ -97,6 +97,7 @@
         ></v-select>
       </div>
     </div>
+
     <!-- end filters -->
     <br />
 
@@ -115,7 +116,7 @@
           <v-btn
             @click="opnenShow()"
             class="news-button"
-            :to="`/donations/${item.id}`" 
+            :to="`/donations/${item.id}`"
             color="white"
             variant="text"
             >عرض المتبرع
@@ -288,7 +289,7 @@ watch(() => {
 .grid-donations {
   display: grid;
   justify-content: space-around;
-  grid-template-columns: repeat(5, 20%);
+  grid-template-columns: repeat(4, 18%);
   grid-template-rows: repeat(2, 40%);
   column-gap: 1px;
   row-gap: 1em;

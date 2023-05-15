@@ -59,6 +59,7 @@
         </v-card-actions>
       </v-card>
     </div>
+
     <!-- pagination  -->
     <v-container class="pagination">
       <button :disabled="chronicDiseases.length < 10" @click="nextPage">
@@ -264,7 +265,7 @@ onMounted(() => {
   getChronicDiseases();
 });
 const numberOfPage = ref(1);
-const numberOfItemPerPage = ref(15);
+const numberOfItemPerPage = ref(12);
 const chronicDiseases = ref([]);
 function getChronicDiseases() {
   isLoading.value = true;
@@ -363,10 +364,10 @@ function previousPage() {
 .grid-chron {
   display: grid;
   justify-content: space-around;
-  grid-template-columns: repeat(5, 20%);
+  grid-template-columns: repeat(4, 23%);
   grid-template-rows: repeat(3, 27%);
   column-gap: 1px;
-  row-gap: 1em;
-  height: 70vh;
+  row-gap: 1rem;
+  height: 90vh;
 }
 </style>

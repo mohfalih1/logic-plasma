@@ -45,21 +45,31 @@
               </v-col>
               <v-col cols="12"
                 ><v-card class="show-donations-card">
-                  <div class="chip">
-                    <h5>نوع المرض المزمن:</h5>
-                    <v-chip :color="primary">السكري</v-chip>
-                    <v-chip :color="primary">امراض المفاصل</v-chip>
-                    <v-chip :color="primary">امراض الجهاز الهضمي</v-chip>
+                  <h5>نوع المرض المزمن:</h5>
+
+                  <div
+                    class="chip"
+                    v-for="(med, i) in donor.chronicDiseases"
+                    :key="i"
+                  >
+                    <v-chip v-if="donor.chronicDiseases" :color="primary">
+                      {{ med.nameArabic }}</v-chip
+                    >
                   </div>
+                  <h6 :v-if="!donor.chronicDiseases">لايوجد امراض مزمنة</h6>
                 </v-card>
               </v-col>
               <v-col cols="12"
                 ><v-card class="show-donations-card"
                   ><div class="chip">
                     <h5>العلاجات المستخدمة:</h5>
-                    <v-chip :color="primary">السكري</v-chip>
-                    <v-chip :color="primary">امراض المفاصل</v-chip>
-                  </div></v-card
+                    <v-chip v-if="donor.medications" :color="primary">
+                      {{ donor.medications }}</v-chip
+                    >
+                  </div>
+                  <h6 :v-if="!donor.medications">
+                    لايوجد علاجات مستخدمة
+                  </h6></v-card
                 >
               </v-col>
               <v-col cols="12"
@@ -89,15 +99,6 @@
                         height="30"
                       ></v-img>
                     </div>
-                    <div
-                      v-if="
-                        donor.whatsapp === false &&
-                        donor.telegram === false &&
-                        donor.viber === false
-                      "
-                    >
-                      لا يوجد حسابات للتواصل
-                    </div>
                   </div>
                 </v-card>
               </v-col>
@@ -108,6 +109,7 @@
                     width="292"
                     height="172"
                     :src="donor?.imageLinkBloodTest"
+                    lazy-src="@\assets\plasmaLogo.png"
                   >
                   </v-img>
                 </v-card>
@@ -119,6 +121,7 @@
                     width="292"
                     height="172"
                     :src="donor?.imageLinkDonorID"
+                    lazy-src="@\assets\plasmaLogo.png"
                   >
                   </v-img></v-card
               ></v-col>
@@ -126,15 +129,20 @@
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-btn class="add-delete-button" color="white" variant="text">
+          <v-btn
+            @click="deleteDialog = true"
+            class="add-delete-button"
+            color="white"
+            variant="text"
+          >
             <v-icon icon="mdi-trash-can-outline" size="22"></v-icon>
             حذف المتبرع
           </v-btn>
           <v-btn
+            @click="closeDialog()"
             class="add-back-button"
             color="white"
             variant="text"
-            to="/donations"
           >
             <v-icon icon="mdi-greater-than"></v-icon>
             العودة
@@ -144,54 +152,25 @@
     </v-dialog>
   </v-row>
 
-  <!-- start edit chronic -->
   <v-row justify="center">
-    <v-dialog v-model="editDialog" persistent width="262">
+    <v-dialog v-model="deleteDialog" persistent width="262">
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary pb-0">
-          <span> تعديل المرض المزمن</span>
+          <span> حذف المتبرع</span>
         </v-card-title>
-        <v-card-text class="pa-0">
-          <v-container>
-            <v-form>
-              <v-col cols="12">
-                <div class="select">
-                  <v-icon color="red" icon="mdi-virus-outline"></v-icon>
-                  <v-text-field
-                    v-model="editChron.nameArabic"
-                    class="text-center"
-                    clearable
-                    variant="plain"
-                    type="text"
-                  ></v-text-field>
-                </div>
-              </v-col>
-              <v-col cols="12">
-                <div class="select">
-                  <v-text-field
-                    v-model="editChron.nameEnglish"
-                    clearable
-                    variant="plain"
-                    type="text"
-                  ></v-text-field>
-                  <v-icon color="red" icon="mdi-virus-outline"></v-icon>
-                </div>
-              </v-col>
-            </v-form>
-          </v-container>
-        </v-card-text>
+        <v-card-text> هل انت متأكد من حذف المتبرع ؟ </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
             <v-btn
-              @click="UpdateChronicDisease(selectedItem.id)"
+              @click="deleteSubscribers()"
               class="delete-button"
               color="white"
               variant="text"
             >
-              حفظ
+              حذف
             </v-btn>
             <v-btn
-              @click="editDialog = false"
+              @click="deleteDialog = false"
               class="back-button"
               color="white"
               variant="text"
@@ -204,22 +183,22 @@
       </v-card>
     </v-dialog>
   </v-row>
+  <!-- start delete donattion  -->
   <!-- end edit chronic -->
 </template>
 <script setup>
+import router from "@/router";
 import { useCounterStore } from "@/store/app";
 import { primary } from "@/assets/style";
 import { ref, onMounted } from "vue";
-import router from "@/router";
 import axios from "@/server/axios";
+const deleteDialog = ref(false);
 const store = useCounterStore();
 
 const donorId = ref(router.currentRoute.value.params.id);
 function closeDialog() {
-  store.dialog = false;
   router.push("/donations");
 }
-
 const donor = ref({});
 function getDonor() {
   axios.get(`/Admin/GetDonerById?ID=${donorId.value}`).then((res) => {
@@ -228,7 +207,9 @@ function getDonor() {
 }
 function deleteSubscribers() {
   axios.delete(`Admin/DeleteSubscribers?id=${donorId.value}`).then((res) => {
-    closeDialog();
+    deleteDialog.value = false;
+    store.dialog = false;
+    router.push("/donations");
   });
 }
 onMounted(() => {

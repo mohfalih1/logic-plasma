@@ -2,13 +2,13 @@
   <Loader v-if="isLoading" />
   <v-row justify="center">
     <v-dialog v-model="store.dialog" persistent width="664">
-      <v-card rounded="xl">
-        <v-card-title class="text-center text-primary pt-4">
-          <span> اضافة متبرع</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-form ref="validForm">
+      <v-form ref="validForm">
+        <v-card rounded="xl">
+          <v-card-title class="text-center text-primary pt-4">
+            <span> اضافة متبرع</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
               <v-row>
                 <v-col cols="6">
                   <div class="select">
@@ -66,6 +66,7 @@
                   <div class="select">
                     <v-select
                       v-model="form.BloodGroup"
+                      :rules="bloodGroupRules"
                       clearable
                       variant="plain"
                       placeholder="نوع الزمرة"
@@ -91,18 +92,19 @@
                 </v-col>
                 <v-col cols="12">
                   <div class="select">
-                    <v-select
+                    <v-autocomplete
                       v-if="form.HasChronicDisease"
                       v-model="form.ChronicDiseaseId"
                       clearable
                       variant="plain"
-                      placeholder="هل هناك امراض مزمنة؟"
+                      placeholder="اختر نوع المرض المزمن"
                       type="text"
                       no-data-text="لا يوجد بيانات "
                       :items="typeChronicDisease"
                       item-title="nameArabic"
                       item-value="id"
-                    ></v-select></div
+                      multiple
+                    ></v-autocomplete></div
                 ></v-col>
                 <v-col cols="6">
                   <div class="select">
@@ -161,6 +163,7 @@
                   <div class="select-file">
                     <v-file-input
                       v-model="form.ImageLinkBloodTest"
+                      :rules="imageRules"
                       clearable
                       variant="plain"
                       prepend-icon="mdi-file-image-plus"
@@ -172,6 +175,7 @@
                   <div class="select-file">
                     <v-file-input
                       v-model="form.ImageLinkDonorID"
+                      :rules="imageRules"
                       clearable
                       variant="plain"
                       prepend-icon="mdi-file-image-plus"
@@ -180,29 +184,29 @@
                   </div>
                 </v-col>
               </v-row>
-            </v-form>
-          </v-container>
-        </v-card-text>
-        <v-card-actions class="pb-5">
-          <v-btn
-            @click="validate()"
-            class="add-edit-button"
-            :color="primary"
-            variant="text"
-          >
-            اضافة المتبرع
-          </v-btn>
-          <v-btn
-            class="add-back-button"
-            color="white"
-            variant="text"
-            to="/donations"
-          >
-            <v-icon icon="mdi-greater-than"></v-icon>
-            العودة
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+            </v-container>
+          </v-card-text>
+          <v-card-actions class="pb-5">
+            <v-btn
+              @click="validate()"
+              class="add-edit-button"
+              :color="primary"
+              variant="text"
+            >
+              اضافة المتبرع
+            </v-btn>
+            <v-btn
+              class="add-back-button"
+              color="white"
+              variant="text"
+              to="/donations"
+            >
+              <v-icon icon="mdi-greater-than"></v-icon>
+              العودة
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-dialog>
   </v-row>
 </template>
@@ -256,7 +260,7 @@ const form = reactive({
   BloodGroup: null,
   IsCheckForNotitifiction: false,
   HasChronicDisease: null,
-  ChronicDiseaseId: null,
+  ChronicDiseaseId: [],
   TakingAnyMedication: null,
   Medications: null,
   Latitude: null,
@@ -280,8 +284,9 @@ function addSubscribers() {
   );
   formData.append("Name", form.Name);
   formData.append("Phone", form.Phone);
-  formData.append("Whatsapp", form.Whatsapp);
-  formData.append("Telegram", form.Telegram);
+  formData.append("Whatsapp", form.Whatsapp === null ? "" : form.Whatsapp);
+  formData.append("Telegram", form.Telegram === null ? "" : form.Telegram);
+  formData.append("Telegram", form.Viber === null ? "" : form.Viber);
   formData.append("Governorate", form.Governorate);
   formData.append("BloodGroup", form.BloodGroup);
   formData.append("IsCheckForNotitifiction", form.IsCheckForNotitifiction);
@@ -295,13 +300,13 @@ function addSubscribers() {
     .post("Admin/AddSubscribers", formData)
     .then((res) => {
       console.log(res);
+      router.push("/donations");
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
       store.dialog = false;
-      router.push("/donations");
       isLoading.value = false;
     });
 }
@@ -325,7 +330,6 @@ async function validate() {
   if (valid.value) {
     isLoading.value = false;
     addSubscribers();
-    router.push("/donations");
   }
 }
 
