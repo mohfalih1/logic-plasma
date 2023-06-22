@@ -1,23 +1,19 @@
 <template>
   <div class="app-bar">
     <div class="wlecome-name">
-      <h4>أهلا مروان</h4>
-
-      <img src="@/assets/Ellipse1.png" />
+      <!-- <h4>Admin User</h4>
+      <img src="@/assets/plasmaLogo.png" /> -->
+           <v-list-item
+           rounded=""
+           variant="tonal"
+           color="red"
+            title="Admin User"
+                prepend-avatar="@/assets/plasmaLogo.png"
+          ></v-list-item>
     </div>
     <div class="all-frame">
-      <img
-        class="frame-1"
-        src="@/assets/Frame(1).png"
-        height="49"
-        width="49"
-      />
-      <img
-        class="frame-2"
-        src="@/assets/Frame(1).png"
-        height="49"
-        width="49"
-      />
+      <img class="frame-1" src="@/assets/Frame(1).png" height="49" width="49" />
+      <img class="frame-2" src="@/assets/Frame(1).png" height="49" width="49" />
     </div>
   </div>
   <!-- <div class="app-bar">
@@ -52,8 +48,8 @@
   margin: 5px;
 }
 .wlecome-name img {
-  width: 64px;
-  height: 64px;
+  width: 73px;
+  height: 63px;
   border: 1px solid #c4c7c5;
   border-radius: 50%;
 }

@@ -101,8 +101,10 @@
     <!-- end filters -->
     <br />
 
-    <div class="grid-donations mt-5 mr-5 ml-1">
-      <v-card class="donations-card" v-for="item in donations" :key="item.id">
+    <!-- <div class="grid-donations mt-5 mr-5 ml-1"> -->
+      <v-row>
+        <v-col cols="3" v-for="item in donations" :key="item.id">
+      <v-card class="donations-card" >
         <div class="news-title">
           <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
           {{ item.name }}
@@ -123,7 +125,9 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </div>
+      </v-col>
+      </v-row>
+    <!-- </div> -->
     <!-- pagination  -->
     <v-container class="pagination">
       <button :disabled="donations.length < 10" @click="nextPage">&lt;</button>

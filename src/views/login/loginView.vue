@@ -1,10 +1,10 @@
 <template>
    <Loader v-if="isLoading"/>
   <div class="contenier">
-    <div class="boold-1">
+    <!-- <div class="boold-1">
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
-    </div>
+    </div> -->
     <div class="content">
       <v-card class="card" color="primary">
         <v-card-text>
@@ -19,7 +19,7 @@
             <div>
               <v-text-field
                 v-model="loginData.email"
-                class="bg-white rounded-lg pa-0"
+                class="bg-white rounded-lg  pr-2"
                 variant="plain"
                 placeholder="البريد الالكتروني"
                 type="email"
@@ -28,7 +28,7 @@
               <br />
               <v-text-field
                 v-model="loginData.password"
-                class="bg-white rounded-lg pa-0"
+                class="bg-white rounded-lg pr-2"
                 variant="plain"
                 placeholder="الرمز السري"
                 type="password"
@@ -40,7 +40,7 @@
               >
               <v-btn
                 @click="login()"
-                class="mt-6 pa-1"
+                class="mt-6 pa-1 rounded-lg"
                 large
                 rounded
                 block
@@ -58,10 +58,10 @@
       </v-card>
       <br />
     </div>
-    <div class="boold-2">
+    <!-- <div class="boold-2">
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
-    </div>
+    </div> -->
   </div>
 </template>
 <script setup>
@@ -107,7 +107,10 @@ iframe {
   border: none;
 }
 .contenier {
-  height: 100vh;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .content {
   display: flex;

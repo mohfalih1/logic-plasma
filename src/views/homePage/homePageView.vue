@@ -86,24 +86,16 @@
           ></v-select>
         </div>
 
-        <fieldset class="select-don-home">
+        <fieldset class="select-don-home-date">
           <legend>من</legend>
-          <input v-model="query.DateFrom" type="date" />
+          <input class="date-input" v-model="query.DateFrom" type="date" />
         </fieldset>
 
-        <fieldset class="select-don-home">
+        <fieldset class="select-don-home-date">
           <legend>الى</legend>
-          <input v-model="query.DateTo" type="date" />
+          <input class="date-input" v-model="query.DateTo" type="date" />
         </fieldset>
       </div>
-
-      <!-- end filters -->
-      <!-- <label for="start-date">Start Date:</label>
-          <input type="date" id="start-date" />
-
-          <label for="end-date">End Date:</label>
-          <input type="date" id="end-date" /> -->
-      <!-- end filters -->
 
       <v-container>
         <v-row no-gutters class="mt-0">
@@ -338,12 +330,25 @@ const query = ref({
   TypeChronicDisease: null,
 });
 function getStatistics() {
-  const filteredQuery = Object.entries(query.value)
-    .filter(([key, value]) => value !== null)
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
+  // const filteredQuery = Object.entries(query.value)
+  //   .filter(([key, value]) => value !== null)
+  //   .map(([key, value]) => `${key}=${value}`)
+  //   .join("&");
   axios
-    .get(`Admin/GetStatistics?${filteredQuery}`)
+    .get(`Admin/GetStatistics`
+    ,{
+      params:{
+        bloodGroup: query.value.bloodGroup,
+        donorType: query.value.donorType,
+        governorate: query.value.governorate,
+        subscribersType: query.value.subscribersType,
+        DateFrom: query.value.DateFrom,
+        DateTo: query.value.DateTo,
+        HaveChronicDisease: query.value.HaveChronicDisease,
+        TypeChronicDisease: query.value.TypeChronicDisease,
+      }
+    }
+    )
     .then((res) => {
       statistics.value = res.data;
       console.log(statistics.value);
@@ -513,12 +518,24 @@ watch(() => {
 });
 </script>
 <style scoped>
-.parent {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+.select-don-home-date {
+  height: 52px;
+  border: 1px solid#BDBDBD;
+  background-color: #ffff;
+  border-radius: 8px;
+  display: flex;
+  padding-right: 2px;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+  margin-top: 0;
+}
+.date-input {
+  border: none;
+  background-color: transparent;
+  color: #bdbdbd;
+  text-align: center;
+  outline: none;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");

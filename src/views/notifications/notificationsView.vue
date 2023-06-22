@@ -57,8 +57,8 @@
         </v-card-actions>
       </v-card>
     </div>
-    <br>
-    <br>
+    <br />
+    <br />
     <!-- pagination  -->
     <v-container class="pagination">
       <button :disabled="notification.length < 10" @click="nextPage">
@@ -382,7 +382,7 @@ async function validate() {
   display: grid;
   justify-content: space-around;
   grid-template-columns: repeat(4, 20%);
-  grid-template-rows: repeat(3,35%);
+  grid-template-rows: repeat(3, 35%);
   column-gap: 1px;
   row-gap: 1em;
   height: 90vh;
@@ -391,6 +391,7 @@ async function validate() {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: auto;
   padding: 5px 5px;
   width: 262px;
   height: 200px;

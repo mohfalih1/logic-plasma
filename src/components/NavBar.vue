@@ -32,15 +32,7 @@
           title="الاخبار"
         ></v-list-item>
         <br />
-        <!-- <v-list-item
-          active-class="secondary--text"
-          router
-          to="/provinces"
-          class="bg-white rounded-lg text-primary"
-          prepend-icon="mdi-city-variant-outline"
-          title="المحافظات"
-        ></v-list-item>
-        <br /> -->
+ 
         <v-list-item
           active-class="secondary--text"
           router
@@ -60,15 +52,24 @@
           title="الامراض المزمنة"
         ></v-list-item>
         <br />
-        <!-- <v-list-item
+        <v-list-item
           active-class="secondary--text"
           router
-          to="/blood-group"
+          to="/role"
           class="bg-white rounded-lg text-primary"
-          prepend-icon="mdi-heart-outline"
-          title="زمر الدم"
+          prepend-icon="mdi-shield-account-outline"
+          title="ادارة المشرفين"
         ></v-list-item>
-        <br /> -->
+        <br />
+        <v-list-item
+          active-class="secondary--text"
+          router
+          to="/activeites"
+          class="bg-white rounded-lg text-primary"
+          prepend-icon="mdi-calendar-month-outline"
+          title="سجل النشاط"
+        ></v-list-item>
+        <br />
         <v-list-item
           active-class="secondary--text"
           router
@@ -87,8 +88,21 @@
           title="رفع / تنزيل البيانات"
         ></v-list-item>
       </v-list>
-
-      <template v-slot:append>
+  <br />
+        <v-list-item  
+          class="rounded-lg text-black"        >
+           <v-btn
+            @click="isLogOutDialog = true"
+            rounded="lg"
+            block
+            color="secondary"
+          >
+            تسجيل الخروج
+          </v-btn>
+      </v-list-item>
+      <br>
+      <br>
+      <br>     <!-- <template v-slot:append>
         <div class="pa-2 mb-10">
           <v-btn
             @click="isLogOutDialog = true"
@@ -99,7 +113,7 @@
             تسجيل الخروج
           </v-btn>
         </div>
-      </template>
+      </template> -->
     </v-navigation-drawer>
   </v-card>
 
@@ -108,7 +122,7 @@
     <v-dialog v-model="isLogOutDialog" persistent width="262">
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary pb-0">
-          <span>  تسجيل الخروج</span>
+          <span> تسجيل الخروج</span>
         </v-card-title>
         <v-card-text> هل انت متأكد من تسجيل الخروج ؟ </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
@@ -142,7 +156,6 @@ import router from "@/router";
 
 const isLogOutDialog = ref(false);
 const logout = () => {
-
   localStorage.removeItem("token");
   router.push("/login");
 };

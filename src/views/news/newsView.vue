@@ -1,6 +1,6 @@
 <template>
   <Loader v-if="isLoading" />
-  <v-card class="card-temp">
+  <v-card class="card-temp-news">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-newspaper-variant-outline"></v-icon>
       <h2>الاخبار</h2>
@@ -48,10 +48,10 @@
     <!-- pagination  -->
     <div class="pag">
       <v-container class="pagination">
-        <button :disabled="blog.length < 10" @click="nextPage">&lt;</button>
+        <button :disabled="blog.length < 8" @click="nextPage">&lt;</button>
         <button
-          v-if="blog.length >= 10"
-          :disabled="blog.length < 10"
+          v-if="blog.length >= 8"
+          :disabled="blog.length < 8"
           @click="nextPage"
         >
           {{ numberOfPage + 1 }}
@@ -77,7 +77,7 @@ import { ref, onMounted } from "vue";
 import axios from "@/server/axios";
 const isLoading = ref(false);
 const numberOfPage = ref(1);
-const numberOfItemPerPage = ref(10);
+const numberOfItemPerPage = ref(8);
 const blog = ref({});
 function getBlog() {
   isLoading.value = true;
@@ -111,5 +111,27 @@ onMounted(() => {
 });
 </script>
 <style scoped>
-
+.card-temp-news {
+  margin: 1px 10px 7px 7px;
+  border-radius: 16px;
+  width: 100%;
+  height: 135vh;
+}
+.grid-news {
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 70%);
+  column-gap: 1px;
+  row-gap: 1em;
+  height: 70vh;
+}
+.pag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  height: 65vh;
+}
 </style>

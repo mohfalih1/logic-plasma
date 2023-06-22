@@ -148,6 +148,7 @@ function addBlog() {
     .finally(() => {
       isLoading.value = false;
       router.push("/news");
+      console.log("add suc")
     });
 }
 const validForm = ref();

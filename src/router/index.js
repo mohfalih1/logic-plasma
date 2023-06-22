@@ -75,6 +75,22 @@ const router = createRouter({
       },
     },
     {
+      path: "/role",
+      name: "role",
+      component: () => import("@/views/role/RoleView.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/activeites",
+      name: "activeites",
+      component: () => import("@/views/activites/ActivitesView.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: "/blood-group",
       name: "bloodGroup",
       component: () => import("@/views/bloodGroup/bloodGroupView.vue"),
