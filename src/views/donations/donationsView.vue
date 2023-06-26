@@ -102,31 +102,31 @@
     <br />
 
     <!-- <div class="grid-donations mt-5 mr-5 ml-1"> -->
-      <v-row>
-        <v-col cols="3" v-for="item in donations" :key="item.id">
-      <v-card class="donations-card" >
-        <div class="news-title">
-          <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
-          {{ item.name }}
-        </div>
-        <br />
-        <div>المحافظة:{{ item.governorate }}</div>
-        <div>رقم الهاتف:{{ item.phone }}</div>
-        <div>نوع التبرع:{{ item.donorType === 0 ? "دم" : "بلازما" }}</div>
-        <div>زمرة الدم:{{ bloodGroups[item?.bloodGroup]?.name }}</div>
-        <v-card-actions class="pa-0">
-          <v-btn
-            @click="opnenShow()"
-            class="news-button"
-            :to="`/donations/${item.id}`"
-            color="white"
-            variant="text"
-            >عرض المتبرع
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+    <v-row>
+      <v-col cols="3" v-for="item in donations" :key="item.id">
+        <v-card class="donations-card">
+          <div class="news-title">
+            <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
+            {{ item.name }}
+          </div>
+          <br />
+          <div>المحافظة:{{ item.governorate }}</div>
+          <div>رقم الهاتف:{{ item.phone }}</div>
+          <div>نوع التبرع:{{ item.donorType === 0 ? "دم" : "بلازما" }}</div>
+          <div>زمرة الدم:{{ bloodGroups[item?.bloodGroup]?.name }}</div>
+          <v-card-actions class="pa-0">
+            <v-btn
+              @click="opnenShow()"
+              class="news-button"
+              :to="`/donations/${item.id}`"
+              color="white"
+              variant="text"
+              >عرض المتبرع
+            </v-btn>
+          </v-card-actions>
+        </v-card>
       </v-col>
-      </v-row>
+    </v-row>
     <!-- </div> -->
     <!-- pagination  -->
     <v-container class="pagination">

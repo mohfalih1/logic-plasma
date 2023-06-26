@@ -22,38 +22,37 @@
     </v-card-text>
 
     <div class="grid-role ma-5">
-      <v-card class="role-card">
+      <v-card class="role-card" v-for="item in roleData" :key="item.id">
         <div class="role-title">
           <div class="w-75">
             <v-icon icon="mdi-shield-account-outline" class="ml-2"></v-icon>
-            محمد فالح
+            {{ item.name }}
           </div>
           <div>
             <img src="@/assets/Frame(1).png" height="49" width="49" />
           </div>
         </div>
-        <div>نوع المشرف: سوبر ادمن</div>
+        <div>نوع المشرف: {{ item.role === 0 ? "ادمن" : "سوبر ادمن" }}</div>
         <hr class="w-100" />
-        <div>رقم الهاتف: +9647736434814</div>
+        <div>الايميل: {{ item.email }}</div>
         <hr class="w-100" />
-        <div class="password-card">
+        <!-- <div class="password-card">
           <div>كلمة المرور:*******</div>
           <div class="icon-password">
             <v-icon color="primary" icon="mdi-eye"></v-icon>
           </div>
-        </div>
-        <hr class="w-100" />
+        </div> -->
         <v-card-actions class="pa-0">
           <div class="role-button">
             <v-btn
-              @click="isEditRole = true"
+              @click="showModel('edit', item)"
               class="edit-button"
               color="white"
               variant="text"
               >تعديل المشرف
             </v-btn>
             <v-btn
-              @click="isBlockeRole = true"
+              @click="showModel('block', item)"
               class="block-button"
               color="#ff2c54"
               variant="text"
@@ -67,10 +66,10 @@
     <!-- pagination  -->
     <div class="pag">
       <v-container class="pagination">
-        <button :disabled="blog.length < 8" @click="nextPage">&lt;</button>
+        <button :disabled="roleData.length < 8" @click="nextPage">&lt;</button>
         <button
-          v-if="blog.length >= 8"
-          :disabled="blog.length < 8"
+          v-if="roleData.length >= 8"
+          :disabled="roleData.length < 8"
           @click="nextPage"
         >
           {{ numberOfPage + 1 }}
@@ -103,6 +102,8 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-text-field
+                      v-model="newUser.name"
+                      :rules="nameRules"
                       clearable
                       variant="plain"
                       placeholder="اسم المشرف"
@@ -113,17 +114,19 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-text-field
-                      :rules="phoneRules"
+                      v-model="newUser.email"
+                      :rules="emailRules"
                       clearable
                       variant="plain"
-                      placeholder="رقم الهاتف"
-                      type="Number"
+                      placeholder="الايميل"
                     ></v-text-field>
                   </div>
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
                     <v-text-field
+                      v-model="newUser.password"
+                      :rules="passwordRules"
                       clearable
                       variant="plain"
                       placeholder="كلمة المرور"
@@ -137,6 +140,10 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-select
+                      v-model="newUser.role"
+                      :items="Admin"
+                      item-title="name"
+                      item-value="value"
                       clearable
                       variant="plain"
                       placeholder="نوع المشرف"
@@ -145,56 +152,24 @@
                   </div>
                 </v-col>
                 <v-col cols="12">
-                  <div class="chip">
-                    <h5>صلاحية الوصول:</h5>
-                    <div class="roles-check">
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                        >الصفحة الرئيسية</v-checkbox
-                      >
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                        >الاخبار</v-checkbox
-                      >
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        المتبرعين</v-checkbox
-                      >
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        الامراض المزمنة
-                      </v-checkbox>
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        ادارة المشرفين
-                      </v-checkbox>
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        سجل النشاط
-                      </v-checkbox>
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        الاشعارت
-                      </v-checkbox>
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        رفع وتنزيل البيانات
-                      </v-checkbox>
-                    </div>
+                  <div class="select">
+                    <v-autocomplete
+                      :items="MainRole"
+                      v-model="newUser.cliams[0].privliages"
+                      :rules="roleRules"
+                      item-title="name"
+                      item-value="value"
+                      placeholder="صلاحية الوصول"
+                      outlined
+                      dense
+                      multiple
+                      chips
+                      clearable
+                      deletable-chips
+                      small-chips
+                      variant="plain"
+                      persistent-hint
+                    ></v-autocomplete>
                   </div>
                 </v-col>
               </v-row>
@@ -239,6 +214,8 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-text-field
+                      v-model="editUser.name"
+                      :rules="nameRules"
                       clearable
                       variant="plain"
                       placeholder="اسم المشرف"
@@ -249,17 +226,19 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-text-field
+                      v-model="editUser.email"
                       :rules="phoneRules"
                       clearable
                       variant="plain"
-                      placeholder="رقم الهاتف"
-                      type="Number"
+                      placeholder="البريد الالكتروني"
                     ></v-text-field>
                   </div>
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
                     <v-text-field
+                      v-model="editUser.password"
+                      :rules="passwordRules"
                       clearable
                       variant="plain"
                       placeholder="كلمة المرور"
@@ -273,6 +252,10 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-select
+                      v-model="editUser.role"
+                      :items="Admin"
+                      item-title="name"
+                      item-value="value"
                       clearable
                       variant="plain"
                       placeholder="نوع المشرف"
@@ -281,7 +264,26 @@
                   </div>
                 </v-col>
                 <v-col cols="12">
-                  <div class="chip">
+                  <div class="select">
+                  <v-autocomplete
+                    :items="MainRole"
+                    v-model="editUser.cliams[0].privliages"
+                    :rules="roleRules"
+                    item-title="name"
+                    item-value="value"
+                    placeholder="صلاحية الوصول"
+                    outlined
+                    dense
+                    multiple
+                    chips
+                    clearable
+                    deletable-chips
+                    small-chips
+                    variant="plain"
+                    persistent-hint
+                  ></v-autocomplete>
+                  </div>
+                  <!-- <div class="chip">
                     <h5>صلاحية الوصول:</h5>
                     <div class="roles-check">
                       <v-checkbox
@@ -331,7 +333,7 @@
                         رفع وتنزيل البيانات
                       </v-checkbox>
                     </div>
-                  </div>
+                  </div> -->
                 </v-col>
               </v-row>
             </v-container>
@@ -372,7 +374,7 @@
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
             <v-btn
-              @click="deleteRole(selectedItem.id)"
+              @click="deleteUser(selectedItem.id)"
               class="delete-button"
               color="white"
               variant="text"
@@ -404,22 +406,162 @@ const isLoading = ref(false);
 const isBlockeRole = ref(false);
 const isAddRole = ref(false);
 const isEditRole = ref(false);
-const numberOfPage = ref(1);
-const numberOfItemPerPage = ref(8);
-const blog = ref({});
-
+const selectedItem = ref({});
+const showModel = (type, item) => {
+  selectedItem.value = item;
+  if (type === "edit") {
+    isEditRole.value = true;
+    blog.value = item;
+  } else if (type === "block") {
+    isBlockeRole.value = true;
+  }
+  editUser.value.name = item.name;
+  editUser.value.email = item.email;
+  editUser.value.role = item.role;
+};
 // .............pagination.............
 function nextPage() {
   numberOfPage.value++;
   isLoading.value = true;
-  getBlog();
+  geUsers();
 }
 function previousPage() {
   numberOfPage.value--;
   isLoading.value = true;
-  getBlog();
+  geUsers();
 }
-onMounted(() => {});
+onMounted(() => {
+  geUsers();
+});
+const roleData = ref([]);
+const numberOfPage = ref(1);
+const NumberOfItemPerPage = ref(8);
+function geUsers() {
+  isLoading.value = true;
+  axios
+    .get(
+      `Admin/GetUsers?numberOfPage=${numberOfPage.value}&NumberOfItemPerPage=${NumberOfItemPerPage.value}`
+    )
+    .then((res) => {
+      roleData.value = res.data;
+      console.log(roleData.value);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+}
+
+const newUser = ref({
+  name: null,
+  email: null,
+  password: null,
+  role: null,
+  cliams: [
+    {
+      privliages: null,
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
+    },
+  ],
+});
+function addUser() {
+  isLoading.value = true;
+  axios
+    .post("Admin/AddUser", newUser.value)
+    .then((res) => {
+      console.log(res);
+      geUsers();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isAddRole.value = false;
+      isLoading.value = false;
+    });
+}
+const editUser = ref({
+  name: null,
+  email: null,
+  password: null,
+  role: null,
+  cliams: [
+    {
+      privliages: null,
+      create: null,
+      read: null,
+      update: null,
+      delete: null,
+    },
+  ],
+});
+function updateUser(id) {
+  isLoading.value = true;
+  axios
+    .put(`Admin/EditUser?id=${id}`, editUser.value)
+    .then((res) => {
+      console.log(res);
+      geUsers();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isEditRole.value = false;
+      isLoading.value = false;
+    });
+}
+function deleteUser(id) {
+  isLoading.value = true;
+  axios
+    .put(`Admin/DeleteUser?id=${id}`)
+    .then((res) => {
+      console.log(res);
+      geUsers();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      isBlockeRole.value = false;
+      isLoading.value = false;
+    });
+}
+const validForm = ref();
+const valid = ref(true);
+
+const passwordRules = ref([(v) => !!v || "الرمز مطلوب"]);
+const nameRules = ref([(v) => !!v || " الاسم مطلوب"]);
+const emailRules = ref([(v) => !!v || " الايميل مطلوب"]);
+const adminRules = ref([(v) => !!v || " نوع المشرف مطلوب"]);
+const roleRules = ref([(v) => !!v || "يجب تحديد واحد على الاقل"]);
+async function validate() {
+  valid.value = await validForm.value.validate();
+
+  if (valid.value) {
+    isLoading.value = false;
+    addUser();
+  }
+}
+const MainRole = ref([
+  { name: "الصفحة الرئيسية", value: 0 },
+  { name: "الاخبار", value: 1 },
+  { name: "المتبرعين", value: 2 },
+  { name: "الامراض المزمنة", value: 3 },
+  { name: "ادارة المشرفين", value: 4 },
+  { name: "سجل النشاط", value: 5 },
+  { name: "الاشعارات", value: 6 },
+  { name: "رفع/تنزيل البيانات", value: 7 },
+]);
+const Admin = ref([
+  { name: "ادمن", value: 0 },
+  { name: "سوبر ادمن", value: 1 },
+]);
 </script>
 <style scoped>
 .card-temp-role {
@@ -445,7 +587,7 @@ onMounted(() => {});
   padding: 8px;
   gap: 8px;
   width: 262px;
-  height: 260px;
+  height: 220px;
   background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
   border-radius: 16px;

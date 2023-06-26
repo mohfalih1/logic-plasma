@@ -85,8 +85,25 @@
             item-value="id"
           ></v-select>
         </div>
-
-        <fieldset class="select-don-home-date">
+        <div class="select-don-date">
+          <VueDatePicker
+            v-model="query.DateFrom"
+            model-type="yyyy/MM/dd"
+            placeholder="من"
+            class="date-picker"
+            auto-apply
+          ></VueDatePicker>
+        </div>
+        <div class="select-don-date">
+          <VueDatePicker
+            v-model="query.DateTo"
+            model-type="yyyy/MM/dd"
+            placeholder="الى"
+            class="date-picker"
+            auto-apply
+          ></VueDatePicker>
+        </div>
+        <!-- <fieldset class="select-don-home-date">
           <legend>من</legend>
           <input class="date-input" v-model="query.DateFrom" type="date" />
         </fieldset>
@@ -94,7 +111,7 @@
         <fieldset class="select-don-home-date">
           <legend>الى</legend>
           <input class="date-input" v-model="query.DateTo" type="date" />
-        </fieldset>
+        </fieldset> -->
       </div>
 
       <v-container>
@@ -335,9 +352,8 @@ function getStatistics() {
   //   .map(([key, value]) => `${key}=${value}`)
   //   .join("&");
   axios
-    .get(`Admin/GetStatistics`
-    ,{
-      params:{
+    .get(`Admin/GetStatistics`, {
+      params: {
         bloodGroup: query.value.bloodGroup,
         donorType: query.value.donorType,
         governorate: query.value.governorate,
@@ -346,9 +362,8 @@ function getStatistics() {
         DateTo: query.value.DateTo,
         HaveChronicDisease: query.value.HaveChronicDisease,
         TypeChronicDisease: query.value.TypeChronicDisease,
-      }
-    }
-    )
+      },
+    })
     .then((res) => {
       statistics.value = res.data;
       console.log(statistics.value);
@@ -518,10 +533,9 @@ watch(() => {
 });
 </script>
 <style scoped>
-.select-don-home-date {
+.select-don-date {
   height: 52px;
-  border: 1px solid#BDBDBD;
-  background-color: #ffff;
+
   border-radius: 8px;
   display: flex;
   padding-right: 2px;
@@ -548,7 +562,9 @@ watch(() => {
 .filter-icon {
   margin-bottom: 10px;
 }
-
+.select-don-date {
+  border-radius: 8px;
+}
 .graph-card {
   background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);

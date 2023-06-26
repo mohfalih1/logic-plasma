@@ -32,4 +32,5 @@ const isSidebar = computed(() => {
 body {
   font-family: "Cairo", sans-serif;
 }
+
 </style>

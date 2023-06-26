@@ -32,7 +32,7 @@
           title="الاخبار"
         ></v-list-item>
         <br />
- 
+
         <v-list-item
           active-class="secondary--text"
           router
@@ -88,21 +88,21 @@
           title="رفع / تنزيل البيانات"
         ></v-list-item>
       </v-list>
-  <br />
-        <v-list-item  
-          class="rounded-lg text-black"        >
-           <v-btn
-            @click="isLogOutDialog = true"
-            rounded="lg"
-            block
-            color="secondary"
-          >
-            تسجيل الخروج
-          </v-btn>
+      <br />
+      <v-list-item class="rounded-lg text-black">
+        <v-btn
+          @click="isLogOutDialog = true"
+          rounded="lg"
+          block
+          color="secondary"
+        >
+          تسجيل الخروج
+        </v-btn>
       </v-list-item>
-      <br>
-      <br>
-      <br>     <!-- <template v-slot:append>
+      <br />
+      <br />
+      <br />
+      <!-- <template v-slot:append>
         <div class="pa-2 mb-10">
           <v-btn
             @click="isLogOutDialog = true"
