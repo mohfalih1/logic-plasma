@@ -9,14 +9,14 @@
       <!-- start filters -->
 
       <div class="filters">
-        <div class="filter-icon">
+        <!-- <div class="filter-icon">
           <v-icon size="40" icon="mdi-filter-outline"></v-icon>
-        </div>
+        </div> -->
         <div class="select-don-home">
           <v-select
             v-model="query.bloodGroup"
             clearable
-            variant="plain"
+            :variant="null"
             placeholder="زمرة الدم"
             no-data-text="لايوجد بيانات"
             :items="bloodGroups"
@@ -28,7 +28,7 @@
           <v-select
             v-model="query.donorType"
             clearable
-            variant="plain"
+            :variant="null"
             placeholder="نوع التبرع"
             no-data-text="لايوجد بيانات"
             :items="donorTypes"
@@ -40,7 +40,7 @@
           <v-select
             v-model="query.governorate"
             clearable
-            variant="plain"
+            :variant="null"
             placeholder="المدينة"
             no-data-text="لايوجد بيانات"
             :items="governorates"
@@ -52,7 +52,7 @@
           <v-select
             v-model="query.subscribersType"
             clearable
-            variant="plain"
+            :variant="null"
             placeholder="نوع المستخدم"
             no-data-text="لايوجد بيانات"
             :items="subscribersType"
@@ -65,7 +65,7 @@
           <v-select
             v-model="query.HaveChronicDisease"
             clearable
-            variant="plain"
+            :variant="null"
             placeholder=" المرض المزمن"
             no-data-text="لايوجد بيانات"
             :items="ChronicDisease"
@@ -77,8 +77,8 @@
           <v-select
             v-model="query.TypeChronicDisease"
             clearable
-            variant="plain"
-            placeholder="نوع المرض المزمن"
+            :variant="null"
+            placeholder="نوع المرض"
             no-data-text="لايوجد بيانات"
             :items="typeChronicDisease"
             item-title="nameArabic"
@@ -90,16 +90,19 @@
             v-model="query.DateFrom"
             model-type="yyyy/MM/dd"
             placeholder="من"
-            class="date-picker"
+            class="dp__pointer"
             auto-apply
           ></VueDatePicker>
         </div>
-        <div class="select-don-date">
+        <div
+          class="select-don-date"
+          style="margin-left: 12px; margin-right: -7px"
+        >
           <VueDatePicker
             v-model="query.DateTo"
             model-type="yyyy/MM/dd"
             placeholder="الى"
-            class="date-picker"
+            class="dp__pointer"
             auto-apply
           ></VueDatePicker>
         </div>
@@ -326,22 +329,13 @@ import { ref, onMounted, watch } from "vue";
 import { primary } from "@/assets/style";
 import axios from "@/server/axios";
 import { useCounterStore } from "@/store/app";
-const store = useCounterStore();
 const isLoading = ref(false);
-const rooole = ref([]);
 
-const hi = ref("الاحصائيات");
 onMounted(() => {
   getStatistics();
   getStatsGraph();
   getGovernorates();
   getChronicDisease();
-
-  // if (store.usersRole > 0) {
-  //   for (var i = 0; i < store.usersRole[length]; i++) {
-  //     rooole.value.push(store.usersRole[i].privliages);
-  //   }
-  // }
 });
 
 // ................API................
@@ -536,28 +530,32 @@ watch(() => {
 <style scoped>
 .select-don-date {
   height: 52px;
-
   border-radius: 8px;
   display: flex;
-  padding-right: 2px;
   align-items: center;
   justify-content: center;
-  margin-right: 5px;
   margin-top: 0;
 }
-.date-input {
-  border: none;
-  background-color: transparent;
-  color: #bdbdbd;
-  text-align: center;
-  outline: none;
+.dp__pointer {
+  height: 52px !important;
+  border-radius: 8px;
+  border: none !important;
+  cursor: pointer;
+  height: 51px !important;
+  padding-right: -10px !important;
+}
+.dp__main {
+  height: 52px !important;
+}
+.dp__main :deep(.dp__pointer) {
+  height: 52px !important;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");
 .filters {
   display: grid;
-  grid-template-columns: 3% repeat(8, 12%);
-  column-gap: 1px;
+  grid-template-columns: repeat(8, 12%);
+  column-gap: 10px;
   row-gap: 1em;
 }
 .filter-icon {

@@ -1,15 +1,11 @@
 <template>
   <Loader v-if="isLoading" />
   <div class="contenier">
-    <!-- <div class="boold-1">
-      <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
-      <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
-    </div> -->
     <div class="content">
       <v-card class="card" color="primary">
         <v-card-text>
           <div class="logo">
-            <v-img width="120px" src="../../assets/plasmaLogo.png"></v-img>
+            <v-img width="150px" src="../../assets/plasmaLogo.png"></v-img>
             <br />
             <h2>تسجيل الدخول</h2>
           </div>
@@ -19,8 +15,8 @@
             <div>
               <v-text-field
                 v-model="loginData.email"
-                class="bg-white rounded-lg pr-2"
-                variant="plain"
+                class="login-input"
+                :variant="null"
                 placeholder="البريد الالكتروني"
                 type="email"
                 prepend-inner-icon="mdi-email"
@@ -28,15 +24,15 @@
               <br />
               <v-text-field
                 v-model="loginData.password"
-                class="bg-white rounded-lg pr-2"
-                variant="plain"
+                class="login-input"
+                :variant="null"
                 placeholder="الرمز السري"
                 type="password"
                 prepend-inner-icon="mdi-key"
               ></v-text-field>
               <br />
               <v-alert v-if="error" dismissible type="error"
-                >اسم المستخدم او كلمة المرور خطأ</v-alert
+                >البريد الالكتروني او الرمز السري خطأ</v-alert
               >
               <v-btn
                 @click="login()"
@@ -44,7 +40,7 @@
                 large
                 rounded
                 block
-                style="height: 50px !important"
+                style="height: 3rem  !important"
                 elevation="0"
                 color="secondary"
                 fluid
@@ -58,16 +54,12 @@
       </v-card>
       <br />
     </div>
-    <!-- <div class="boold-2">
-      <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
-      <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
-    </div> -->
   </div>
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
 import axios from "@/server/axios";
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { usePermissionsStore } from "@/store/permissions.js";
 const permissions = usePermissionsStore();
@@ -99,6 +91,7 @@ function login() {
       isLoading.value = false;
     });
 }
+
 </script>
 <style scoped>
 * {
@@ -122,14 +115,7 @@ iframe {
   justify-content: center;
   align-items: center;
 }
-.boold-1 {
-  display: flex;
-  justify-content: space-between;
-}
-.boold-2 {
-  display: flex;
-  justify-content: space-between;
-}
+
 .logo {
   display: flex;
   justify-content: center;
@@ -145,5 +131,13 @@ iframe {
   border-radius: 10px;
   box-shadow: 0 0 50px 0 rgba(238, 76, 76, 0.5);
   z-index: 10;
+}
+.login-input{
+  width: 100%;
+  height: 3.5rem;
+  background-color: #ffff;
+  border-radius: 10px;
+  color: black;
+  font-size: 1.2rem;
 }
 </style>

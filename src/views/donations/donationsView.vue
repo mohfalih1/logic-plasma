@@ -23,15 +23,13 @@
     <!-- start filters -->
 
     <div class="filters">
-      <div class="filter-icon">
-        <v-icon size="40" icon="mdi-filter-outline"></v-icon>
-      </div>
+  
       <div class="select-don-home">
         <v-text-field
           v-model="filter.search"
           clearable
           append-icon="mdi-magnify"
-          variant="plain"
+          :variant="null"
           placeholder="بحث اسم او رقم هاتف"
           no-data-text="لايوجد بيانات"
         ></v-text-field>
@@ -40,7 +38,7 @@
         <v-select
           v-model="filter.governorate"
           clearable
-          variant="plain"
+          :variant="null"
           placeholder="المدينة"
           no-data-text="لايوجد بيانات"
           :items="governorates"
@@ -52,7 +50,7 @@
         <v-select
           v-model="filter.donorType"
           clearable
-          variant="plain"
+          :variant="null"
           placeholder="نوع التبرع"
           no-data-text="لايوجد بيانات"
           :items="donorTypes"
@@ -64,7 +62,7 @@
         <v-select
           v-model="filter.bloodGroup"
           clearable
-          variant="plain"
+          :variant="null"
           placeholder="نوع الزمرة"
           no-data-text="لايوجد بيانات"
           :items="bloodGroups"
@@ -76,7 +74,7 @@
         <v-select
           v-model="filter.HaveChronicDisease"
           clearable
-          variant="plain"
+          :variant="null"
           placeholder="امراض مزمنة"
           no-data-text="لايوجد بيانات"
           :items="ChronicDisease"
@@ -88,7 +86,7 @@
         <v-select
           v-model="filter.TypeChronicDisease"
           clearable
-          variant="plain"
+          :variant="null"
           placeholder="نوع المرض المزمن"
           no-data-text="لايوجد بيانات"
           :items="typeChronicDisease"
@@ -102,31 +100,31 @@
     <br />
 
     <!-- <div class="grid-donations mt-5 mr-5 ml-1"> -->
-    <v-row>
-      <v-col cols="3" v-for="item in donations" :key="item.id">
-        <v-card class="donations-card">
-          <div class="news-title">
-            <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
-            {{ item.name }}
-          </div>
-          <br />
-          <div>المحافظة:{{ item.governorate }}</div>
-          <div>رقم الهاتف:{{ item.phone }}</div>
-          <div>نوع التبرع:{{ item.donorType === 0 ? "دم" : "بلازما" }}</div>
-          <div>زمرة الدم:{{ bloodGroups[item?.bloodGroup]?.name }}</div>
-          <v-card-actions class="pa-0">
-            <v-btn
-              @click="opnenShow()"
-              class="news-button"
-              :to="`/donations/${item.id}`"
-              color="white"
-              variant="text"
-              >عرض المتبرع
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+    <div class="grid-donations">
+      <v-card class="donations-card" v-for="item in donations" :key="item.id">
+        <div class="news-title">
+          <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
+          {{ item.name }}
+        </div>
+        <br />
+        <div>المحافظة:{{ item.governorate }}</div>
+        <div>رقم الهاتف:{{ item.phone }}</div>
+        <div>نوع التبرع:{{ item.donorType === 0 ? "دم" : "بلازما" }}</div>
+        <div>زمرة الدم:{{ bloodGroups[item?.bloodGroup]?.name }}</div>
+        <v-card-actions class="pa-0">
+          <v-btn
+            @click="opnenShow()"
+            class="news-button"
+            :to="`/donations/${item.id}`"
+            color="white"
+            variant="text"
+            >عرض المتبرع
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </div>
+<br>
+<br>  
     <!-- </div> -->
     <!-- pagination  -->
     <v-container class="pagination">
@@ -275,23 +273,39 @@ watch(() => {
 </script>
 <style scoped>
 .filters {
+  margin-right: 1rem;
   display: grid;
-  grid-template-columns: 3% repeat(6, 16%);
+  grid-template-columns: repeat(6, 16%);
   grid-template-rows: repeat(auto-fit, 40px);
-  column-gap: 1px;
+  column-gap: 7px;
   row-gap: 1em;
 }
 .filter-icon {
   margin: 5px;
 }
 
+.select-don-home {
+  width: 100%;
+  height: 50px;
+  border: 1px solid#BDBDBD;
+  background-color: #ffff;
+  border-radius: 8px;
+  display: flex;
+  padding-right: -20px;
+  padding-top: 20px;
+  padding-left: -10px;
+  align-items: center;
+  justify-content: center;
+}
+
 .grid-donations {
   display: grid;
   justify-content: space-around;
-  grid-template-columns: repeat(4, 18%);
-  grid-template-rows: repeat(2, 40%);
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 55%);
   column-gap: 1px;
   row-gap: 1em;
   height: 70vh;
+  margin: 10px;
 }
 </style>

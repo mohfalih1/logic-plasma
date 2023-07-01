@@ -1,7 +1,7 @@
 <template>
   <Loader v-if="isLoading" />
   <v-row justify="center">
-    <v-dialog v-model="store.dialog" persistent width="664">
+    <v-dialog v-model="store.dialog" persistent width="664" height="auto">
       <v-form ref="validForm">
         <v-card rounded="xl">
           <v-card-title class="text-center text-primary pt-4">
@@ -51,6 +51,19 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-select
+                      clearable
+                      variant="plain"
+                      placeholder="الجنس"
+                      type="text"
+                      :items="donorTypes"
+                      item-title="name"
+                      item-value="value"
+                    ></v-select>
+                  </div>
+                </v-col>
+                <v-col cols="6">
+                  <div class="select">
+                    <v-select
                       v-model="form.DonorType"
                       clearable
                       variant="plain"
@@ -77,7 +90,26 @@
                     ></v-select>
                   </div>
                 </v-col>
+                        <v-col cols="6">
+                  <VueDatePicker
+                    model-type="yyyy/MM/dd"
+                    placeholder="تاريخ الميلاد"
+                    auto-apply
+                  ></VueDatePicker>
+                </v-col>
                 <v-col cols="6">
+                  <div class="select">
+                    <v-checkbox
+                      :color="!select ? 'primary' : 'white'"
+                      class="d-flex algin-center"
+                      clearable
+                      variant="plain"
+                      label="هل المتبرع مدخن؟"
+                      type="text"
+                    ></v-checkbox>
+                  </div>
+                </v-col>
+                <v-col cols="12">
                   <div class="select">
                     <v-checkbox
                       v-model="form.HasChronicDisease"
@@ -159,6 +191,8 @@
                     </div>
                   </div>
                 </v-col>
+        
+
                 <v-col cols="6">
                   <div class="select-file">
                     <v-file-input
@@ -278,14 +312,20 @@ function addSubscribers() {
   );
   formData.append("Name", form.Name);
   formData.append("Phone", form.Phone);
-  formData.append("Whatsapp", form.Whatsapp === null ? "" : form.Whatsapp);
-  formData.append("Telegram", form.Telegram === null ? "" : form.Telegram);
-  formData.append("Telegram", form.Viber === null ? "" : form.Viber);
+  formData.append("Whatsapp", form.Whatsapp === null ? false : form.Whatsapp);
+  formData.append("Telegram", form.Telegram === null ? false : form.Telegram);
+  formData.append("Telegram", form.Viber === null ? false : form.Viber);
   formData.append("Governorate", form.Governorate);
   formData.append("BloodGroup", form.BloodGroup);
   formData.append("IsCheckForNotitifiction", form.IsCheckForNotitifiction);
-  formData.append("HasChronicDisease", form.HasChronicDisease);
-  formData.append("ChronicDiseaseId", form.ChronicDiseaseId);
+  formData.append(
+    "HasChronicDisease",
+    form.HasChronicDisease === null ? false : form.HasChronicDisease
+  );
+  formData.append(
+    "ChronicDiseaseId",
+    form.ChronicDiseaseId ? null : form.ChronicDiseaseId
+  );
   formData.append("TakingAnyMedication", form.TakingAnyMedication);
   formData.append("Medications", form.Medications);
   formData.append("DonorType", form.DonorType);
@@ -347,6 +387,21 @@ const bloodGroups = ref([
 ]);
 </script>
 <style scoped>
+.dp__theme_light {
+  --dp-background-color: #f2f2f2 !important;
+  --dp-primary-color: #ff2c54 !important;
+  --dp-border-color: transparent !important;
+  --dp-border-color-hover: transparent !important;
+}
+
+.dp__main {
+  height: 40px !important;
+}
+
+.dp__main :deep(.dp__pointer) {
+  height: 40px !important;
+}
+
 .chip {
   display: flex;
   flex-direction: row;
@@ -387,5 +442,6 @@ const bloodGroups = ref([
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 1.2rem;
 }
 </style>

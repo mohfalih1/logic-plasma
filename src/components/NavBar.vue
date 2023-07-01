@@ -14,13 +14,9 @@
         src="../assets/plasmaLogo.png"
         width="232"
       ></v-img>
-      <v-list
-        class="mt-5 mr-5"
-        width="232"
-        v-if="permissions.routes?.value.length > 0"
-      >
+      <v-list class="mt-5 mr-5" width="232" v-if="userInfo.role === 1">
         <v-list-item
-          v-for="item in permissions.routes.value"
+          v-for="item in userCliams"
           :key="item.id"
           active-class="secondary--text"
           router
@@ -30,7 +26,17 @@
           :title="routesEnum[item.privliages].name"
         ></v-list-item>
         <br />
-        <!-- <v-list-item
+      </v-list>
+      <v-list class="mt-5 mr-5" width="232" v-if="userInfo.role === 0">
+        <v-list-item
+          router
+          to="/"
+          class="bg-white rounded-lg text-primary"
+          prepend-icon="mdi-speedometer"
+          title="الصفحة الرئيسية"
+        ></v-list-item>
+        <br />
+        <v-list-item
           router
           to="/news"
           class="bg-white rounded-lg text-primary"
@@ -92,7 +98,7 @@
           class="bg-white rounded-lg text-primary"
           prepend-icon="mdi-export-variant"
           title="رفع / تنزيل البيانات"
-        ></v-list-item> -->
+        ></v-list-item>
       </v-list>
       <br />
       <v-list-item class="rounded-lg text-black">
@@ -145,12 +151,24 @@
   <!-- start log out  -->
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import router from "@/router";
 import { usePermissionsStore } from "@/store/permissions.js";
+import axios from "@/server/axios";
 const permissions = usePermissionsStore();
 const isLogOutDialog = ref(false);
-
+onMounted(() => {
+  getUserInfo();
+});
+const userInfo = ref([]);
+const userCliams = ref([]);
+function getUserInfo() {
+  axios.get("Admin/GetUserInfo").then((res) => {
+    userInfo.value = res.data;
+    userCliams.value = res.data.cliams;
+    console.log(userInfo.value.role, "userInfo");
+  });
+}
 const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("role");
@@ -198,7 +216,7 @@ const routesEnum = ref([
   {
     name: "رفع/تنزيل البيانات",
     value: 7,
-    route: "/import-exports",
+    route: "/import-export",
     icon: "mdi-export-variant",
   },
 ]);

@@ -2,14 +2,14 @@
   <div class="app-bar">
     <div class="wlecome-name">
       <!-- <h4>Admin User</h4>
-      <img src="@/assets/plasmaLogo.png" /> -->
-           <v-list-item
-           rounded=""
-           variant="tonal"
-           color="red"
-            title="Admin User"
-                prepend-avatar="@/assets/plasmaLogo.png"
-          ></v-list-item>
+      <img src="@/assets/plasmaLogo.png" /> --> 
+      <v-list-item
+        rounded=""
+        variant="tonal"
+        color="red"
+        :title="userInfo.name"
+        prepend-avatar="@/assets/plasmaLogo.png"
+      ></v-list-item>
     </div>
     <div class="all-frame">
       <img class="frame-1" src="@/assets/Frame(1).png" height="49" width="49" />
@@ -26,9 +26,17 @@
 </div> -->
 </template>
 <script setup>
-import { useCounterStore } from "@/store/app";
-const store = useCounterStore();
-
+import { ref, onMounted } from "vue";
+import axios from "@/server/axios";
+onMounted(() => {
+  getUserInfo();
+});
+const userInfo = ref([]);
+function getUserInfo() {
+  axios.get("Admin/GetUserInfo").then((res) => {
+    userInfo.value = res.data;
+  });
+}
 </script>
 <style scoped>
 .app-bar {

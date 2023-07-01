@@ -32,7 +32,7 @@
             <img src="@/assets/Frame(1).png" height="49" width="49" />
           </div>
         </div>
-        <div>نوع المشرف: {{ item.role === 0 ? "ادمن" : "سوبر ادمن" }}</div>
+        <div>نوع المشرف: {{ item.role === 1 ? "ادمن" : "سوبر ادمن" }}</div>
         <hr class="w-100" />
         <div>الايميل: {{ item.email }}</div>
         <hr class="w-100" />
@@ -152,7 +152,7 @@
                   </div>
                 </v-col>
                 <v-col cols="12">
-                  <div class="select">
+                  <div v-if="newUser.role === 1" class="select">
                     <v-autocomplete
                       :items="MainRole"
                       v-model="newUser.cliams[0].privliages"
@@ -182,7 +182,7 @@
               color="primary"
               variant="text"
             >
-              اضافة المتبرع
+              اضافة مشرف
             </v-btn>
             <v-btn
               class="add-back-button"
@@ -283,64 +283,13 @@
                       persistent-hint
                     ></v-autocomplete>
                   </div>
-                  <!-- <div class="chip">
-                    <h5>صلاحية الوصول:</h5>
-                    <div class="roles-check">
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                        >الصفحة الرئيسية</v-checkbox
-                      >
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                        >الاخبار</v-checkbox
-                      >
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        المتبرعين</v-checkbox
-                      >
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        الامراض المزمنة
-                      </v-checkbox>
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        ادارة المشرفين
-                      </v-checkbox>
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        سجل النشاط
-                      </v-checkbox>
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        الاشعارت
-                      </v-checkbox>
-                      <v-checkbox
-                        :color="!select ? 'primary' : 'white'"
-                        class="d-flex algin-center"
-                      >
-                        رفع وتنزيل البيانات
-                      </v-checkbox>
-                    </div>
-                  </div> -->
                 </v-col>
               </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions class="pb-5">
             <v-btn
-              @click="validate()"
+              @click="updateUser(selectedItem.id)"
               class="add-edit-button"
               color="primary"
               variant="text"
@@ -417,6 +366,8 @@ const showModel = (type, item) => {
   editUser.value.name = item.name;
   editUser.value.email = item.email;
   editUser.value.role = item.role;
+  editUser.value.password = item.password;
+  // editUser.value.cliams[0].privliages = item.cliams[0].privliages;
 };
 // .............pagination.............
 function nextPage() {
@@ -468,23 +419,27 @@ const newUser = ref({
 });
 function addUser() {
   isLoading.value = true;
-  // Get the selected privileges
-  const selectedPrivileges = newUser.value.cliams[0].privliages;
-  // Create a new array to store the privileges as separate objects
-  const privilegesArray = [];
-  // Iterate over the selectedPrivileges and create a new object for each privilege
-  for (const privilege of selectedPrivileges) {
-    const privilegeObject = {
-      privliages: privilege,
-      create: true,
-      read: true,
-      update: true,
-      delete: true,
-    };
-    privilegesArray.push(privilegeObject);
+  if (newUser.value.role === 1) {
+    // Get the selected privileges
+    const selectedPrivileges = newUser.value.cliams[0].privliages;
+    // Create a new array to store the privileges as separate objects
+    const privilegesArray = [];
+    // Iterate over the selectedPrivileges and create a new object for each privilege
+    for (const privilege of selectedPrivileges) {
+      const privilegeObject = {
+        privliages: privilege,
+        create: true,
+        read: true,
+        update: true,
+        delete: true,
+      };
+      privilegesArray.push(privilegeObject);
+    }
+    // Update the newUser object with the privilegesArray
+    newUser.value.cliams = privilegesArray;
+  } else {
+    newUser.value.cliams = null;
   }
-  // Update the newUser object with the privilegesArray
-  newUser.value.cliams = privilegesArray;
   axios
     .post("Admin/AddUser", newUser.value)
     .then((res) => {
@@ -513,8 +468,24 @@ const editUser = ref({
 });
 function updateUser(id) {
   isLoading.value = true;
+  const selectedPrivilegesEdit = editUser.value.cliams[0].privliages;
+  // Create a new array to store the privileges as separate objects
+  const privilegesArray = [];
+  // Iterate over the selectedPrivileges and create a new object for each privilege
+  for (const privilege of selectedPrivilegesEdit) {
+    const privilegeObject = {
+      privliages: privilege,
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
+    };
+    privilegesArray.push(privilegeObject);
+  }
+  // Update the newUser object with the privilegesArray
+  editUser.value.cliams = privilegesArray;
   axios
-    .put(`Admin/EditUser?id=${id}`, editUser.value)
+    .put(`Admin/UpdateUser?id=${id}`, editUser.value)
     .then((res) => {
       geUsers();
     })
@@ -571,8 +542,9 @@ const MainRole = ref([
   { name: "رفع/تنزيل البيانات", value: 7 },
 ]);
 const Admin = ref([
-  { name: "ادمن", value: 0 },
-  { name: "سوبر ادمن", value: 1 },
+  { name: "سوبر ادمن", value: 0 },
+
+  { name: "ادمن", value: 1 },
 ]);
 </script>
 <style scoped>

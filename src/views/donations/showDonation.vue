@@ -3,7 +3,7 @@
     <v-dialog v-model="store.dialog" persistent width="664">
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary">
-          <v-icon icon="mdi-hand-heart-outline"></v-icon>
+          <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
           <span>{{ donor.name }}</span>
         </v-card-title>
         <v-card-text>
@@ -12,33 +12,42 @@
               <v-col cols="6">
                 <v-card class="show-donations-card" rounded="0">
                   <div>
-                    <h5>اسم المتبرع:{{ donor.name }}</h5>
+                    <h5>اسم المتبرع: {{ donor.name }}</h5>
                   </div>
                   <div>
-                    <h5>اسم المدينة:{{ donor?.governorate }}</h5>
+                    <h5>اسم المدينة: {{ donor?.governorate }}</h5>
                   </div>
                   <div>
                     <h5>
-                      نوع الزمرة:{{ bloodGroups[donor?.bloodGroup]?.name }}
+                      نوع الزمرة: {{ bloodGroups[donor?.bloodGroup]?.name }}
                     </h5>
+                  </div>
+                  <div>
+                    <h5>الجنس: ذكر</h5>
                   </div>
                 </v-card>
               </v-col>
               <v-col cols="6">
                 <v-card class="show-donations-card" rounded="0">
                   <div>
-                    <h5>رقم الهاتف:{{ donor?.phone }}</h5>
+                    <h5>رقم الهاتف: {{ donor?.phone }}</h5>
                   </div>
                   <div>
                     <h5>
-                      نوع التبرع:{{ donor.donorType === 0 ? "دم" : "بلازما" }}
+                      نوع التبرع: {{ donor.donorType === 0 ? "دم" : "بلازما" }}
                     </h5>
                   </div>
                   <div>
                     <h5>
-                      المرض المزمن:{{
+                      المرض المزمن:
+                      {{
                         donor.hasChronicDisease === true ? "يوجد" : "لا يوجد"
                       }}
+                    </h5>
+                  </div>
+                  <div>
+                    <h5>
+                      هل المتبرع مدخن: مدخن
                     </h5>
                   </div>
                 </v-card>
@@ -56,7 +65,7 @@
                       {{ med.nameArabic }}</v-chip
                     >
                   </div>
-                  <h6 :v-if="!donor.chronicDiseases">لايوجد امراض مزمنة</h6>
+                  <h6 v-if="!donor.chronicDiseases">لايوجد امراض مزمنة</h6>
                 </v-card>
               </v-col>
               <v-col cols="12"
@@ -67,7 +76,7 @@
                       {{ donor.medications }}</v-chip
                     >
                   </div>
-                  <h6 :v-if="!donor.medications">
+                  <h6 v-if="!donor.medications">
                     لايوجد علاجات مستخدمة
                   </h6></v-card
                 >
@@ -100,6 +109,24 @@
                       ></v-img>
                     </div>
                   </div>
+                </v-card>
+              </v-col>
+              <v-col cols="12">
+                <v-card class="show-donations-card">
+                  <h5>سجل التبرع:</h5>
+                  <div  >
+                    <table >
+<tr>
+  <th>نوع التبرع</th>
+  <th>تاريخ التبرع</th>
+</tr>
+<tr>
+  <td>دم</td>
+  <td>2023/6/23</td>
+</tr>
+                    </table>
+                  </div>
+               
                 </v-card>
               </v-col>
               <v-col cols="6"
@@ -248,5 +275,22 @@ const bloodGroups = ref([
   border-radius: 50%;
 
   background: #ffc0cc;
+}
+table,
+td,
+th {
+  border: 1px solid black;
+  padding: 5px;
+  
+}
+table {
+  border-collapse: collapse;
+  width: 10rem;
+  font-size: 12px;
+  
+}
+
+th {
+  background-color: #ffc0cc;
 }
 </style>
