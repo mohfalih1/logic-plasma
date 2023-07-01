@@ -284,9 +284,7 @@ function getNotification() {
     .then((res) => {
       notification.value = res.data;
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });
@@ -310,9 +308,7 @@ function addNotification() {
       getNotification();
       addDialog.value = false;
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });
@@ -325,9 +321,7 @@ function deleteNotifications(id) {
     .then((res) => {
       getNotification();
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
       deleteDialog.value = false;
@@ -342,9 +336,7 @@ function sendNotification(id) {
       console.log(id);
       sendDialog.value = true;
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });

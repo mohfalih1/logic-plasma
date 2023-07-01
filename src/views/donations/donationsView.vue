@@ -158,8 +158,9 @@ import { ref, onMounted, reactive, watch } from "vue";
 import router from "@/router";
 import axios from "@/server/axios";
 import { useCounterStore } from "@/store/app";
-const isLoading = ref(false);
 const store = useCounterStore();
+const isLoading = ref(false);
+
 onMounted(() => {
   getDoner();
   getGovernorates();
@@ -179,9 +180,7 @@ function getGovernorates() {
     .then((res) => {
       governorates.value = res.data;
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const typeChronicDisease = ref([]);
 function getChronicDisease() {
@@ -191,9 +190,7 @@ function getChronicDisease() {
       typeChronicDisease.value = res.data;
       console.log(typeChronicDisease.value + "fffffffffffffff");
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const filter = reactive({
   bloodGroup: null,
@@ -222,9 +219,7 @@ function getDoner() {
       donations.value = res.data;
       console.log(donations.value);
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });

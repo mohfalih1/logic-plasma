@@ -16,6 +16,7 @@ const router = createRouter({
       component: () => import("@/views/homePage/homePageView"),
       meta: {
         requiresAuth: true,
+        // role: 0,
       },
     },
 
@@ -25,6 +26,7 @@ const router = createRouter({
       component: () => import("@/views/news/newsView.vue"),
       meta: {
         requiresAuth: true,
+        // role: 1,
       },
     },
 
@@ -53,6 +55,7 @@ const router = createRouter({
       component: () => import("@/views/donations/donationsView.vue"),
       meta: {
         requiresAuth: true,
+        // role: 2,
       },
     },
     {
@@ -72,6 +75,7 @@ const router = createRouter({
         import("@/views/chronicDiseases/chronicDiseasesView.vue"),
       meta: {
         requiresAuth: true,
+        // role: 3,
       },
     },
     {
@@ -80,6 +84,7 @@ const router = createRouter({
       component: () => import("@/views/role/RoleView.vue"),
       meta: {
         requiresAuth: true,
+        // role: 4,
       },
     },
     {
@@ -88,22 +93,24 @@ const router = createRouter({
       component: () => import("@/views/activites/ActivitesView.vue"),
       meta: {
         requiresAuth: true,
+        // role: 5,
       },
     },
-    {
-      path: "/blood-group",
-      name: "bloodGroup",
-      component: () => import("@/views/bloodGroup/bloodGroupView.vue"),
-      meta: {
-        requiresAuth: true,
-      },
-    },
+    // {
+    //   path: "/blood-group",
+    //   name: "bloodGroup",
+    //   component: () => import("@/views/bloodGroup/bloodGroupView.vue"),
+    //   meta: {
+    //     requiresAuth: true,
+    //   },
+    // },
     {
       path: "/notifications",
       name: "notifications",
       component: () => import("@/views/notifications/notificationsView.vue"),
       meta: {
         requiresAuth: true,
+        // role: 6,
       },
     },
     {
@@ -112,6 +119,7 @@ const router = createRouter({
       component: () => import("@/views/importExport/importExportView.vue"),
       meta: {
         requiresAuth: true,
+        // role: 7,
       },
     },
     {

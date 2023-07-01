@@ -25,6 +25,11 @@
           <v-img src="../assets/Frame (1).png" width="100" height="100"></v-img>
 </div> -->
 </template>
+<script setup>
+import { useCounterStore } from "@/store/app";
+const store = useCounterStore();
+
+</script>
 <style scoped>
 .app-bar {
   width: 97%;

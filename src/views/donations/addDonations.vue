@@ -226,11 +226,8 @@ function getGovernorates() {
     .get(`Admin/GetGovernoratesForStatistics`)
     .then((res) => {
       governorates.value = res.data;
-      console.log(governorates.value + "fffffffffffffff");
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 
 const typeChronicDisease = ref([]);
@@ -239,11 +236,8 @@ function getChronicDisease() {
     .get(`Admin/GetChronicDiseaseForStatistics`)
     .then((res) => {
       typeChronicDisease.value = res.data;
-      console.log(typeChronicDisease.value + "fffffffffffffff");
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 
 onMounted(() => {
@@ -299,12 +293,9 @@ function addSubscribers() {
   axios
     .post("Admin/AddSubscribers", formData)
     .then((res) => {
-      console.log(res);
       router.push("/donations");
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       store.dialog = false;
       isLoading.value = false;

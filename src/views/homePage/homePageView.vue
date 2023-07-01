@@ -325,13 +325,23 @@ import Loader from "@/components/Loader.vue";
 import { ref, onMounted, watch } from "vue";
 import { primary } from "@/assets/style";
 import axios from "@/server/axios";
+import { useCounterStore } from "@/store/app";
+const store = useCounterStore();
 const isLoading = ref(false);
+const rooole = ref([]);
+
 const hi = ref("الاحصائيات");
 onMounted(() => {
   getStatistics();
   getStatsGraph();
   getGovernorates();
   getChronicDisease();
+
+  // if (store.usersRole > 0) {
+  //   for (var i = 0; i < store.usersRole[length]; i++) {
+  //     rooole.value.push(store.usersRole[i].privliages);
+  //   }
+  // }
 });
 
 // ................API................
@@ -366,11 +376,8 @@ function getStatistics() {
     })
     .then((res) => {
       statistics.value = res.data;
-      console.log(statistics.value);
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const year = ref(2023);
 
@@ -394,11 +401,8 @@ function getGovernorates() {
     .get(`Admin/GetGovernoratesForStatistics`)
     .then((res) => {
       governorates.value = res.data;
-      console.log(governorates.value + "fffffffffffffff");
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const typeChronicDisease = ref([]);
 function getChronicDisease() {
@@ -406,11 +410,8 @@ function getChronicDisease() {
     .get(`Admin/GetChronicDiseaseForStatistics`)
     .then((res) => {
       typeChronicDisease.value = res.data;
-      console.log(typeChronicDisease.value + "fffffffffffffff");
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const series = ref([
   {

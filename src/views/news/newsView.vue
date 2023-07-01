@@ -90,9 +90,7 @@ function getBlog() {
       console.log(blog.value);
       isLoading.value = false;
     })
-    .catch((res) => {
-      console.log(res);
-    });
+    .catch((res) => {});
 }
 
 // .............pagination.............

@@ -1,5 +1,5 @@
 <template>
-   <Loader v-if="isLoading"/>
+  <Loader v-if="isLoading" />
   <div class="contenier">
     <!-- <div class="boold-1">
       <iframe src="https://embed.lottiefiles.com/animation/87081"></iframe>
@@ -19,7 +19,7 @@
             <div>
               <v-text-field
                 v-model="loginData.email"
-                class="bg-white rounded-lg  pr-2"
+                class="bg-white rounded-lg pr-2"
                 variant="plain"
                 placeholder="البريد الالكتروني"
                 type="email"
@@ -69,29 +69,34 @@ import Loader from "@/components/Loader.vue";
 import axios from "@/server/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { usePermissionsStore } from "@/store/permissions.js";
+const permissions = usePermissionsStore();
 
 const router = useRouter();
 const error = ref(false);
-const isLoading=ref(false);
+const isLoading = ref(false);
 const loginData = ref({
   email: "",
   password: "",
 });
 function login() {
-  isLoading.value=true;
+  isLoading.value = true;
   axios
     .post("Admin/Login", loginData.value)
     .then((res) => {
       localStorage.setItem("token", res.data.token);
-      console.log(res);
+
+      permissions.setPermissions(res.data.claims);
+
+      console.log(permissions.routes.value);
+
       router.push("/");
-     
     })
     .catch((err) => {
-      console.log(err);
       error.value = true;
-    }).finally(()=>{
-       isLoading.value=false;
+    })
+    .finally(() => {
+      isLoading.value = false;
     });
 }
 </script>

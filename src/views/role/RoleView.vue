@@ -265,23 +265,23 @@
                 </v-col>
                 <v-col cols="12">
                   <div class="select">
-                  <v-autocomplete
-                    :items="MainRole"
-                    v-model="editUser.cliams[0].privliages"
-                    :rules="roleRules"
-                    item-title="name"
-                    item-value="value"
-                    placeholder="صلاحية الوصول"
-                    outlined
-                    dense
-                    multiple
-                    chips
-                    clearable
-                    deletable-chips
-                    small-chips
-                    variant="plain"
-                    persistent-hint
-                  ></v-autocomplete>
+                    <v-autocomplete
+                      :items="MainRole"
+                      v-model="editUser.cliams[0].privliages"
+                      :rules="roleRules"
+                      item-title="name"
+                      item-value="value"
+                      placeholder="صلاحية الوصول"
+                      outlined
+                      dense
+                      multiple
+                      chips
+                      clearable
+                      deletable-chips
+                      small-chips
+                      variant="plain"
+                      persistent-hint
+                    ></v-autocomplete>
                   </div>
                   <!-- <div class="chip">
                     <h5>صلاحية الوصول:</h5>
@@ -400,7 +400,7 @@
 <script setup>
 import Loader from "@/components/Loader.vue";
 import dayjs from "dayjs";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import axios from "@/server/axios";
 const isLoading = ref(false);
 const isBlockeRole = ref(false);
@@ -411,7 +411,6 @@ const showModel = (type, item) => {
   selectedItem.value = item;
   if (type === "edit") {
     isEditRole.value = true;
-    blog.value = item;
   } else if (type === "block") {
     isBlockeRole.value = true;
   }
@@ -446,9 +445,7 @@ function geUsers() {
       roleData.value = res.data;
       console.log(roleData.value);
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });
@@ -471,15 +468,29 @@ const newUser = ref({
 });
 function addUser() {
   isLoading.value = true;
+  // Get the selected privileges
+  const selectedPrivileges = newUser.value.cliams[0].privliages;
+  // Create a new array to store the privileges as separate objects
+  const privilegesArray = [];
+  // Iterate over the selectedPrivileges and create a new object for each privilege
+  for (const privilege of selectedPrivileges) {
+    const privilegeObject = {
+      privliages: privilege,
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
+    };
+    privilegesArray.push(privilegeObject);
+  }
+  // Update the newUser object with the privilegesArray
+  newUser.value.cliams = privilegesArray;
   axios
     .post("Admin/AddUser", newUser.value)
     .then((res) => {
-      console.log(res);
       geUsers();
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isAddRole.value = false;
       isLoading.value = false;
@@ -505,12 +516,9 @@ function updateUser(id) {
   axios
     .put(`Admin/EditUser?id=${id}`, editUser.value)
     .then((res) => {
-      console.log(res);
       geUsers();
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isEditRole.value = false;
       isLoading.value = false;
@@ -521,12 +529,9 @@ function deleteUser(id) {
   axios
     .put(`Admin/DeleteUser?id=${id}`)
     .then((res) => {
-      console.log(res);
       geUsers();
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isBlockeRole.value = false;
       isLoading.value = false;
@@ -548,6 +553,13 @@ async function validate() {
     addUser();
   }
 }
+watch(() => {
+  if (newUser.value.cliams && newUser.value.cliams > 0) {
+    newUser.value.cliams.forEach((cliams) => {
+      cliams.privliages = [];
+    });
+  }
+});
 const MainRole = ref([
   { name: "الصفحة الرئيسية", value: 0 },
   { name: "الاخبار", value: 1 },

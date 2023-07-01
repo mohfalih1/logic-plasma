@@ -201,9 +201,7 @@ function getBlogById() {
       blog.value = res.data;
       console.log(res.data);
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });
@@ -215,9 +213,7 @@ function deleteBlog() {
     .then((res) => {
       console.log(res.data);
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
       router.push("/news");
@@ -246,9 +242,7 @@ function updateNews() {
     .then((res) => {
       console.log(res.data);
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
       router.push("/news");

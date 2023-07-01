@@ -179,9 +179,7 @@ function getGovernorates() {
     .then((res) => {
       governorates.value = res.data;
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const query = reactive({
   governorate: null,
@@ -197,12 +195,9 @@ function uploadExcelFileForDoner() {
       formData
     )
     .then((res) => {
-      console.log(res);
       isuplaodDialog.value = false;
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 function downloadTemplate() {
   const workbook = createExcelTemplate();

@@ -134,11 +134,8 @@ function getUsersForQuery() {
     .get("Admin/GetUsersForQuery")
     .then((res) => {
       userData.value = res.data;
-      console.log(userData.value);
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const activitesData = ref({});
 const numberOfPage = ref(1);
@@ -160,11 +157,8 @@ function getRecordActivities() {
     )
     .then((res) => {
       activitesData.value = res.data;
-      console.log(activitesData.value);
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });

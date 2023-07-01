@@ -276,9 +276,7 @@ function getChronicDiseases() {
     .then((res) => {
       chronicDiseases.value = res.data;
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });
@@ -295,9 +293,7 @@ function addChronicDiseas() {
       addDialog.value = false;
       getChronicDiseases();
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
       addChron.value = {};
@@ -315,9 +311,7 @@ function UpdateChronicDisease(id) {
       editDialog.value = false;
       getChronicDiseases();
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });
@@ -330,9 +324,7 @@ function deleteChronicDisease(id) {
       deleteDialog.value = false;
       getChronicDiseases();
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
     });

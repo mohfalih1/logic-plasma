@@ -85,28 +85,27 @@
             >
             </v-file-input>
           </v-card>
-        <v-card-actions>
-          <v-btn
-            @click="validate()"
-            class="add-edit-button pa-5"
-            :color="primary"
-            variant="text"
-          >
-            نشر الخبر
-          </v-btn>
+          <v-card-actions>
+            <v-btn
+              @click="validate()"
+              class="add-edit-button pa-5"
+              :color="primary"
+              variant="text"
+            >
+              نشر الخبر
+            </v-btn>
 
-          <v-btn
-            to="/news"
-            class="add-back-button pa-5"
-            color="white"
-            variant="text"
-          >
-            <v-icon icon="mdi-greater-than"></v-icon>
-            العودة
-          </v-btn>
-        </v-card-actions>
+            <v-btn
+              to="/news"
+              class="add-back-button pa-5"
+              color="white"
+              variant="text"
+            >
+              <v-icon icon="mdi-greater-than"></v-icon>
+              العودة
+            </v-btn>
+          </v-card-actions>
         </v-form>
-
       </v-card>
     </div>
   </v-card>
@@ -142,13 +141,11 @@ function addBlog() {
     .then((res) => {
       console.log(res.data);
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
       router.push("/news");
-      console.log("add suc")
+      console.log("add suc");
     });
 }
 const validForm = ref();

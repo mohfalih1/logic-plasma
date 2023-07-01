@@ -147,9 +147,7 @@ function getChronicDisease() {
     .then((res) => {
       typeChronicDiseases.value = res.data;
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const governorates = ref([]);
 function getGovernorates() {
@@ -157,11 +155,8 @@ function getGovernorates() {
     .get(`Admin/GetGovernoratesForStatistics`)
     .then((res) => {
       governorates.value = res.data;
-      console.log(governorates.value + "fffffffffffffff");
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
 }
 const filter = reactive({
   bloodGroup: null,
