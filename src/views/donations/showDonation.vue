@@ -17,37 +17,88 @@
                   <div>
                     <h5>اسم المدينة: {{ donor?.governorate }}</h5>
                   </div>
+
+                  <div>
+                    <h5>رقم الهاتف: {{ donor?.phone }}</h5>
+                  </div>
                   <div>
                     <h5>
-                      نوع الزمرة: {{ bloodGroups[donor?.bloodGroup]?.name }}
+                      الجنس:
+                      {{
+                        donor.gender === 0
+                          ? "ذكر"
+                          : donor.gender === 0
+                          ? "انثى"
+                          : "---"
+                      }}
                     </h5>
                   </div>
                   <div>
-                    <h5>الجنس: ذكر</h5>
+                    <h5>
+                      العمر:
+                      {{
+                        dayjs(donor?.birthDate).format("YYYY/MM/DD") === null
+                          ? dayjs(donor?.birthDate).format("YYYY/MM/DD")
+                          : "---"
+                      }}
+                    </h5>
                   </div>
                 </v-card>
               </v-col>
               <v-col cols="6">
                 <v-card class="show-donations-card" rounded="0">
                   <div>
-                    <h5>رقم الهاتف: {{ donor?.phone }}</h5>
+                    <h5>
+                      حالة المستخدم:
+                      {{
+                        donor.isActive === true
+                          ? "نشط"
+                          : donor.isActive === false
+                          ? "غير نشط"
+                          : "---"
+                      }}
+                    </h5>
                   </div>
                   <div>
                     <h5>
-                      نوع التبرع: {{ donor.donorType === 0 ? "دم" : "بلازما" }}
+                      نوع الزمرة:
+                      {{ bloodGroups[donor?.bloodGroup]?.name }}
+                    </h5>
+                  </div>
+                  <div>
+                    <h5>
+                      نوع التبرع:
+                      {{
+                        donor.donorType === 0
+                          ? "دم"
+                          : donor.donorType === 1
+                          ? "بلازما"
+                          : "---"
+                      }}
                     </h5>
                   </div>
                   <div>
                     <h5>
                       المرض المزمن:
                       {{
-                        donor.hasChronicDisease === true ? "يوجد" : "لا يوجد"
+                        donor.hasChronicDisease === true
+                          ? "يوجد"
+                          : donor.hasChronicDisease === false
+                          ? "لا يوجد"
+                          : "---"
                       }}
                     </h5>
                   </div>
                   <div>
                     <h5>
-                      هل المتبرع مدخن: مدخن
+                      هل المتبرع مدخن:
+                      {{
+                        donor.doYouSmoke === true
+                          ? "مدخن "
+                          : donor.doYouSmoke === false
+                          ? "غير مدخن"
+                          : "---"
+                      }}
                     </h5>
                   </div>
                 </v-card>
@@ -65,7 +116,9 @@
                       {{ med.nameArabic }}</v-chip
                     >
                   </div>
-                  <h6 v-if="!donor.chronicDiseases">لايوجد امراض مزمنة</h6>
+                  <!-- <h6 v-if="(donor.chronicDiseases===null)">
+                    لايوجد امراض مزمنة
+                  </h6> -->
                 </v-card>
               </v-col>
               <v-col cols="12"
@@ -114,19 +167,23 @@
               <v-col cols="12">
                 <v-card class="show-donations-card">
                   <h5>سجل التبرع:</h5>
-                  <div  >
-                    <table >
-<tr>
-  <th>نوع التبرع</th>
-  <th>تاريخ التبرع</th>
-</tr>
-<tr>
-  <td>دم</td>
-  <td>2023/6/23</td>
-</tr>
+                  <div v-if="donRecord.length === 0">
+                    <h6>لا يوجد تبرعات</h6>
+                  </div>
+                  <div v-if="donRecord.length > 0">
+                    <table>
+                      <tr>
+                        <th>نوع التبرع</th>
+                        <th>تاريخ التبرع</th>
+                      </tr>
+                      <tr v-for="item in donRecord" :key="item.id">
+                        <td>{{ item.donorType === 0 ? "دم" : "بلازما" }}</td>
+                        <td>
+                          {{ dayjs(item.donationDate).format("YYYY/MM/DD") }}
+                        </td>
+                      </tr>
                     </table>
                   </div>
-               
                 </v-card>
               </v-col>
               <v-col cols="6"
@@ -218,6 +275,7 @@ import router from "@/router";
 import { useCounterStore } from "@/store/app";
 import { primary } from "@/assets/style";
 import { ref, onMounted } from "vue";
+import dayjs from "dayjs";
 import axios from "@/server/axios";
 const deleteDialog = ref(false);
 const store = useCounterStore();
@@ -232,6 +290,14 @@ function getDonor() {
     donor.value = res.data;
   });
 }
+const donRecord = ref([]);
+function getDonationRecord() {
+  axios
+    .get(`Admin/GetDonerDonationRecord?DonerId=${donorId.value}`)
+    .then((res) => {
+      donRecord.value = res.data;
+    });
+}
 function deleteSubscribers() {
   axios.delete(`Admin/DeleteSubscribers?id=${donorId.value}`).then((res) => {
     deleteDialog.value = false;
@@ -241,6 +307,7 @@ function deleteSubscribers() {
 }
 onMounted(() => {
   getDonor();
+  getDonationRecord();
 });
 
 const bloodGroups = ref([
@@ -281,16 +348,18 @@ td,
 th {
   border: 1px solid black;
   padding: 5px;
-  
+  text-align: center;
 }
 table {
   border-collapse: collapse;
-  width: 10rem;
+  width: 35rem;
   font-size: 12px;
-  
 }
 
 th {
   background-color: #ffc0cc;
+}
+td {
+  font-weight: bold;
 }
 </style>

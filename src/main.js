@@ -10,6 +10,8 @@ import "@vuepic/vue-datepicker/dist/main.css";
 // Plugins
 import { registerPlugins } from "@/plugins";
 import { createPinia } from "pinia";
+// import VueFormulate, { options } from "@braid/vue-formulate";
+// import { FormulateInput } from "vue-formulate";
 
 //assets
 import "@/assets/css/main.css";
@@ -20,4 +22,7 @@ registerPlugins(app);
 app.use(pinia);
 app.use(VueApexCharts);
 app.component("VueDatePicker", VueDatePicker);
+// app.use(VueFormulate, options);
+// app.component("FormulateInput", FormulateInput);
+
 app.mount("#app");

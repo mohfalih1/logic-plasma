@@ -242,6 +242,7 @@
                       clearable
                       variant="plain"
                       placeholder="كلمة المرور"
+                      hint="يجب اعادة كتابة الرمز السري"
                       type="password"
                       :items="governorates"
                       item-title="nameArabic"
@@ -266,6 +267,7 @@
                 <v-col cols="12">
                   <div class="select">
                     <v-autocomplete
+                      v-if="editUser.role === 1"
                       :items="MainRole"
                       v-model="editUser.cliams[0].privliages"
                       :rules="roleRules"
@@ -344,15 +346,55 @@
       </v-card>
     </v-dialog>
   </v-row>
-  <!-- start delete notification  -->
+  <!-- end delete notification  -->
+  <!--start snackbar delete  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="isSnackBarBlock">
+      <p>{{ deleteRes }}</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="isSnackBarBlock = false">
+          اغلاق
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end snackbar delete -->
+  <!--start snackbar add  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="isSnackBarAdd">
+      <p>{{ addRes }}</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="isSnackBarAdd = false">
+          اغلاق
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!-- end snackbar add -->
+  <!--start snackbar edit  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="isSnackBarEdit">
+      <p>{{ editRes }}</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="isSnackBarEdit = false">
+          اغلاق
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!-- end snackbar edit -->
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
-import dayjs from "dayjs";
+import SnackBar from "@/components/SnackBar.vue";
 import { ref, onMounted, watch } from "vue";
 import axios from "@/server/axios";
 const isLoading = ref(false);
 const isBlockeRole = ref(false);
+const isSnackBarBlock = ref(false);
+const isSnackBarAdd = ref(false);
+const isSnackBarEdit = ref(false);
+const editRes = ref();
 const isAddRole = ref(false);
 const isEditRole = ref(false);
 const selectedItem = ref({});
@@ -401,7 +443,7 @@ function geUsers() {
       isLoading.value = false;
     });
 }
-
+const addRes = ref();
 const newUser = ref({
   name: null,
   email: null,
@@ -443,12 +485,14 @@ function addUser() {
   axios
     .post("Admin/AddUser", newUser.value)
     .then((res) => {
+      addRes.value = res.data;
       geUsers();
     })
     .catch((err) => {})
     .finally(() => {
       isAddRole.value = false;
       isLoading.value = false;
+      isSnackBarAdd.value = true;
     });
 }
 const editUser = ref({
@@ -487,25 +531,31 @@ function updateUser(id) {
   axios
     .put(`Admin/UpdateUser?id=${id}`, editUser.value)
     .then((res) => {
+      editRes.value = res.data;
+      console.log(editRes.value);
       geUsers();
     })
     .catch((err) => {})
     .finally(() => {
       isEditRole.value = false;
       isLoading.value = false;
+      isSnackBarEdit.value = true;
     });
 }
+const deleteRes = ref();
 function deleteUser(id) {
   isLoading.value = true;
   axios
     .put(`Admin/DeleteUser?id=${id}`)
     .then((res) => {
+      deleteRes.value = res.data;
       geUsers();
     })
     .catch((err) => {})
     .finally(() => {
       isBlockeRole.value = false;
       isLoading.value = false;
+      isSnackBarBlock.value = true;
     });
 }
 const validForm = ref();
@@ -558,10 +608,10 @@ const Admin = ref([
   display: grid;
   justify-content: space-around;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 55%);
+  grid-template-rows: repeat(2, 50%);
   column-gap: 1px;
-  row-gap: 1em;
-  height: 70vh;
+  row-gap: 2em;
+  height: 60vh;
 }
 
 .role-card {
@@ -632,7 +682,7 @@ const Admin = ref([
   align-items: center;
   margin: 0 auto;
   width: 100%;
-  height: 40vh;
+  height: 35vh;
 }
 .roles-check {
   margin: 10px;

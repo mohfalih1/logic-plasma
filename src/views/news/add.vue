@@ -139,6 +139,8 @@ function addBlog() {
   axios
     .post(`Admin/AddBlog`, formData)
     .then((res) => {
+      router.push("/news");
+
       console.log(res.data);
     })
     .catch((err) => {})
@@ -161,7 +163,6 @@ async function validate() {
   if (valid.value) {
     isLoading.value = false;
     addBlog();
-    router.push("/news");
   }
 }
 </script>

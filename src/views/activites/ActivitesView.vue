@@ -215,6 +215,13 @@ const ActionTypeEnm = ref([
 .filter-icon {
   margin-bottom: 10px;
 }
+.dp__main {
+  height: 52px !important;
+  --dp-border-color: #BDBDBD;
+}
+.dp__main :deep(.dp__pointer) {
+  height: 52px !important;
+}
 .select-don-activites {
   height: 52px;
   border: 1px solid#BDBDBD;

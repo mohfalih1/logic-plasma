@@ -14,7 +14,9 @@
         </v-btn>
       </div>
     </v-card-text>
-
+  <div v-if="blog.length===0" class="d-flex justify-center align-center mt-10">
+      <h3>لا يوجد اخبار لعرضهم !</h3>
+    </div>
     <div class="grid-news ma-5">
       <v-card class="news-card" v-for="item in blog" :key="item.id">
         <v-img

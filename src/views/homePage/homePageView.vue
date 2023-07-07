@@ -546,6 +546,7 @@ watch(() => {
 }
 .dp__main {
   height: 52px !important;
+  --dp-border-color: #BDBDBD;
 }
 .dp__main :deep(.dp__pointer) {
   height: 52px !important;

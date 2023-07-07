@@ -23,7 +23,6 @@
     <!-- start filters -->
 
     <div class="filters">
-  
       <div class="select-don-home">
         <v-text-field
           v-model="filter.search"
@@ -98,7 +97,12 @@
 
     <!-- end filters -->
     <br />
-
+    <div
+      v-if="donations.length === 0"
+      class="d-flex justify-center align-center mt-10"
+    >
+      <h3>لا يوجد متبرعين لعرضهم !</h3>
+    </div>
     <!-- <div class="grid-donations mt-5 mr-5 ml-1"> -->
     <div class="grid-donations">
       <v-card class="donations-card" v-for="item in donations" :key="item.id">
@@ -123,15 +127,15 @@
         </v-card-actions>
       </v-card>
     </div>
-<br>
-<br>  
+    <br />
+    <br />
     <!-- </div> -->
     <!-- pagination  -->
     <v-container class="pagination">
-      <button :disabled="donations.length < 10" @click="nextPage">&lt;</button>
+      <button :disabled="donations.length < 8" @click="nextPage">&lt;</button>
       <button
-        v-if="donations.length >= 10"
-        :disabled="donations.length < 10"
+        v-if="donations.length >= 8"
+        :disabled="donations.length < 8"
         @click="nextPage"
       >
         {{ numberOfPage + 1 }}
@@ -202,7 +206,7 @@ const filter = reactive({
 const donations = ref([]);
 
 const numberOfPage = ref(1);
-const numberOfItemPerPage = ref(10);
+const numberOfItemPerPage = ref(8);
 function getDoner() {
   isLoading.value = true;
   const filteredQuery = Object.entries(filter)
@@ -296,16 +300,5 @@ watch(() => {
   padding-left: -10px;
   align-items: center;
   justify-content: center;
-}
-
-.grid-donations {
-  display: grid;
-  justify-content: space-around;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 55%);
-  column-gap: 1px;
-  row-gap: 1em;
-  height: 70vh;
-  margin: 10px;
 }
 </style>

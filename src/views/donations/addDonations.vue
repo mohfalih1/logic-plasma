@@ -1,9 +1,15 @@
 <template>
   <Loader v-if="isLoading" />
   <v-row justify="center">
-    <v-dialog v-model="store.dialog" persistent width="664" height="auto">
+    <v-dialog
+      v-model="store.dialog"
+      persistent
+      width="664"
+      scrollable="true"
+      height="105vh"
+    >
       <v-form ref="validForm">
-        <v-card rounded="xl">
+        <v-card rounded="xl" scroolable="true" height="100vh">
           <v-card-title class="text-center text-primary pt-4">
             <span> اضافة متبرع</span>
           </v-card-title>
@@ -51,11 +57,12 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-select
+                      v-model="form.Gender"
                       clearable
                       variant="plain"
                       placeholder="الجنس"
                       type="text"
-                      :items="donorTypes"
+                      :items="genderData"
                       item-title="name"
                       item-value="value"
                     ></v-select>
@@ -90,8 +97,9 @@
                     ></v-select>
                   </div>
                 </v-col>
-                        <v-col cols="6">
+                <v-col cols="6">
                   <VueDatePicker
+                    v-model="form.BirthDate"
                     model-type="yyyy/MM/dd"
                     placeholder="تاريخ الميلاد"
                     auto-apply
@@ -100,6 +108,7 @@
                 <v-col cols="6">
                   <div class="select">
                     <v-checkbox
+                      v-model="form.DoYouSmoke"
                       :color="!select ? 'primary' : 'white'"
                       class="d-flex algin-center"
                       clearable
@@ -191,7 +200,6 @@
                     </div>
                   </div>
                 </v-col>
-        
 
                 <v-col cols="6">
                   <div class="select-file">
@@ -217,42 +225,82 @@
                     ></v-file-input>
                   </div>
                 </v-col>
+                <v-col cols="12">
+                  <v-card-actions class="pb-5">
+                    <v-btn
+                      @click="validate()"
+                      class="add-edit-button"
+                      :color="primary"
+                      variant="text"
+                    >
+                      اضافة المتبرع
+                    </v-btn>
+                    <v-btn
+                      class="add-back-button"
+                      color="white"
+                      variant="text"
+                      to="/donations"
+                    >
+                      <v-icon icon="mdi-greater-than"></v-icon>
+                      العودة
+                    </v-btn>
+                  </v-card-actions>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-text>
-          <v-card-actions class="pb-5">
-            <v-btn
-              @click="validate()"
-              class="add-edit-button"
-              :color="primary"
-              variant="text"
-            >
-              اضافة المتبرع
-            </v-btn>
-            <v-btn
-              class="add-back-button"
-              color="white"
-              variant="text"
-              to="/donations"
-            >
-              <v-icon icon="mdi-greater-than"></v-icon>
-              العودة
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-form>
     </v-dialog>
   </v-row>
+    <!--start snackbar delete  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="isSnackBarDelete">
+      <p>{{ deleteRes }}</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="isSnackBarDelete = false">
+          اغلاق
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end snackbar delete -->
+  <!--start snackbar add  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="isSnackBarAdd">
+      <p>{{ addRes }}</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="isSnackBarAdd = false">
+          اغلاق
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!-- end snackbar add -->
+  <!--start snackbar edit  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="isSnackBarEdit">
+      <p>{{ editRes }}</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="isSnackBarEdit = false">
+          اغلاق
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!-- end snackbar edit -->
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
 import { useCounterStore } from "@/store/app";
 import { primary } from "@/assets/style";
 import router from "@/router";
+
 import axios from "@/server/axios";
 import { reactive, ref, onMounted } from "vue";
 
 const isLoading = ref(false);
+const isSnackBarDelete = ref(false);
 const store = useCounterStore();
 const governorates = ref([]);
 function getGovernorates() {
@@ -298,6 +346,10 @@ const form = reactive({
   ImageLinkBloodTest: null,
   ImageLinkDonorID: null,
   IsHasLocation: null,
+  Gender: null,
+  BirthDate: null,
+  DoYouSmoke: null,
+  // IsActive: null,
 });
 function addSubscribers() {
   isLoading.value = true;
@@ -317,19 +369,30 @@ function addSubscribers() {
   formData.append("Telegram", form.Viber === null ? false : form.Viber);
   formData.append("Governorate", form.Governorate);
   formData.append("BloodGroup", form.BloodGroup);
-  formData.append("IsCheckForNotitifiction", form.IsCheckForNotitifiction);
   formData.append(
     "HasChronicDisease",
     form.HasChronicDisease === null ? false : form.HasChronicDisease
   );
   formData.append(
     "ChronicDiseaseId",
-    form.ChronicDiseaseId ? null : form.ChronicDiseaseId
+    form.ChronicDiseaseId === null ? "" : form.ChronicDiseaseId
   );
-  formData.append("TakingAnyMedication", form.TakingAnyMedication);
+  formData.append(
+    "TakingAnyMedication",
+    form.TakingAnyMedication === null ? false : form.TakingAnyMedication
+  );
   formData.append("Medications", form.Medications);
   formData.append("DonorType", form.DonorType);
   formData.append("SubscribersType", form.SubscribersType);
+
+  formData.append("Gender", form.Gender);
+  formData.append("BirthDate", form.BirthDate);
+  formData.append(
+    "DoYouSmoke",
+    form.DoYouSmoke === null ? false : form.DoYouSmoke
+  );
+  // formData.append("IsActive", form.IsActive);
+
   axios
     .post("Admin/AddSubscribers", formData)
     .then((res) => {
@@ -384,6 +447,10 @@ const bloodGroups = ref([
   { name: "AB-", value: 5 },
   { name: "O+", value: 6 },
   { name: "O-", value: 7 },
+]);
+const genderData = ref([
+  { name: "ذكر", value: 0 },
+  { name: "انثى", value: 1 },
 ]);
 </script>
 <style scoped>

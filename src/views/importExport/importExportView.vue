@@ -50,7 +50,7 @@
     </div>
     <v-form ref="validForm">
       <div class="filters">
-        <div class="select-don-home">
+        <div class="select-don-import">
           <v-select
             v-model="query.governorate"
             :rules="goverRules"
@@ -63,7 +63,7 @@
             item-value="id"
           ></v-select>
         </div>
-        <div class="select-don-home">
+        <div class="select-don-import">
           <v-select
             v-model="query.donorType"
             :rules="typeRules"
@@ -234,16 +234,17 @@ async function validate() {
   row-gap: 1em;
   margin-right: 15px;
 }
-.select-import-home {
-  height: 52px;
+.select-don-import {
+  width: 100%;
+  height: 50px;
   border: 1px solid#BDBDBD;
   background-color: #ffff;
   border-radius: 8px;
-  padding: 10px;
   display: flex;
+  padding-right: 10px;
+  padding-top: 10px;
   align-items: center;
   justify-content: center;
-  margin-right: 5px;
 }
 
 table,

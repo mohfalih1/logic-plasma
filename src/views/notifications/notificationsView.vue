@@ -1,9 +1,21 @@
 <template>
   <loader v-if="isLoading" />
   <v-card class="card-temp">
-    <v-card-title class="d-flex ma-5">
-      <v-icon class="ml-3" icon="mdi-bell-ring-outline"></v-icon>
-      <h2>الاشعارات</h2>
+    <v-card-title class="d-flex ma-5 justify-space-between">
+      <div class="d-flex">
+        <v-icon class="ml-3" icon="mdi-bell-ring-outline"></v-icon>
+
+        <h2>الاشعارات</h2>
+      </div>
+      <div>
+        <v-switch
+          v-model="model"
+          true-value="EN"
+          false-value="AR"
+          :label="`اللغة: ${model}`"
+          color="primary"
+        ></v-switch>
+      </div>
     </v-card-title>
     <v-card-text class="pa-0">
       <div class="header">
@@ -20,6 +32,12 @@
         </v-btn>
       </div>
     </v-card-text>
+    <div
+      v-if="notification.length === 0"
+      class="d-flex justify-center align-center mt-10"
+    >
+      <h3>لا يوجد اشعارات لعرضهم !</h3>
+    </div>
     <div class="grid-notifications mx-5 mt-5 mb-0">
       <v-card
         class="notifications-card pb-0"
@@ -28,11 +46,13 @@
       >
         <div class="news-title">
           <v-icon icon="mdi-bell-ring-outline" class="ml-2"></v-icon>
-          {{ item.titleArabic }}
+          {{ model === "AR" ? item.titleArabic : item.titleEnglish }}
         </div>
+        <br />
         <div class="news-title">
-          {{ item.decArabic }}
+          {{ model === "AR" ? item.decArabic : item.decEnglish }}
         </div>
+
         <v-card-actions class="pa-0 mb-0">
           <div class="d-flex ma-0">
             <v-btn
@@ -260,6 +280,7 @@ const isLoading = ref(false);
 const addDialog = ref(false);
 const sendDialog = ref(false);
 const deleteDialog = ref(false);
+const model = ref("AR");
 const selectedItem = ref();
 onMounted(() => {
   getNotification();
@@ -385,8 +406,8 @@ async function validate() {
   justify-content: space-between;
   gap: auto;
   padding: 5px 5px;
-  width: 262px;
-  height: 200px;
+  width: 17rem;
+  height: fit-content;
   background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
   border-radius: 16px;

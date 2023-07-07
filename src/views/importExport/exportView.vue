@@ -16,9 +16,6 @@
     </v-card-text>
     <!-- start filters -->
     <div class="filters">
-      <div class="filter-icon">
-        <v-icon size="40" icon="mdi-filter-outline"></v-icon>
-      </div>
       <div class="select-don-home">
         <v-select
           v-model="filter.bloodGroup"
@@ -92,14 +89,35 @@
           item-value="id"
         ></v-select>
       </div>
-      <fieldset class="select-don-home-date">
+      <div class="select-don-date">
+        <VueDatePicker
+          v-model="filter.DateFrom"
+          model-type="yyyy/MM/dd"
+          placeholder="من"
+          class="dp__pointer"
+          auto-apply
+        ></VueDatePicker>
+      </div>
+      <div
+        class="select-don-date"
+        style="margin-left: 12px; margin-right: -7px"
+      >
+        <VueDatePicker
+          v-model="filter.DateTo"
+          model-type="yyyy/MM/dd"
+          placeholder="الى"
+          class="dp__pointer"
+          auto-apply
+        ></VueDatePicker>
+      </div>
+      <!-- <fieldset class="select-don-home-date">
         <legend>من</legend>
         <input class="input-date" v-model="filter.DateFrom" type="date" />
       </fieldset>
       <fieldset class="select-don-home-date">
         <legend>الى</legend>
         <input class="input-date" v-model="filter.DateTo" type="date" />
-      </fieldset>
+      </fieldset> -->
     </div>
 
     <!-- end filters -->
@@ -218,18 +236,16 @@ watch(() => {
 });
 </script>
 <style scoped>
-.select-don-home-date {
+.select-don-date {
   height: 52px;
-  width: 50px;
+  width: 8.5rem;
 
-  border: 1px solid#BDBDBD;
   background-color: #ffff;
   border-radius: 8px;
   display: flex;
   padding-right: 2px;
   align-items: center;
   justify-content: center;
-  margin-right: 5px;
   margin-top: 0;
 }
 .input-date {
@@ -241,13 +257,29 @@ watch(() => {
 }
 .filters {
   display: grid;
-  grid-template-columns: 3% repeat(8, 12%);
+  grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(1, 50px);
-  column-gap: 1px;
+  column-gap: 4px;
   row-gap: 1em;
   margin-right: 15px;
 }
-.select-import-home {
+.dp__pointer {
+  height: 52px !important;
+  border-radius: 8px;
+  border: none !important;
+  cursor: pointer;
+  height: 51px !important;
+  padding-right: -10px !important;
+}
+.dp__main {
+  height: 52px !important;
+  --dp-border-color: #bdbdbd;
+}
+.dp__main :deep(.dp__pointer) {
+  height: 52px !important;
+}
+.select-don-home {
+  width: 8.5rem;
   height: 52px;
   border: 1px solid#BDBDBD;
   background-color: #ffff;
@@ -256,7 +288,6 @@ watch(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 5px;
 }
 
 .import-edit-button {
