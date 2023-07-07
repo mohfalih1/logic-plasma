@@ -271,6 +271,19 @@
     </v-dialog>
   </v-row>
   <!-- start delete notification  -->
+
+  <!--start snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="snackbar">
+      <p>{{ resAdd }}</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end snackbar  -->
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
@@ -280,6 +293,7 @@ const isLoading = ref(false);
 const addDialog = ref(false);
 const sendDialog = ref(false);
 const deleteDialog = ref(false);
+const snackbar = ref(false);
 const model = ref("AR");
 const selectedItem = ref();
 onMounted(() => {
@@ -296,6 +310,7 @@ const showModel = (item, type) => {
 const notification = ref([]);
 const numberOfPage = ref(1);
 const numberOfItemPerPage = ref(12);
+const resText = ref();
 function getNotification() {
   isLoading.value = true;
   axios
@@ -310,7 +325,8 @@ function getNotification() {
       isLoading.value = false;
     });
 }
-const addNotific = reactive({
+const resAdd = ref();
+const addNotific = ref({
   titleEn: "",
   titleAr: "",
   decEnglish: "",
@@ -318,20 +334,23 @@ const addNotific = reactive({
 });
 function addNotification() {
   const formData = new FormData();
-  formData.append("titleEn", addNotific.titleEn);
-  formData.append("titleAr", addNotific.titleAr);
-  formData.append("decEnglish", addNotific.decEnglish);
-  formData.append("decArabic", addNotific.decArabic);
+  formData.append("titleEn", addNotific.value.titleEn);
+  formData.append("titleAr", addNotific.value.titleAr);
+  formData.append("decEnglish", addNotific.value.decEnglish);
+  formData.append("decArabic", addNotific.value.decArabic);
   isLoading.value = true;
   axios
     .post("Admin/AddNotification", formData)
     .then((res) => {
+      resAdd.value = res.data;
       getNotification();
       addDialog.value = false;
+      addNotific.value = {};
     })
     .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
+      snackbar.value = true;
     });
 }
 

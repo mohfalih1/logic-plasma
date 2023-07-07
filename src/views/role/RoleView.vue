@@ -386,7 +386,7 @@
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
-import SnackBar from "@/components/SnackBar.vue";
+// import SnackBar from "@/components/SnackBar.vue";
 import { ref, onMounted, watch } from "vue";
 import axios from "@/server/axios";
 const isLoading = ref(false);
@@ -503,31 +503,34 @@ const editUser = ref({
   cliams: [
     {
       privliages: null,
-      create: null,
-      read: null,
-      update: null,
-      delete: null,
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
     },
   ],
 });
 function updateUser(id) {
   isLoading.value = true;
-  const selectedPrivilegesEdit = editUser.value.cliams[0].privliages;
-  // Create a new array to store the privileges as separate objects
-  const privilegesArray = [];
-  // Iterate over the selectedPrivileges and create a new object for each privilege
-  for (const privilege of selectedPrivilegesEdit) {
-    const privilegeObject = {
-      privliages: privilege,
-      create: true,
-      read: true,
-      update: true,
-      delete: true,
-    };
-    privilegesArray.push(privilegeObject);
+  if (newUser.value.role === 1) {
+    const selectedPrivilegesEdit = editUser.value.cliams[0].privliages;
+    // Create a new array to store the privileges as separate objects
+    const privilegesArray = [];
+    // Iterate over the selectedPrivileges and create a new object for each privilege
+    for (const privilege of selectedPrivilegesEdit) {
+      const privilegeObject = {
+        privliages: privilege,
+        create: true,
+        read: true,
+        update: true,
+        delete: true,
+      };
+      privilegesArray.push(privilegeObject);
+    }
+    // Update the newUser object with the privilegesArray
+    editUser.value.cliams = privilegesArray;
   }
-  // Update the newUser object with the privilegesArray
-  editUser.value.cliams = privilegesArray;
+
   axios
     .put(`Admin/UpdateUser?id=${id}`, editUser.value)
     .then((res) => {

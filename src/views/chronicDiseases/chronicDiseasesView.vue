@@ -95,7 +95,7 @@
         </v-card-title>
         <v-card-text class="pa-0">
           <v-container>
-            <v-form>
+            <v-form ref="validForm">
               <v-col cols="12">
                 <div class="select">
                   <v-icon color="red" icon="mdi-virus-outline"></v-icon>
@@ -106,6 +106,7 @@
                     variant="plain"
                     placeholder="اضافة مرض مزمن.."
                     type="text"
+                    :rules="titleRule"
                   ></v-text-field>
                 </div>
               </v-col>
@@ -117,6 +118,7 @@
                     variant="plain"
                     placeholder="Enter chronic disease..."
                     type="text"
+                    :rules="titleRuleEn"
                   ></v-text-field>
                   <v-icon color="red" icon="mdi-virus-outline"></v-icon>
                 </div>
@@ -127,7 +129,7 @@
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
             <v-btn
-              @click="addChronicDiseas()"
+              @click="submit()"
               class="delete-button"
               color="white"
               variant="text"
@@ -244,6 +246,42 @@
     </v-dialog>
   </v-row>
   <!-- end delete chronic -->
+  <!--start add snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="addsnackbar">
+      <p>تمت الاضافة بنجاح</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="addsnackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end add snackbar  -->
+  <!--start edit snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="editsanckbar">
+      <p>تم التعديل بنجاح</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="editsanckbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end edit snackbar  -->
+  <!--start edit snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="deletesanckbar">
+      <p>تم الحذف بنجاح</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="deletesanckbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end edit snackbar  -->
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
@@ -254,6 +292,9 @@ const isLoading = ref(false);
 const addDialog = ref(false);
 const editDialog = ref(false);
 const deleteDialog = ref(false);
+const addsnackbar = ref(false);
+const editsanckbar = ref(false);
+const deletesanckbar = ref(false);
 const selectedItem = ref();
 const showModel = (item, type) => {
   selectedItem.value = item;
@@ -293,10 +334,10 @@ function addChronicDiseas() {
       addDialog.value = false;
       getChronicDiseases();
     })
-    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
       addChron.value = {};
+      addsnackbar.value = true;
     });
 }
 const editChron = ref({
@@ -314,6 +355,7 @@ function UpdateChronicDisease(id) {
     .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
+      editsanckbar.value = true;
     });
 }
 function deleteChronicDisease(id) {
@@ -324,9 +366,9 @@ function deleteChronicDisease(id) {
       deleteDialog.value = false;
       getChronicDiseases();
     })
-    .catch((err) => {})
     .finally(() => {
       isLoading.value = false;
+      deletesanckbar.value = true;
     });
 }
 
@@ -340,6 +382,21 @@ function previousPage() {
   numberOfPage.value--;
   isLoading.value = true;
   getChronicDiseases();
+}
+// .............validation.............
+const validForm = ref();
+const valid = ref(true);
+
+const titleRule = ref([(v) => !!v || "العنوان مطلوب"]);
+const titleRuleEn = ref([(v) => !!v || "title is requierd"]);
+
+async function submit() {
+  valid.value = await validForm.value.validate();
+
+  if (valid.value) {
+    isLoading.value = false;
+    addChronicDiseas();
+  }
 }
 </script>
 <style scoped>
