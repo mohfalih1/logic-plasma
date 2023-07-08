@@ -512,12 +512,14 @@ const editUser = ref({
 });
 function updateUser(id) {
   isLoading.value = true;
-  if (newUser.value.role === 1) {
-    const selectedPrivilegesEdit = editUser.value.cliams[0].privliages;
+  isLoading.value = true;
+  if (editUser.value.role === 1) {
+    // Get the selected privileges
+    const selectedPrivileges = editUser.value.cliams[0].privliages;
     // Create a new array to store the privileges as separate objects
     const privilegesArray = [];
     // Iterate over the selectedPrivileges and create a new object for each privilege
-    for (const privilege of selectedPrivilegesEdit) {
+    for (const privilege of selectedPrivileges) {
       const privilegeObject = {
         privliages: privilege,
         create: true,
@@ -529,8 +531,9 @@ function updateUser(id) {
     }
     // Update the newUser object with the privilegesArray
     editUser.value.cliams = privilegesArray;
+  } else {
+    editUser.value.cliams = null;
   }
-
   axios
     .put(`Admin/UpdateUser?id=${id}`, editUser.value)
     .then((res) => {

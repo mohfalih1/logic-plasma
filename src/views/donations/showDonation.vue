@@ -38,8 +38,8 @@
                       العمر:
                       {{
                         dayjs(donor?.birthDate).format("YYYY/MM/DD") === null
-                          ? dayjs(donor?.birthDate).format("YYYY/MM/DD")
-                          : "---"
+                          ? "---"
+                          : dayjs(donor?.birthDate).format("YYYY/MM/DD")
                       }}
                     </h5>
                   </div>
