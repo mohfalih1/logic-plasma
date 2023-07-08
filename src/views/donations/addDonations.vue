@@ -253,7 +253,7 @@
       </v-form>
     </v-dialog>
   </v-row>
-    <!--start snackbar delete  -->
+  <!--start snackbar delete  -->
   <div class="text-center ma-2">
     <v-snackbar v-model="isSnackBarDelete">
       <p>{{ deleteRes }}</p>
@@ -336,7 +336,7 @@ const form = reactive({
   BloodGroup: null,
   IsCheckForNotitifiction: false,
   HasChronicDisease: null,
-  ChronicDiseaseId: [],
+  ChronicDiseaseId: null,
   TakingAnyMedication: null,
   Medications: null,
   Latitude: null,
@@ -373,10 +373,7 @@ function addSubscribers() {
     "HasChronicDisease",
     form.HasChronicDisease === null ? false : form.HasChronicDisease
   );
-  formData.append(
-    "ChronicDiseaseId",
-    form.ChronicDiseaseId === null ? "" : form.ChronicDiseaseId
-  );
+  formData.append("ChronicDiseaseId", form.ChronicDiseaseId);
   formData.append(
     "TakingAnyMedication",
     form.TakingAnyMedication === null ? false : form.TakingAnyMedication
@@ -434,6 +431,7 @@ const isAnyMedications = ref([
 const donorTypes = ref([
   { name: "دم", value: 0 },
   { name: "بلازما", value: 1 },
+  { name: "كلاهما", value: 2 },
 ]);
 const bloodGroups = ref([
   {
