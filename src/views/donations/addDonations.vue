@@ -144,7 +144,7 @@
                       :items="typeChronicDisease"
                       item-title="nameArabic"
                       item-value="id"
-                      multiple
+                      multiple=""
                     ></v-autocomplete></div
                 ></v-col>
                 <v-col cols="6">
@@ -352,8 +352,19 @@ const form = reactive({
   // IsActive: null,
 });
 function addSubscribers() {
+  console.log(form.ChronicDiseaseId);
   isLoading.value = true;
   const formData = new FormData();
+
+  // formData.append(
+  //   "ChronicDiseaseId",
+  //   form.ChronicDiseaseId ? form.ChronicDiseaseId : null
+  // );
+
+  form.ChronicDiseaseId?.forEach((element) => {
+    formData.append("ChronicDiseaseId", element);
+  });
+
   formData.append(
     "ImageLinkBloodTest",
     form.ImageLinkBloodTest === null ? "" : form.ImageLinkBloodTest[0]
@@ -373,7 +384,7 @@ function addSubscribers() {
     "HasChronicDisease",
     form.HasChronicDisease === null ? false : form.HasChronicDisease
   );
-  formData.append("ChronicDiseaseId", form.ChronicDiseaseId);
+
   formData.append(
     "TakingAnyMedication",
     form.TakingAnyMedication === null ? false : form.TakingAnyMedication
