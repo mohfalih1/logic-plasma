@@ -3,14 +3,14 @@
   <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-export-variant"></v-icon>
-      <h2>رفع / تنزيل بيانات المتبرعين</h2>
+      <h2>رفع / تنزيل بيانات المستخدمين</h2>
     </v-card-title>
     <v-card-text class="pa-0">
       <div class="header">
-        <div class="show"><h3>رفع بيانات المتطوعين</h3></div>
+        <div class="show"><h3>رفع بيانات المستخدمين</h3></div>
         <v-btn class="add" rounded="0" height="50" elevation="0">
           <v-icon icon="mdi-plus-circle-outline"></v-icon>
-          <h3>تنزيل بيانات المتطوعين</h3>
+          <h3>تنزيل بيانات المستخدمين</h3>
         </v-btn>
       </div>
     </v-card-text>
@@ -130,7 +130,7 @@
           variant="text"
         >
           <v-icon icon="mdi-export" size="22"></v-icon>
-          تنزيل بيانات المتبرعين
+          تنزيل بيانات المستخدمين
         </v-btn>
         <v-btn
           to="/import-export"
@@ -223,7 +223,7 @@ const donorTypes = ref([
   { name: "بلازما", value: 1 },
 ]);
 const subscribersType = ref([
-  { name: "متبرع", value: 0 },
+  { name: "مستخدم", value: 0 },
   { name: "مستفيد", value: 1 },
 ]);
 
@@ -257,11 +257,10 @@ watch(() => {
 }
 .filters {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(1, 50px);
-  column-gap: 4px;
-  row-gap: 1em;
+  grid-template-columns: repeat(auto-fit, 125px);
+  gap: 1rem;
   margin-right: 15px;
+  margin-top: 1rem;
 }
 .dp__pointer {
   height: 52px !important;

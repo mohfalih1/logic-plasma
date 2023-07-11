@@ -36,12 +36,7 @@
         <hr class="w-100" />
         <div>الايميل: {{ item.email }}</div>
         <hr class="w-100" />
-        <!-- <div class="password-card">
-          <div>كلمة المرور:*******</div>
-          <div class="icon-password">
-            <v-icon color="primary" icon="mdi-eye"></v-icon>
-          </div>
-        </div> -->
+
         <v-card-actions class="pa-0">
           <div class="role-button">
             <v-btn
@@ -57,7 +52,7 @@
               color="#ff2c54"
               variant="text"
             >
-              تعطيل الحساب
+              حذف الحساب
             </v-btn>
           </div>
         </v-card-actions>
@@ -91,7 +86,7 @@
   <!-- start add role -->
   <v-row justify="center">
     <v-dialog v-model="isAddRole" persistent width="600">
-      <v-form ref="validForm">
+      <v-form v-model="valid" @submit.prevent="validate">
         <v-card rounded="xl">
           <v-card-title class="text-center text-primary pt-4">
             <span> اضافة مشرف جديد</span>
@@ -145,6 +140,7 @@
                       item-title="name"
                       item-value="value"
                       clearable
+                      :rules="adminRules"
                       variant="plain"
                       placeholder="نوع المشرف"
                       type="text"
@@ -177,7 +173,7 @@
           </v-card-text>
           <v-card-actions class="pb-5">
             <v-btn
-              @click="validate()"
+              type="submit"
               class="add-edit-button"
               color="primary"
               variant="text"
@@ -319,9 +315,9 @@
     <v-dialog v-model="isBlockeRole" persistent width="262">
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary pb-0">
-          <span> تعطيل حساب المشرف</span>
+          <span> حذف حساب المشرف</span>
         </v-card-title>
-        <v-card-text> هل انت متأكد من تعطيل حساب المشرف ؟ </v-card-text>
+        <v-card-text> هل انت متأكد من حذف حساب المشرف ؟ </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
             <v-btn
@@ -330,7 +326,7 @@
               color="white"
               variant="text"
             >
-              تعطيل
+              حذف
             </v-btn>
             <v-btn
               @click="isBlockeRole = false"
@@ -487,6 +483,7 @@ function addUser() {
     .then((res) => {
       addRes.value = res.data;
       geUsers();
+      newUser.value = {};
     })
     .catch((err) => {})
     .finally(() => {
@@ -564,17 +561,44 @@ function deleteUser(id) {
       isSnackBarBlock.value = true;
     });
 }
-const validForm = ref();
 const valid = ref(true);
 
-const passwordRules = ref([(v) => !!v || "الرمز مطلوب"]);
-const nameRules = ref([(v) => !!v || " الاسم مطلوب"]);
-const emailRules = ref([(v) => !!v || " الايميل مطلوب"]);
-const adminRules = ref([(v) => !!v || " نوع المشرف مطلوب"]);
-const roleRules = ref([(v) => !!v || "يجب تحديد واحد على الاقل"]);
-async function validate() {
-  valid.value = await validForm.value.validate();
+const passwordRules = ref([
+  (value) => {
+    if (value) return true;
 
+    return "الرمز مطلوب";
+  },
+]);
+const nameRules = ref([
+  (value) => {
+    if (value) return true;
+
+    return "الاسم مطلوب";
+  },
+]);
+const emailRules = ref([
+  (v) => {
+    if (v) return true;
+
+    return " الايميل مطلوب";
+  },
+]);
+// const adminRules = ref([
+//   (v) => {
+//     if (v) return true;
+
+//     return " نوع المشرف مطلوب";
+//   },
+// ]);
+const roleRules = ref([
+  (v) => {
+    if (v) return true;
+
+    return " الصلاحيات مطلوبة يجب تحديد واحد على الاقل";
+  },
+]);
+function validate() {
   if (valid.value) {
     isLoading.value = false;
     addUser();
@@ -590,7 +614,7 @@ watch(() => {
 const MainRole = ref([
   { name: "الصفحة الرئيسية", value: 0 },
   { name: "الاخبار", value: 1 },
-  { name: "المتبرعين", value: 2 },
+  { name: "المستخدمين", value: 2 },
   { name: "الامراض المزمنة", value: 3 },
   { name: "ادارة المشرفين", value: 4 },
   { name: "سجل النشاط", value: 5 },
@@ -608,16 +632,12 @@ const Admin = ref([
   margin: 1px 10px 7px 7px;
   border-radius: 16px;
   width: 100%;
-  height: 120vh;
 }
 .grid-role {
   display: grid;
   justify-content: space-around;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 50%);
-  column-gap: 1px;
-  row-gap: 2em;
-  height: 60vh;
+  gap: 1rem;
 }
 
 .role-card {
@@ -626,8 +646,6 @@ const Admin = ref([
   align-items: start;
   padding: 8px;
   gap: 8px;
-  width: 262px;
-  height: 220px;
   background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
@@ -636,22 +654,6 @@ const Admin = ref([
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 15rem;
-}
-.password-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 15rem;
-}
-.icon-password {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background: #ff2c5433;
 }
 .role-button {
   display: flex;
@@ -688,16 +690,12 @@ const Admin = ref([
   align-items: center;
   margin: 0 auto;
   width: 100%;
-  height: 35vh;
 }
 .roles-check {
   margin: 10px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 55%);
-}
-.roles-check > * {
-  width: 3rem;
 }
 
 .select {

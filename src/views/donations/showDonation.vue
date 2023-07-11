@@ -12,7 +12,7 @@
               <v-col cols="6">
                 <v-card class="show-donations-card" rounded="0">
                   <div>
-                    <h5>اسم المتبرع: {{ donor.name }}</h5>
+                    <h5>اسم المستخدم: {{ donor.name }}</h5>
                   </div>
                   <div>
                     <h5>اسم المدينة: {{ donor?.governorate }}</h5>
@@ -91,7 +91,7 @@
                   </div>
                   <div>
                     <h5>
-                      هل المتبرع مدخن:
+                      هل المستخدم مدخن:
                       {{
                         donor.doYouSmoke === true
                           ? "مدخن "
@@ -200,7 +200,7 @@
               </v-col>
               <v-col cols="6">
                 <v-card class="show-donations-card"
-                  ><h5>هوية المتبرع:</h5>
+                  ><h5>هوية المستخدم:</h5>
                   <v-img
                     width="292"
                     height="172"
@@ -220,7 +220,7 @@
             variant="text"
           >
             <v-icon icon="mdi-trash-can-outline" size="22"></v-icon>
-            حذف المتبرع
+            حذف المستخدم
           </v-btn>
           <v-btn
             @click="closeDialog()"
@@ -240,9 +240,9 @@
     <v-dialog v-model="deleteDialog" persistent width="262">
       <v-card rounded="xl">
         <v-card-title class="text-center text-primary pb-0">
-          <span> حذف المتبرع</span>
+          <span> حذف المستخدم</span>
         </v-card-title>
-        <v-card-text> هل انت متأكد من حذف المتبرع ؟ </v-card-text>
+        <v-card-text> هل انت متأكد من حذف المستخدم ؟ </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center my-1">
             <v-btn

@@ -3,11 +3,11 @@
   <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-export-variant"></v-icon>
-      <h2>رفع / تنزيل بيانات المتبرعين</h2>
+      <h2>رفع / تنزيل بيانات المستخدمين</h2>
     </v-card-title>
     <v-card-text class="pa-0">
       <div class="header">
-        <div class="show"><h3>رفع بيانات المتطوعين</h3></div>
+        <div class="show"><h3>رفع بيانات المستخدمين</h3></div>
         <v-btn
           to="/import-export/export"
           class="add"
@@ -16,12 +16,12 @@
           elevation="0"
         >
           <v-icon icon="mdi-plus-circle-outline"></v-icon>
-          <h3>تنزيل بيانات المتطوعين</h3>
+          <h3>تنزيل بيانات المستخدمين</h3>
         </v-btn>
       </div>
     </v-card-text>
     <div class="ma-5">
-      <h3>رفع متطوعين بصيغة Excel مشابه للقالب التالي:</h3>
+      <h3>رفع مستخدمين بصيغة Excel مشابه للقالب التالي:</h3>
     </div>
     <div class="ma-5">
       <table>
@@ -32,12 +32,12 @@
         </tr>
 
         <tr>
-          <td></td>
+          <td class="text-center">APositive</td>
           <td></td>
           <td></td>
         </tr>
         <tr>
-          <td></td>
+          <td class="text-center">ANegative</td>
           <td></td>
           <td></td>
         </tr>
@@ -86,7 +86,7 @@
             variant="text"
           >
             <v-icon icon="mdi-tray-arrow-up" size="22"></v-icon>
-            رفع البيانات المتبرعين
+            رفع البيانات المستخدمين
           </v-btn>
           <v-btn
             @click="downloadTemplate()"
@@ -105,7 +105,7 @@
     <v-dialog v-model="isuplaodDialog" persistent width="300">
       <v-card rounded="xl" height="300">
         <v-card-title class="text-center text-primary pb-0">
-          <span> رفع ملف المتبرعين</span>
+          <span> رفع ملف المستخدمين</span>
         </v-card-title>
         <v-card-text>
           <div class="d-flex justify-center align-center">

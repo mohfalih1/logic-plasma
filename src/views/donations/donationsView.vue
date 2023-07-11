@@ -3,11 +3,11 @@
   <v-card class="card-temp">
     <v-card-title class="d-flex ma-5">
       <v-icon class="ml-3" icon="mdi-hand-heart-outline"></v-icon>
-      <h2>المتبرعين</h2>
+      <h2>المستخدمين</h2>
     </v-card-title>
     <v-card-text class="pa-0">
       <div class="header">
-        <div class="show"><h3>عرض المتبرعين</h3></div>
+        <div class="show"><h3>عرض المستخدمين</h3></div>
         <v-btn
           @click="opnenAdd()"
           class="add"
@@ -16,7 +16,7 @@
           elevation="0"
         >
           <v-icon icon="mdi-plus-circle-outline"></v-icon>
-          <h3>اضافة متبرع</h3>
+          <h3>اضافة مستخدم</h3>
         </v-btn>
       </div>
     </v-card-text>
@@ -101,16 +101,15 @@
       v-if="donations.length === 0"
       class="d-flex justify-center align-center mt-10"
     >
-      <h3>لا يوجد متبرعين لعرضهم !</h3>
+      <h3>لا يوجد مستخدمين لعرضهم !</h3>
     </div>
     <!-- <div class="grid-donations mt-5 mr-5 ml-1"> -->
     <div class="grid-donations">
       <v-card class="donations-card" v-for="item in donations" :key="item.id">
-        <div class="news-title">
+        <div class="news-title mb-2">
           <v-icon icon="mdi-hand-heart-outline" class="ml-2"></v-icon>
           {{ item.name }}
         </div>
-        <br />
         <div>المحافظة:{{ item.governorate }}</div>
         <div>رقم الهاتف:{{ item.phone }}</div>
         <div>نوع التبرع:{{ item.donorType === 0 ? "دم" : "بلازما" }}</div>
@@ -118,11 +117,11 @@
         <v-card-actions class="pa-0">
           <v-btn
             @click="opnenShow()"
-            class="news-button"
+            class="don-button"
             :to="`/donations/${item.id}`"
             color="white"
             variant="text"
-            >عرض المتبرع
+            >عرض المستخدم
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -279,10 +278,10 @@ watch(() => {
 .filters {
   margin-right: 1rem;
   display: grid;
-  grid-template-columns: repeat(6, 16%);
-  grid-template-rows: repeat(auto-fit, 40px);
+  grid-template-columns: repeat(auto-fit, 16%);
   column-gap: 7px;
   row-gap: 1em;
+  margin-top: 1rem;
 }
 .filter-icon {
   margin: 5px;
@@ -300,5 +299,16 @@ watch(() => {
   padding-left: -10px;
   align-items: center;
   justify-content: center;
+}
+.don-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0px;
+  width: 100%;
+  margin-top: auto;
+  background: #ff2c54;
+  border-radius: 999999px;
 }
 </style>

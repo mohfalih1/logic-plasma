@@ -57,7 +57,7 @@
             تعديل الخبر
           </v-btn>
           <v-btn
-            @click="deleteBlog()"
+            @click="isDeleteNews = true"
             class="add-delete-button pa-5"
             color="white"
             variant="text"
@@ -172,6 +172,39 @@
     </v-dialog>
   </v-row>
   <!-- end edit news -->
+  <!-- end delete notification  -->
+  <v-row justify="center">
+    <v-dialog v-model="isDeleteNews" persistent width="262">
+      <v-card rounded="xl">
+        <v-card-title class="text-center text-primary pb-0">
+          <span> حذف الخبر </span>
+        </v-card-title>
+        <v-card-text> هل انت متأكد من حذف هذاالخبر ؟ </v-card-text>
+        <v-card-actions class="d-flex align-center justify-center">
+          <div class="d-flex align-center justify-center my-1">
+            <v-btn
+              @click="deleteBlog()"
+              class="delete-button"
+              color="white"
+              variant="text"
+            >
+              حذف
+            </v-btn>
+            <v-btn
+              @click="isDeleteNews = false"
+              class="back-button"
+              color="white"
+              variant="text"
+            >
+              <v-icon icon="mdi-greater-than" size="20"></v-icon>
+              العودة
+            </v-btn>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+  <!-- end delete notification  -->
 </template>
 
 <script setup>
@@ -182,6 +215,7 @@ import router from "@/router";
 import axios from "@/server/axios";
 const isLoading = ref(true);
 const isEditDialog = ref(false);
+const isDeleteNews = ref(false);
 const model = ref("AR");
 const blog = ref({});
 const donorId = ref(router.currentRoute.value.params.id);

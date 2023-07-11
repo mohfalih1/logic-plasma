@@ -11,7 +11,7 @@
       <v-form ref="validForm">
         <v-card rounded="xl" scroolable="true" height="100vh">
           <v-card-title class="text-center text-primary pt-4">
-            <span> اضافة متبرع</span>
+            <span> اضافة مستخدم</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -23,7 +23,7 @@
                       :rules="nameRules"
                       clearable
                       variant="plain"
-                      placeholder="اسم المتبرع"
+                      placeholder="اسم المستخدم"
                       type="text"
                     ></v-text-field>
                   </div>
@@ -39,6 +39,8 @@
                       type="Number"
                     ></v-text-field>
                   </div>
+                  <br />
+                  <span color="primary">{{ resPhone }}</span>
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
@@ -113,7 +115,7 @@
                       class="d-flex algin-center"
                       clearable
                       variant="plain"
-                      label="هل المتبرع مدخن؟"
+                      label="هل المستخدم مدخن؟"
                       type="text"
                     ></v-checkbox>
                   </div>
@@ -221,7 +223,7 @@
                       clearable
                       variant="plain"
                       prepend-icon="mdi-file-image-plus"
-                      label="مستند الرقم الوطني للمتبرع"
+                      label="مستند الرقم الوطني للمستخدم"
                     ></v-file-input>
                   </div>
                 </v-col>
@@ -233,7 +235,7 @@
                       :color="primary"
                       variant="text"
                     >
-                      اضافة المتبرع
+                      اضافة المستخدم
                     </v-btn>
                     <v-btn
                       class="add-back-button"
@@ -326,6 +328,7 @@ onMounted(() => {
   getChronicDisease();
   getGovernorates();
 });
+
 const form = reactive({
   Name: null,
   Phone: null,
@@ -412,10 +415,26 @@ function addSubscribers() {
       isLoading.value = false;
     });
 }
-const validForm = ref();
+const resPhone = ref();
+function checkPhone() {
+  resPhone.value = "";
+  const formData = new FormData();
+  formData.append("phoneNumber", form.Phone);
+  axios
+    .post("Admin/CheckPhone", formData)
+    .then((res) => {})
+    .catch((err) => {
+      resPhone.value = err.response.data;
+      console.log(resPhone.value);
+    });
+}
 const valid = ref(true);
-
-const imageRules = ref([(v) => !!v || "الصورة مطلوبة"]);
+const imageRules = ref([
+  (v) => {
+    if (v) return true;
+    return "الصورة مطلوبة";
+  },
+]);
 const nameRules = ref([(v) => !!v || " الاسم مطلوب"]);
 const bloodGroupRules = ref([(v) => !!v || "زمرة الدم مطلوبة"]);
 const phoneRules = ref([
@@ -423,12 +442,10 @@ const phoneRules = ref([
     if (!v) return "رقم الهاتف مطلوب";
     else if (!(v.length <= 15 && v.length >= 11))
       return "يجب ان يكون رقم الهاتف بين 11 الى 15 كحد اقصى";
-    else return true;
+    else return true && checkPhone() && resPhone.value;
   },
 ]);
-async function validate() {
-  valid.value = await validForm.value.validate();
-
+function validate() {
   if (valid.value) {
     isLoading.value = false;
     addSubscribers();
@@ -469,15 +486,12 @@ const genderData = ref([
   --dp-border-color: transparent !important;
   --dp-border-color-hover: transparent !important;
 }
-
 .dp__main {
   height: 40px !important;
 }
-
 .dp__main :deep(.dp__pointer) {
   height: 40px !important;
 }
-
 .chip {
   display: flex;
   flex-direction: row;

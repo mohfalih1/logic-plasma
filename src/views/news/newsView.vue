@@ -14,7 +14,10 @@
         </v-btn>
       </div>
     </v-card-text>
-  <div v-if="blog.length===0" class="d-flex justify-center align-center mt-10">
+    <div
+      v-if="blog.length === 0"
+      class="d-flex justify-center align-center mt-10"
+    >
       <h3>لا يوجد اخبار لعرضهم !</h3>
     </div>
     <div class="grid-news ma-5">
@@ -25,17 +28,16 @@
           class="news-image"
           cover
         ></v-img>
+        <div class="news-title px-2">{{ item.titleArabic }}</div>
 
-        <div class="news-title">{{ item.titleArabic }}</div>
-
-        <div class="news-date">
-          <v-icon icon="mdi-calendar-outline"> </v-icon
+        <div class="news-date px-2">
+          <v-icon icon="mdi-calendar-outline ml-1"> </v-icon
           ><span>{{
             dayjs(item.updateDate).format("YYYY/MM/DD, HH:MM A")
           }}</span>
         </div>
 
-        <v-card-actions class="pa-0">
+        <v-card-actions class="px-2 w-100">
           <v-btn
             :to="`/news/${item.id}`"
             class="news-button"
@@ -45,6 +47,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
+      
     </div>
 
     <!-- pagination  -->
@@ -112,26 +115,20 @@ onMounted(() => {
 </script>
 <style scoped>
 .card-temp-news {
-  margin: 1px 10px 7px 7px;
   border-radius: 16px;
   width: 100%;
-  height: 135vh;
 }
 .grid-news {
   display: grid;
-  justify-content: space-around;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 70%);
-  column-gap: 1px;
-  row-gap: 1em;
-  height: 70vh;
+  height: 100%;
+  gap: 2rem;
 }
 .pag {
+  margin-top: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
   width: 100%;
-  height: 65vh;
 }
 </style>

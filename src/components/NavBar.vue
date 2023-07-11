@@ -4,7 +4,7 @@
       color="primary"
       location="right"
       permanent
-      class="rounded-xl ma-5"
+      class="rounded-xl ma-5 nav"
       width="264"
       height="100vh"
     >
@@ -51,7 +51,7 @@
           to="/donations"
           class="bg-white rounded-lg text-primary"
           prepend-icon="mdi-hand-heart-outline"
-          title="المتبرعين"
+          title="المستخدمين"
         ></v-list-item>
 
         <br />
@@ -184,7 +184,7 @@ const routesEnum = ref([
     icon: "mdi-newspaper-variant-outline",
   },
   {
-    name: "المتبرعين",
+    name: "المستخدمين",
     value: 2,
     route: "/donations",
     icon: "mdi-hand-heart-outline",
@@ -226,5 +226,10 @@ const routesEnum = ref([
 @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400&display=swap");
 * {
   font-family: "Cairo", sans-serif;
+}
+
+.nav {
+  overflow: hidden !important;
+  overflow-y: hidden !important;
 }
 </style>

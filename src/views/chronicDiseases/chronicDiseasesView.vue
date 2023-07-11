@@ -306,7 +306,7 @@ onMounted(() => {
   getChronicDiseases();
 });
 const numberOfPage = ref(1);
-const numberOfItemPerPage = ref(12);
+const numberOfItemPerPage = ref(10);
 const chronicDiseases = ref([]);
 function getChronicDiseases() {
   isLoading.value = true;
@@ -413,10 +413,7 @@ async function submit() {
 .grid-chron {
   display: grid;
   justify-content: space-around;
-  grid-template-columns: repeat(4, 23%);
-  grid-template-rows: repeat(3, 27%);
-  column-gap: 1px;
-  row-gap: 1rem;
-  height: 90vh;
+  grid-template-columns: repeat(auto-fit, 260px);
+gap: 1rem;
 }
 </style>

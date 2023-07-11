@@ -14,100 +14,98 @@
         </v-btn>
       </div>
     </v-card-text>
-    <div class="d-flex justify-center align-center h-75">
-      <v-card elevation="0">
-        <div class="active-button" width="100%">
-          <!-- <div>
-            <v-img
-              class="image-translate ma-0"
-              src="@/assets/Frame88.svg"
-              width="50px"
-              height="36px"
-            ></v-img>
+    <v-form v-model="valid" @submit.prevent="validate">
+      <v-card class="input-flex" elevation="0">
+        <div class="filed-flex">
+          <div class="w-100 mt-5">
+            <h4>اضف خبر باللغة العربية:</h4>
+            <v-text-field
+              v-model="addBlo.TitleArabic"
+              variant="underlined"
+              class="h-50"
+              clearable=""
+              label="عنوان الخبر..."
+              :rules="titleRule"
+            >
+            </v-text-field>
+            <v-textarea
+              v-model="addBlo.ContentArabic"
+              variant="underlined"
+              clearable=""
+              label="محتوى الخبر..."
+              :rules="contentRule"
+            >
+            </v-textarea>
           </div>
-          <div>
-            <v-btn class="lang-button" elevation="0" rounded="0">العربية</v-btn>
-            <v-btn class="ma-0" elevation="0" rounded="0">English</v-btn>
-          </div> -->
+          <div class="w-100 mt-5">
+            <h4>اضف خبر باللغة الانكليزية:</h4>
+            <v-text-field
+              v-model="addBlo.TitleEnglish"
+              :rules="titleRule"
+              clearable=""
+              variant="underlined"
+              class="h-50"
+              label="عنوان الخبر..."
+            >
+            </v-text-field>
+            <v-textarea
+              v-model="addBlo.ContentEnglish"
+              :rules="contentRule"
+              clearable=""
+              variant="underlined"
+              label="محتوى الخبر..."
+            >
+            </v-textarea>
+          </div>
         </div>
-        <h4>اضف خبر باللغة العربية:</h4>
-        <br />
-        <v-form ref="validForm">
+        <div class="w-50">
           <v-text-field
-            v-model="addBlo.TitleArabic"
-            variant="plain"
-            class="h-50"
+            label="اضف رابط الخبر"
             clearable=""
-            label="عنوان الخبر..."
-            :rules="titleRule"
+            variant="underlined"
+            prepend-icon="mdi-link"
           >
           </v-text-field>
-          <br />
-          <v-textarea
-            v-model="addBlo.ContentArabic"
-            variant="plain"
-            clearable=""
-            label="محتوى الخبر..."
-            :rules="contentRule"
-          >
-          </v-textarea>
-          <br />
-          <h4>اضف خبر باللغة الانكليزية:</h4>
+        </div>
 
-          <v-text-field
-            v-model="addBlo.TitleEnglish"
-            :rules="titleRule"
-            clearable=""
+        <v-card class="drag-box mb-3">
+          <v-card-title class="drag-box-title">
+            <p>اضف صورة مربعة 1*1</p>
+          </v-card-title>
+          <v-file-input
+            class="drag-box-content"
             variant="plain"
-            class="h-50"
-            label="عنوان الخبر..."
+            :rules="imageRule"
+            v-model="addBlo.ImageFile"
+            accept="image/*"
+            hint="يرجى رفع صورة مربعة"
+            show-size
+            prepend-icon="mdi-image-plus-outline"
           >
-          </v-text-field>
-
-          <br />
-          <v-textarea
-            v-model="addBlo.ContentEnglish"
-            :rules="contentRule"
-            clearable=""
-            variant="plain"
-            label="محتوى الخبر..."
+          </v-file-input>
+          <v-card-text> </v-card-text>
+        </v-card>
+        <v-card-actions>
+          <v-btn
+            type="submit"
+            class="add-edit-button pa-5"
+            :color="primary"
+            variant="text"
           >
-          </v-textarea>
-          <v-card class="drag-box mb-3">
-            <v-file-input
-              class="drag-box-content"
-              variant="plain"
-              :rules="imageRule"
-              v-model="addBlo.ImageFile"
-              accept="image/*"
-              show-size
-              prepend-icon="mdi-image-plus-outline"
-            >
-            </v-file-input>
-          </v-card>
-          <v-card-actions>
-            <v-btn
-              @click="validate()"
-              class="add-edit-button pa-5"
-              :color="primary"
-              variant="text"
-            >
-              نشر الخبر
-            </v-btn>
-
-            <v-btn
-              to="/news"
-              class="add-back-button pa-5"
-              color="white"
-              variant="text"
-            >
-              <v-icon icon="mdi-greater-than"></v-icon>
-              العودة
-            </v-btn>
-          </v-card-actions>
-        </v-form>
+            نشر الخبر
+          </v-btn>
+          <v-btn
+            to="/news"
+            class="add-back-button pa-5"
+            color="white"
+            variant="text"
+          >
+            <v-icon icon="mdi-greater-than"></v-icon>
+            العودة
+          </v-btn>
+        </v-card-actions>
       </v-card>
-    </div>
+    </v-form>
   </v-card>
 </template>
 <script setup>
@@ -150,16 +148,32 @@ function addBlog() {
       console.log("add suc");
     });
 }
-const validForm = ref();
-const valid = ref(true);
 
-const titleRule = ref([(v) => !!v || "العنوان مطلوب"]);
-const contentRule = ref([(v) => !!v || "المحتوى مطلوب"]);
-const imageRule = ref([(v) => !!v || " الصورة مطلوبة"]);
+// .............validation.............
+const valid = ref(false);
+const titleRule = ref([
+  (v) => {
+    if (v) return true;
 
-async function validate() {
-  valid.value = await validForm.value.validate();
+    return "العنوان مطلوب";
+  },
+]);
+const contentRule = ref([
+  (v) => {
+    if (v) return true;
 
+    return "المحتوى مطلوب";
+  },
+]);
+const imageRule = ref([
+  (v) => {
+    if (v) return true;
+
+    return "الصورة مطلوبة";
+  },
+]);
+
+function validate() {
   if (valid.value) {
     isLoading.value = false;
     addBlog();
@@ -167,11 +181,35 @@ async function validate() {
 }
 </script>
 <style scoped>
+.input-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.filed-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  gap: 2rem;
+  width: 70%;
+}
 .drag-box {
   position: relative;
   width: 425px;
   height: 200px;
   background-color: #ffc0cc;
+}
+.drag-box-title {
+  background-color: #ff2c54;
+  color: white;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 18px;
 }
 
 .drag-box-content {

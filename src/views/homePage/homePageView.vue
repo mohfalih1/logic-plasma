@@ -144,7 +144,7 @@
                 <div>
                   <h2>{{ statistics.totalStatisticsForDoners }}</h2>
                   <br />
-                  <h6>مجموع عدد المتبرعين</h6>
+                  <h6>مجموع عدد المستخدمين</h6>
                 </div>
 
                 <div>
@@ -505,7 +505,7 @@ const donorTypes = ref([
   { name: "بلازما", value: 1 },
 ]);
 const subscribersType = ref([
-  { name: "متبرع", value: 0 },
+  { name: "مستخدم", value: 0 },
   { name: "مستفيد", value: 1 },
 ]);
 
@@ -546,7 +546,7 @@ watch(() => {
 }
 .dp__main {
   height: 52px !important;
-  --dp-border-color: #BDBDBD;
+  --dp-border-color: #bdbdbd;
 }
 .dp__main :deep(.dp__pointer) {
   height: 52px !important;

@@ -2,25 +2,25 @@
   <Loader v-if="isLoading" />
   <div class="contenier">
     <div class="content">
-      <v-card class="card" color="primary">
+      <v-card class="card" color="white" elevation="1">
         <v-card-text>
           <div class="logo">
-            <v-img width="150px" src="../../assets/plasmaLogo.png"></v-img>
-            <br />
-            <h2>تسجيل الدخول</h2>
+            <v-img width="150px" src="@/assets/logoPlasma.svg"></v-img>
           </div>
           <br />
           <br />
           <v-form class="form">
             <div>
-              <v-text-field
-                v-model="loginData.email"
-                class="login-input"
-                :variant="null"
-                placeholder="البريد الالكتروني"
-                type="email"
-                prepend-inner-icon="mdi-email"
-              ></v-text-field>
+              <div class="input-container">
+                <v-text-field
+                  v-model="loginData.email"
+                  class="login-input"
+                  :variant="null"
+                  placeholder="البريد الالكتروني"
+                  type="email"
+                  prepend-inner-icon="mdi-email"
+                />
+              </div>
               <br />
               <v-text-field
                 v-model="loginData.password"
@@ -38,11 +38,11 @@
                 @click="login()"
                 class="mt-6 pa-1 rounded-lg"
                 large
-                rounded
+                rounded="xl"
                 block
-                style="height: 3rem  !important"
+                style="height: 3rem !important"
                 elevation="0"
-                color="secondary"
+                color="primary"
                 fluid
                 >تسجيل دخول</v-btn
               >
@@ -59,7 +59,7 @@
 <script setup>
 import Loader from "@/components/Loader.vue";
 import axios from "@/server/axios";
-import { ref,onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { usePermissionsStore } from "@/store/permissions.js";
 const permissions = usePermissionsStore();
@@ -91,7 +91,6 @@ function login() {
       isLoading.value = false;
     });
 }
-
 </script>
 <style scoped>
 * {
@@ -105,7 +104,8 @@ iframe {
   border: none;
 }
 .contenier {
-  height: auto;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -123,20 +123,20 @@ iframe {
   flex-direction: column;
 }
 .card {
-  width: 600px;
-  height: 600px;
   display: flex;
   align-items: center;
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 50px 0 rgba(238, 76, 76, 0.5);
+  border-radius: 25px;
+
   z-index: 10;
 }
-.login-input{
-  width: 100%;
-  height: 3.5rem;
+
+.login-input {
+  width: 25rem;
+  height: 3.6rem;
   background-color: #ffff;
-  border-radius: 10px;
+  border-radius: 999999px;
+  border: 2px solid var(--primary);
   color: black;
   font-size: 1.2rem;
 }

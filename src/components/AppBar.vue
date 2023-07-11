@@ -40,18 +40,15 @@ function getUserInfo() {
 </script>
 <style scoped>
 .app-bar {
-  width: 97%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: row-reverse;
-  box-shadow: none;
   padding: 8px 16px;
   background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
   margin: 40px 27px 0px 7px;
   border-radius: 8px;
-  height: 80px;
 }
 .wlecome-name {
   display: flex;

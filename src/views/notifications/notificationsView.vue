@@ -1,7 +1,7 @@
 <template>
   <loader v-if="isLoading" />
   <v-card class="card-temp">
-    <v-card-title class="d-flex ma-5 justify-space-between">
+    <v-card-title class="d-flex mx-5 justify-space-between">
       <div class="d-flex">
         <v-icon class="ml-3" icon="mdi-bell-ring-outline"></v-icon>
 
@@ -34,7 +34,7 @@
     </v-card-text>
     <div
       v-if="notification.length === 0"
-      class="d-flex justify-center align-center mt-10"
+      class="d-flex justify-center align-center"
     >
       <h3>لا يوجد اشعارات لعرضهم !</h3>
     </div>
@@ -108,7 +108,7 @@
   <!-- start add notification  -->
   <v-row justify="center">
     <v-dialog v-model="addDialog" persistent width="400">
-      <v-form ref="validForm">
+      <v-form v-model="valid" @submit.prevent="validate">
         <v-card rounded="xl">
           <v-card-title class="text-center text-primary pb-0">
             <span> اضافة اشعار جديد</span>
@@ -175,16 +175,17 @@
           <v-card-actions class="d-flex align-center justify-center pt-0">
             <div class="d-flex align-center justify-center my-1">
               <v-btn
-                @click="validate()"
                 class="delete-button"
                 color="white"
                 variant="text"
+                type="submit"
               >
                 اضافة
               </v-btn>
               <v-btn
                 @click="addDialog = false"
                 class="back-button"
+                type="button"
                 color="white"
                 variant="text"
               >
@@ -394,15 +395,24 @@ function previousPage() {
 }
 
 // .............validation.............
-const validForm = ref();
-const valid = ref(true);
+const valid = ref(false);
 
-const titleRule = ref([(v) => !!v || "العنوان مطلوب"]);
-const contentRule = ref([(v) => !!v || "المحتوى مطلوب"]);
+const titleRule = ref([
+  (value) => {
+    if (value) return true;
 
-async function validate() {
-  valid.value = await validForm.value.validate();
+    return "العنوان مطلوب";
+  },
+]);
+const contentRule = ref([
+  (value) => {
+    if (value) return true;
 
+    return "المحتوى مطلوب";
+  },
+]);
+
+function validate() {
   if (valid.value) {
     isLoading.value = false;
     addNotification();
@@ -412,37 +422,20 @@ async function validate() {
 <style scoped>
 .grid-notifications {
   display: grid;
-  justify-content: space-around;
-  grid-template-columns: repeat(4, 20%);
-  grid-template-rows: repeat(3, 35%);
-  column-gap: 1px;
-  row-gap: 1em;
-  height: 90vh;
+  grid-template-columns: repeat(auto-fit, 260px);
+  gap: 1rem;
 }
 .notifications-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: auto;
-  padding: 5px 5px;
-  width: 17rem;
-  height: fit-content;
+  padding: 5px;
   background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 }
-.active-button {
-  border: 1px solid #ffffff;
-  border-radius: 10px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  margin: 10px;
-  display: flex;
-  justify-content: start;
-  align-items: start;
-  width: 230px;
-}
+
 .select {
   height: 40px;
   background: #f2f2f2;
@@ -451,12 +444,5 @@ async function validate() {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.image-translate {
-  overflow: hidden;
-}
-.lang-button {
-  background-color: #ff2c54;
-  color: white;
 }
 </style>

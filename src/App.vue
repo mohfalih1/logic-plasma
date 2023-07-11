@@ -1,8 +1,7 @@
 <template>
   <v-app id="app" style="background: #f8f8f8">
-
     <v-main>
-      <NavBar v-if="!isSidebar" style="direction: ltr" />
+      <NavBar v-if="!isSidebar" />
       <AppBar v-if="!isSidebar" />
       <v-container>
         <router-view />
@@ -32,5 +31,4 @@ const isSidebar = computed(() => {
 body {
   font-family: "Cairo", sans-serif;
 }
-
 </style>
