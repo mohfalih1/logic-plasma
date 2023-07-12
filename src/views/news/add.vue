@@ -60,6 +60,8 @@
         </div>
         <div class="w-50">
           <v-text-field
+            v-model="addBlo.URL"
+            :rules="urlRule"
             label="اضف رابط الخبر"
             clearable=""
             variant="underlined"
@@ -121,6 +123,7 @@ const addBlo = reactive({
   ImageFile: null,
   ContentArabic: null,
   ContentEnglish: null,
+  URL: null,
 });
 
 function addBlog() {
@@ -133,6 +136,7 @@ function addBlog() {
   );
   formData.append("ContentArabic", addBlo.ContentArabic);
   formData.append("ContentEnglish", addBlo.ContentEnglish);
+  formData.append("URL", addBlo.URL);
   isLoading.value = true;
   axios
     .post(`Admin/AddBlog`, formData)
@@ -172,6 +176,14 @@ const imageRule = ref([
     return "الصورة مطلوبة";
   },
 ]);
+const urlRule = ref([
+  (v) => !!v || "الرابط مطلوب",
+  (v) => isURLValid(v) || "الرابط غير صالح",
+]);
+function isURLValid(value) {
+  const pattern = /^(ftp|http|https):\/\/[^ "]+$/;
+  return pattern.test(value);
+}
 
 function validate() {
   if (valid.value) {

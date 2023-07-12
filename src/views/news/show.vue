@@ -34,6 +34,10 @@
         <p>
           {{ model === "AR" ? blog.contentArabic : blog.contentEnglish }}
         </p>
+        <br />
+        <v-btn>
+          <a class="link" :href="blog.url" target="_blank"> رابط الخبر </a>
+        </v-btn>
 
         <br />
         <v-img
@@ -93,6 +97,7 @@
               <div>
                 <v-text-field
                   v-model="editNews.TitleArabic"
+                  :rules="titleRule"
                   class="select"
                   variant="plain"
                   label="عنوان الخبر..."
@@ -104,6 +109,7 @@
               <div>
                 <v-textarea
                   v-model="editNews.ContentArabic"
+                  :rules="contentRule"
                   class="select"
                   variant="plain"
                   label="محتوى الخبر..."
@@ -116,6 +122,7 @@
               <div>
                 <v-text-field
                   v-model="editNews.TitleEnglish"
+                  :rules="urlRule"
                   class="select"
                   variant="plain"
                   label="عنوان الخبر..."
@@ -132,6 +139,16 @@
                   label="محتوى الخبر..."
                 >
                 </v-textarea>
+              </div>
+              <br />
+              <div>
+                <v-text-field
+                  v-model="editNews.URL"
+                  class="select"
+                  variant="plain"
+                  label="رابط الخبر..."
+                >
+                </v-text-field>
               </div>
               <br />
               <div class="select-image">
@@ -227,6 +244,7 @@ const showModel = (item, type) => {
   editNews.ContentArabic = item.contentArabic;
   editNews.TitleEnglish = item.titleEnglish;
   editNews.ContentEnglish = item.contentEnglish;
+  editNews.URL = item.url;
 };
 function getBlogById() {
   axios
@@ -259,6 +277,7 @@ const editNews = reactive({
   ImageFile: null,
   ContentArabic: "",
   ContentEnglish: "",
+  URL: null,
 });
 function updateNews() {
   isLoading.value = true;
@@ -271,8 +290,11 @@ function updateNews() {
   );
   formData.append("ContentArabic", editNews.ContentArabic);
   formData.append("ContentEnglish", editNews.ContentEnglish);
+  formData.append("URL", editNews.URL);
   axios
+
     .put(`Admin/UpdateBlog?id=${donorId.value}`, formData)
+
     .then((res) => {
       console.log(res.data);
     })
@@ -289,8 +311,50 @@ onMounted(() => {
 
   model.value, donorId;
 });
+
+// .............validation.............
+const valid = ref(false);
+const titleRule = ref([
+  (v) => {
+    if (v) return true;
+
+    return "العنوان مطلوب";
+  },
+]);
+const contentRule = ref([
+  (v) => {
+    if (v) return true;
+
+    return "المحتوى مطلوب";
+  },
+]);
+const imageRule = ref([
+  (v) => {
+    if (v) return true;
+
+    return "الصورة مطلوبة";
+  },
+]);
+const urlRule = ref([
+  (v) => !!v || "الرابط مطلوب",
+  (v) => isURLValid(v) || "الرابط غير صالح",
+]);
+function isURLValid(value) {
+  const pattern = /^(ftp|http|https):\/\/[^ "]+$/;
+  return pattern.test(value);
+}
+
+function validate() {
+  if (valid.value) {
+    isLoading.value = false;
+    addBlog();
+  }
+}
 </script>
 <style scoped>
+.link {
+  text-decoration: none;
+}
 .select {
   height: 100%;
   background: #f2f2f2;
