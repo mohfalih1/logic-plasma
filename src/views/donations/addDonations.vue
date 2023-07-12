@@ -8,7 +8,7 @@
       scrollable="true"
       height="105vh"
     >
-      <v-form ref="validForm">
+      <v-form v-model="valid" @submit.prevent="validate">
         <v-card rounded="xl" scroolable="true" height="100vh">
           <v-card-title class="text-center text-primary pt-4">
             <span> اضافة مستخدم</span>
@@ -39,13 +39,15 @@
                       type="Number"
                     ></v-text-field>
                   </div>
-                  <br />
-                  <span color="primary">{{ resPhone }}</span>
+                  <div v-if="resPhone" color="primary" class="mt-4">
+                    {{ resPhone }}
+                  </div>
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
                     <v-select
                       v-model="form.Governorate"
+                      :rules="governorateRules"
                       clearable
                       variant="plain"
                       placeholder="اسم المدينة"
@@ -60,6 +62,7 @@
                   <div class="select">
                     <v-select
                       v-model="form.Gender"
+                      :rules="genderRules"
                       clearable
                       variant="plain"
                       placeholder="الجنس"
@@ -74,6 +77,7 @@
                   <div class="select">
                     <v-select
                       v-model="form.DonorType"
+                      :rules="donorTypeRules"
                       clearable
                       variant="plain"
                       placeholder="نوع التبرع"
@@ -102,10 +106,14 @@
                 <v-col cols="6">
                   <VueDatePicker
                     v-model="form.BirthDate"
+                    :rules="BirthDateRules"
                     model-type="yyyy/MM/dd"
                     placeholder="تاريخ الميلاد"
                     auto-apply
                   ></VueDatePicker>
+                  <div v-if="BirthDateValid">
+                    <span class="text-danger"> {{ BirthDateValid }}</span>
+                  </div>
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
@@ -207,7 +215,6 @@
                   <div class="select-file">
                     <v-file-input
                       v-model="form.ImageLinkBloodTest"
-                      :rules="imageRules"
                       clearable
                       variant="plain"
                       prepend-icon="mdi-file-image-plus"
@@ -219,7 +226,6 @@
                   <div class="select-file">
                     <v-file-input
                       v-model="form.ImageLinkDonorID"
-                      :rules="imageRules"
                       clearable
                       variant="plain"
                       prepend-icon="mdi-file-image-plus"
@@ -230,7 +236,7 @@
                 <v-col cols="12">
                   <v-card-actions class="pb-5">
                     <v-btn
-                      @click="validate()"
+                      type="submit"
                       class="add-edit-button"
                       :color="primary"
                       variant="text"
@@ -302,6 +308,7 @@ import axios from "@/server/axios";
 import { reactive, ref, onMounted } from "vue";
 
 const isLoading = ref(false);
+const isDialog = ref(true);
 const isSnackBarDelete = ref(false);
 const store = useCounterStore();
 const governorates = ref([]);
@@ -328,7 +335,7 @@ onMounted(() => {
   getChronicDisease();
   getGovernorates();
 });
-
+const BirthDateValid = ref("");
 const form = reactive({
   Name: null,
   Phone: null,
@@ -407,11 +414,15 @@ function addSubscribers() {
   axios
     .post("Admin/AddSubscribers", formData)
     .then((res) => {
+      store.resAddDon = res.data;
       router.push("/donations");
     })
-    .catch((err) => {})
+    .catch((err) => {
+      BirthDateValid.value = "تاريخ الميلاد مطلوب";
+    })
     .finally(() => {
       store.dialog = false;
+      store.isSnackbar = true;
       isLoading.value = false;
     });
 }
@@ -429,14 +440,45 @@ function checkPhone() {
     });
 }
 const valid = ref(true);
-const imageRules = ref([
+
+const nameRules = ref([
   (v) => {
     if (v) return true;
-    return "الصورة مطلوبة";
+    return "الاسم مطلوب";
   },
 ]);
-const nameRules = ref([(v) => !!v || " الاسم مطلوب"]);
-const bloodGroupRules = ref([(v) => !!v || "زمرة الدم مطلوبة"]);
+const bloodGroupRules = ref([
+  (v) => {
+    if (v || v === 0) return true;
+    return "زمرة الدم مطلوبة";
+  },
+]);
+const governorateRules = ref([
+  (v) => {
+    if (v || v === 0) return true;
+    return "المحافظة مطلوبة";
+  },
+]);
+
+const donorTypeRules = ref([
+  (v) => {
+    if (v || v === 0) return true;
+    else if (!v) return "نوع المتبرع مطلوب";
+  },
+]);
+const BirthDateRules = ref([
+  (v) => {
+    if (v) return true;
+    return "تاريخ الميلاد مطلوب";
+  },
+]);
+const genderRules = ref([
+  (v) => {
+    if (v || v === 0) return true;
+    return "الجنس مطلوب";
+  },
+]);
+
 const phoneRules = ref([
   (v) => {
     if (!v) return "رقم الهاتف مطلوب";

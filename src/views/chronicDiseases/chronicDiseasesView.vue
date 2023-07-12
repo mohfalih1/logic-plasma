@@ -89,13 +89,13 @@
   <!-- start add chronic -->
   <v-row justify="center">
     <v-dialog v-model="addDialog" persistent width="262">
-      <v-card rounded="xl">
-        <v-card-title class="text-center text-primary pb-0">
-          <span> اضافة مرض مزمن</span>
-        </v-card-title>
-        <v-card-text class="pa-0">
-          <v-container>
-            <v-form ref="validForm">
+      <v-form v-model="valid" @submit.prevent="validate()">
+        <v-card rounded="xl">
+          <v-card-title class="text-center text-primary pb-0">
+            <span> اضافة مرض مزمن</span>
+          </v-card-title>
+          <v-card-text class="pa-0">
+            <v-container>
               <v-col cols="12">
                 <div class="select">
                   <v-icon color="red" icon="mdi-virus-outline"></v-icon>
@@ -122,32 +122,36 @@
                   ></v-text-field>
                   <v-icon color="red" icon="mdi-virus-outline"></v-icon>
                 </div>
+
+                <div>
+                  {{ checkDis }}
+                </div>
               </v-col>
-            </v-form>
-          </v-container>
-        </v-card-text>
-        <v-card-actions class="d-flex align-center justify-center">
-          <div class="d-flex align-center justify-center my-1">
-            <v-btn
-              @click="submit()"
-              class="delete-button"
-              color="white"
-              variant="text"
-            >
-              اضافة
-            </v-btn>
-            <v-btn
-              @click="addDialog = false"
-              class="back-button"
-              color="white"
-              variant="text"
-            >
-              <v-icon icon="mdi-greater-than" size="20"></v-icon>
-              العودة
-            </v-btn>
-          </div>
-        </v-card-actions>
-      </v-card>
+            </v-container>
+          </v-card-text>
+          <v-card-actions class="d-flex align-center justify-center">
+            <div class="d-flex align-center justify-center my-1">
+              <v-btn
+                type="submit"
+                class="delete-button"
+                color="white"
+                variant="text"
+              >
+                اضافة
+              </v-btn>
+              <v-btn
+                @click="addDialog = false"
+                class="back-button"
+                color="white"
+                variant="text"
+              >
+                <v-icon icon="mdi-greater-than" size="20"></v-icon>
+                العودة
+              </v-btn>
+            </div>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-dialog>
   </v-row>
   <!-- end add chronic -->
@@ -249,7 +253,7 @@
   <!--start add snackbar  -->
   <div class="text-center ma-2">
     <v-snackbar v-model="addsnackbar">
-      <p>تمت الاضافة بنجاح</p>
+      <p>{{ successAdd }}</p>
       <template v-slot:actions>
         <v-btn color="pink" variant="text" @click="addsnackbar = false">
           Close
@@ -326,13 +330,19 @@ const addChron = ref({
   nameArabic: "",
   nameEnglish: "",
 });
+const checkDis = ref("");
+const successAdd = ref();
 function addChronicDiseas() {
   isLoading.value = true;
   axios
     .post("Admin/AddChronicDisease", addChron.value)
     .then((res) => {
       addDialog.value = false;
+      successAdd.value = res.data;
       getChronicDiseases();
+    })
+    .catch((err) => {
+      checkDis.value = err.response.data;
     })
     .finally(() => {
       isLoading.value = false;
@@ -384,15 +394,22 @@ function previousPage() {
   getChronicDiseases();
 }
 // .............validation.............
-const validForm = ref();
 const valid = ref(true);
 
-const titleRule = ref([(v) => !!v || "العنوان مطلوب"]);
-const titleRuleEn = ref([(v) => !!v || "title is requierd"]);
+const titleRule = ref([
+  (v) => {
+    if (v) return true;
+    return "العنوان مطلوب";
+  },
+]);
+const titleRuleEn = ref([
+  (v) => {
+    if (v) return true;
+    return "title is requierd";
+  },
+]);
 
-async function submit() {
-  valid.value = await validForm.value.validate();
-
+function validate() {
   if (valid.value) {
     isLoading.value = false;
     addChronicDiseas();
@@ -414,6 +431,6 @@ async function submit() {
   display: grid;
   justify-content: space-around;
   grid-template-columns: repeat(auto-fit, 260px);
-gap: 1rem;
+  gap: 1rem;
 }
 </style>
