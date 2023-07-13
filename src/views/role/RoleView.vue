@@ -345,10 +345,10 @@
   <!-- end delete notification  -->
   <!--start snackbar delete  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="isSnackBarBlock">
+    <v-snackbar v-model="isSnackBarBlock" timeout="2000">
       <p>{{ deleteRes }}</p>
       <template v-slot:actions>
-        <v-btn color="pink" variant="text" @click="isSnackBarBlock = false">
+        <v-btn color="pink" variant="text" @click="isSnackBarBlock = false" >
           اغلاق
         </v-btn>
       </template>
@@ -357,7 +357,7 @@
   <!--end snackbar delete -->
   <!--start snackbar add  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="isSnackBarAdd">
+    <v-snackbar v-model="isSnackBarAdd" timeout="2000">
       <p>{{ addRes }}</p>
       <template v-slot:actions>
         <v-btn color="pink" variant="text" @click="isSnackBarAdd = false">
@@ -369,7 +369,7 @@
   <!-- end snackbar add -->
   <!--start snackbar edit  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="isSnackBarEdit">
+    <v-snackbar v-model="isSnackBarEdit" timeout="2000">
       <p>{{ editRes }}</p>
       <template v-slot:actions>
         <v-btn color="pink" variant="text" @click="isSnackBarEdit = false">

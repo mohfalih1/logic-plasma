@@ -153,18 +153,34 @@
     <!-- pagination  -->
   </v-card>
 
-  <!--start snackbar  -->
+  <!--start add snackbar  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="store.isSnackbar">
-      <p>{{ store.resAddDon }}</p>
+    <v-snackbar v-model="store.isSnackbarAdd" timeout="2000">
+      <p>{{ store.resAdd }}</p>
       <template v-slot:actions>
-        <v-btn color="pink" variant="text" @click="store.isSnackbar = false">
+        <v-btn color="pink" variant="text" @click="store.isSnackbarAdd = false">
           Close
         </v-btn>
       </template>
     </v-snackbar>
   </div>
-  <!--end snackbar  -->
+  <!--end add snackbar  -->
+  <!--start delet snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="store.isSnackbarDele" timeout="2000">
+      <p>{{ store.resDele }}</p>
+      <template v-slot:actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="store.isSnackbarDele = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end add snackbar  -->
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
@@ -174,7 +190,6 @@ import axios from "@/server/axios";
 import { useCounterStore } from "@/store/app";
 const store = useCounterStore();
 const isLoading = ref(false);
-
 onMounted(() => {
   getDoner();
   getGovernorates();

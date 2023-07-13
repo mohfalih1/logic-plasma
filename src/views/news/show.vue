@@ -230,6 +230,8 @@ import { primary } from "@/assets/style";
 import { ref, onMounted, reactive } from "vue";
 import router from "@/router";
 import axios from "@/server/axios";
+import { useCounterStore } from "@/store/app";
+const store = useCounterStore();
 const isLoading = ref(true);
 const isEditDialog = ref(false);
 const isDeleteNews = ref(false);
@@ -263,6 +265,8 @@ function deleteBlog() {
   axios
     .put(`Admin/DeleteBlog?ID=${donorId.value}`)
     .then((res) => {
+      store.isSnackbarDele = true;
+      store.resDele = res.data;
       console.log(res.data);
     })
     .catch((err) => {})
@@ -296,6 +300,8 @@ function updateNews() {
     .put(`Admin/UpdateBlog?id=${donorId.value}`, formData)
 
     .then((res) => {
+      store.isSnackbarEdit = true;
+      store.resEdit = res.data;
       console.log(res.data);
     })
     .catch((err) => {})

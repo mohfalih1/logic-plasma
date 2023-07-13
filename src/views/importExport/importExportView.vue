@@ -32,13 +32,13 @@
         </tr>
 
         <tr>
-          <td class="text-center">APositive</td>
-          <td></td>
+          <td class="text-center">A-</td>
+          <td class="text-center">يجب ان يبدأ ب07</td>
           <td></td>
         </tr>
         <tr>
-          <td class="text-center">ANegative</td>
-          <td></td>
+          <td class="text-center">A+</td>
+          <td class="text-center">يجب ان يكون 11 رقم</td>
           <td></td>
         </tr>
         <tr>
@@ -146,7 +146,7 @@
   <!--end uplaodDialog  -->
   <!--start snackbar  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="snackbar">
+    <v-snackbar v-model="snackbar" timeout="2000">
       <p v-if="file">تم رفع الفايل بنجاح</p>
       <p v-else>يجب اختيار ملف</p>
       <template v-slot:actions>

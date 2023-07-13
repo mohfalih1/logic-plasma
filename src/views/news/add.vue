@@ -58,10 +58,11 @@
             </v-textarea>
           </div>
         </div>
+        <br />
         <div class="w-50">
           <v-text-field
             v-model="addBlo.URL"
-            :rules="urlRule"
+            hint="يجب ان يكون الرابط صحيح"
             label="اضف رابط الخبر"
             clearable=""
             variant="underlined"
@@ -69,6 +70,7 @@
           >
           </v-text-field>
         </div>
+        <br />
 
         <v-card class="drag-box mb-3">
           <v-card-title class="drag-box-title">
@@ -116,6 +118,8 @@ import { primary } from "@/assets/style";
 import { ref, reactive } from "vue";
 import axios from "@/server/axios";
 import router from "@/router";
+import { useCounterStore } from "@/store/app";
+const store = useCounterStore();
 const isLoading = ref(false);
 const addBlo = reactive({
   TitleArabic: null,
@@ -141,8 +145,9 @@ function addBlog() {
   axios
     .post(`Admin/AddBlog`, formData)
     .then((res) => {
+      store.isSnackbarAdd = true;
+      store.resAdd = res.data;
       router.push("/news");
-
       console.log(res.data);
     })
     .catch((err) => {})
@@ -176,14 +181,14 @@ const imageRule = ref([
     return "الصورة مطلوبة";
   },
 ]);
-const urlRule = ref([
-  (v) => !!v || "الرابط مطلوب",
-  (v) => isURLValid(v) || "الرابط غير صالح",
-]);
-function isURLValid(value) {
-  const pattern = /^(ftp|http|https):\/\/[^ "]+$/;
-  return pattern.test(value);
-}
+// const urlRule = ref([
+//   (v) => !!v || "الرابط مطلوب",
+//   (v) => isURLValid(v) || "الرابط غير صالح",
+// ]);
+// function isURLValid(value) {
+//   const pattern = /^(ftp|http|https):\/\/[^ "]+$/;
+//   return pattern.test(value);
+// }
 
 function validate() {
   if (valid.value) {

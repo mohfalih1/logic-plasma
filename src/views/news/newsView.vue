@@ -47,7 +47,6 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-      
     </div>
 
     <!-- pagination  -->
@@ -74,12 +73,59 @@
     </div>
     <!-- pagination  -->
   </v-card>
+
+  <!--start Add snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="store.isSnackbarAdd" timeout="2000">
+      <p>{{ store.resAdd }}</p>
+      <template v-slot:actions>
+        <v-btn color="pink" variant="text" @click="store.isSnackbarAdd = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end Add snackbar  -->
+  <!--start Edit snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="store.isSnackbarEdit" timeout="2000">
+      <p>{{ store.resEdit }}</p>
+      <template v-slot:actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="store.isSnackbarEdit = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end Edit snackbar  -->
+  <!--start Delete snackbar  -->
+  <div class="text-center ma-2">
+    <v-snackbar v-model="store.isSnackbarDele" timeout="2000">
+      <p>{{ store.resDele }}</p>
+      <template v-slot:actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="store.isSnackbarDele = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+  <!--end Delete snackbar  -->
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
 import dayjs from "dayjs";
 import { ref, onMounted } from "vue";
 import axios from "@/server/axios";
+import { useCounterStore } from "@/store/app";
+const store = useCounterStore();
 const isLoading = ref(false);
 const numberOfPage = ref(1);
 const numberOfItemPerPage = ref(8);

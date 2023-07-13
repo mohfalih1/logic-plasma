@@ -178,7 +178,7 @@
                 <div>
                   <h2>{{ statistics.totalStatisticsForHaveChronicDisease }}</h2>
                   <br />
-                  <h6>العدد الكلي للامراض المزمنة</h6>
+                  <h6>عدد المصابين بالامراض المزمنة</h6>
                 </div>
 
                 <div>

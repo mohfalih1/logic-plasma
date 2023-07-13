@@ -302,6 +302,8 @@ function deleteSubscribers() {
   axios.delete(`Admin/DeleteSubscribers?id=${donorId.value}`).then((res) => {
     deleteDialog.value = false;
     store.dialog = false;
+    store.isSnackbarDele = true;
+    store.resDele = res.data;
     router.push("/donations");
   });
 }

@@ -44,9 +44,21 @@
         v-for="item in notification"
         :key="item.id"
       >
-        <div class="news-title">
-          <v-icon icon="mdi-bell-ring-outline" class="ml-2"></v-icon>
-          {{ model === "AR" ? item.titleArabic : item.titleEnglish }}
+        <div class="news-title d-felx justify-space-between">
+          <div>
+            <v-icon icon="mdi-bell-ring-outline" class="ml-2"></v-icon>
+            {{ model === "AR" ? item.titleArabic : item.titleEnglish }}
+          </div>
+          <div>
+            <span
+              v-if="item.isSend === true"
+              class="text-green font-weight-bold"
+              >مرسل</span
+            >
+            <span v-if="item.isSend === false" class="text-red font-weight-bold"
+              >غير مرسل</span
+            >
+          </div>
         </div>
         <br />
         <div class="news-title">
@@ -275,8 +287,9 @@
 
   <!--start snackbar  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="snackbar">
-      <p>{{ resAdd }}</p>
+    <v-snackbar v-model="snackbar" timeout="2000">
+      <p v-if="resAdd">{{ resAdd }}</p>
+      <p v-if="resDelete">{{ resDelete }}</p>
       <template v-slot:actions>
         <v-btn color="pink" variant="text" @click="snackbar = false">
           Close
@@ -334,6 +347,7 @@ const addNotific = ref({
   decArabic: "",
 });
 function addNotification() {
+  resDelete.value = "";
   const formData = new FormData();
   formData.append("titleEn", addNotific.value.titleEn);
   formData.append("titleAr", addNotific.value.titleAr);
@@ -354,13 +368,16 @@ function addNotification() {
       snackbar.value = true;
     });
 }
-
+const resDelete = ref();
 function deleteNotifications(id) {
+  resAdd.value = "";
   isLoading.value = true;
   axios
     .put(`Admin/DeleteNotifications?id=${id}`)
     .then((res) => {
       getNotification();
+      snackbar.value = true;
+      resDelete.value = res.data;
     })
     .catch((err) => {})
     .finally(() => {

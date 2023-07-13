@@ -252,7 +252,7 @@
   <!-- end delete chronic -->
   <!--start add snackbar  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="addsnackbar">
+    <v-snackbar v-model="addsnackbar" timeout="2000">
       <p>{{ successAdd }}</p>
       <template v-slot:actions>
         <v-btn color="pink" variant="text" @click="addsnackbar = false">
@@ -264,7 +264,7 @@
   <!--end add snackbar  -->
   <!--start edit snackbar  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="editsanckbar">
+    <v-snackbar v-model="editsanckbar" timeout="2000">
       <p>تم التعديل بنجاح</p>
       <template v-slot:actions>
         <v-btn color="pink" variant="text" @click="editsanckbar = false">
@@ -276,7 +276,7 @@
   <!--end edit snackbar  -->
   <!--start edit snackbar  -->
   <div class="text-center ma-2">
-    <v-snackbar v-model="deletesanckbar">
+    <v-snackbar v-model="deletesanckbar" timeout="2000">
       <p>تم الحذف بنجاح</p>
       <template v-slot:actions>
         <v-btn color="pink" variant="text" @click="deletesanckbar = false">

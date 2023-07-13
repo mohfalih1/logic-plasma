@@ -261,52 +261,14 @@
       </v-form>
     </v-dialog>
   </v-row>
-  <!--start snackbar delete  -->
-  <div class="text-center ma-2">
-    <v-snackbar v-model="isSnackBarDelete">
-      <p>{{ deleteRes }}</p>
-      <template v-slot:actions>
-        <v-btn color="pink" variant="text" @click="isSnackBarDelete = false">
-          اغلاق
-        </v-btn>
-      </template>
-    </v-snackbar>
-  </div>
-  <!--end snackbar delete -->
-  <!--start snackbar add  -->
-  <div class="text-center ma-2">
-    <v-snackbar v-model="isSnackBarAdd">
-      <p>{{ addRes }}</p>
-      <template v-slot:actions>
-        <v-btn color="pink" variant="text" @click="isSnackBarAdd = false">
-          اغلاق
-        </v-btn>
-      </template>
-    </v-snackbar>
-  </div>
-  <!-- end snackbar add -->
-  <!--start snackbar edit  -->
-  <div class="text-center ma-2">
-    <v-snackbar v-model="isSnackBarEdit">
-      <p>{{ editRes }}</p>
-      <template v-slot:actions>
-        <v-btn color="pink" variant="text" @click="isSnackBarEdit = false">
-          اغلاق
-        </v-btn>
-      </template>
-    </v-snackbar>
-  </div>
-  <!-- end snackbar edit -->
 </template>
 <script setup>
 import Loader from "@/components/Loader.vue";
 import { useCounterStore } from "@/store/app";
 import { primary } from "@/assets/style";
 import router from "@/router";
-
 import axios from "@/server/axios";
 import { reactive, ref, onMounted } from "vue";
-
 const isLoading = ref(false);
 const isDialog = ref(true);
 const isSnackBarDelete = ref(false);
@@ -365,12 +327,6 @@ function addSubscribers() {
   console.log(form.ChronicDiseaseId);
   isLoading.value = true;
   const formData = new FormData();
-
-  // formData.append(
-  //   "ChronicDiseaseId",
-  //   form.ChronicDiseaseId ? form.ChronicDiseaseId : null
-  // );
-
   form.ChronicDiseaseId?.forEach((element) => {
     formData.append("ChronicDiseaseId", element);
   });
@@ -409,20 +365,18 @@ function addSubscribers() {
     "DoYouSmoke",
     form.DoYouSmoke === null ? false : form.DoYouSmoke
   );
-  // formData.append("IsActive", form.IsActive);
-
   axios
     .post("Admin/AddSubscribers", formData)
     .then((res) => {
-      store.resAddDon = res.data;
+      store.isSnackbarAdd = true;
+      store.resAdd = res.data;
+      store.dialog = false;
       router.push("/donations");
     })
     .catch((err) => {
       BirthDateValid.value = "تاريخ الميلاد مطلوب";
     })
     .finally(() => {
-      store.dialog = false;
-      store.isSnackbar = true;
       isLoading.value = false;
     });
 }
