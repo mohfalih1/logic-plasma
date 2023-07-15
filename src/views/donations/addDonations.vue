@@ -106,14 +106,13 @@
                 <v-col cols="6">
                   <VueDatePicker
                     v-model="form.BirthDate"
-                    :rules="BirthDateRules"
                     model-type="yyyy/MM/dd"
                     placeholder="تاريخ الميلاد"
                     auto-apply
                   ></VueDatePicker>
-                  <div v-if="BirthDateValid">
+                  <!-- <div v-if="BirthDateValid">
                     <span class="text-danger"> {{ BirthDateValid }}</span>
-                  </div>
+                  </div> -->
                 </v-col>
                 <v-col cols="6">
                   <div class="select">
@@ -360,7 +359,7 @@ function addSubscribers() {
   formData.append("SubscribersType", form.SubscribersType);
 
   formData.append("Gender", form.Gender);
-  formData.append("BirthDate", form.BirthDate);
+  formData.append("BirthDate", form.BirthDate === null ? "" : form.BirthDate);
   formData.append(
     "DoYouSmoke",
     form.DoYouSmoke === null ? false : form.DoYouSmoke
