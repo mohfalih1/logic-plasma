@@ -110,15 +110,31 @@
           auto-apply
         ></VueDatePicker>
       </div>
-      <!-- <fieldset class="select-don-home-date">
-        <legend>من</legend>
-        <input class="input-date" v-model="filter.DateFrom" type="date" />
-      </fieldset>
-      <fieldset class="select-don-home-date">
-        <legend>الى</legend>
-        <input class="input-date" v-model="filter.DateTo" type="date" />
-      </fieldset> -->
     </div>
+    <v-table class="table-role ma-5" v-if="donerData.length > 0">
+      <thead>
+        <tr class="bg-primary">
+          <th class="text-center text-white">الاسم</th>
+          <th class="text-center text-white">الهاتف</th>
+          <th class="text-center text-white">فصيلة الدم</th>
+          <th class="text-center text-white">المحافظة</th>
+          <th class="text-center text-white">لديه مرض مزمن</th>
+          <th class="text-center text-white">نوع المرض المزمن</th>
+          <th class="text-center text-white">نوع التبرع</th>
+        </tr>
+      </thead>
+      <tbody class="table-body">
+        <tr v-for="item in donerData" :key="item.id">
+          <td class="">{{ item.name }}</td>
+          <td>{{ item.phone }}</td>
+          <td>{{ item.bloodGroup }}</td>
+          <td>{{ item.governorate }}</td>
+          <td>{{ item.hasChronicDisease }}</td>
+          <td>{{ item.chronicDiseases }}</td>
+          <td>{{ item.donorType }}</td>
+        </tr>
+      </tbody>
+    </v-table>
 
     <!-- end filters -->
     <v-card-actions class="pa-5 mb-5">
@@ -157,6 +173,7 @@ const isLoading = ref(false);
 onMounted(() => {
   getChronicDisease();
   getGovernorates();
+  // ExportDoner();
 });
 const typeChronicDiseases = ref([]);
 function getChronicDisease() {
@@ -203,6 +220,19 @@ async function downloadExcelFiles() {
   const fileBlob = new Blob([x], { type: contentType });
   saveAs(fileBlob, "doner.xlsx");
 }
+const donerData = ref([]);
+function ExportDoner() {
+  const filterQuery = Object.entries(filter)
+    .filter(([key, value]) => value !== null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+  axios
+    .get(`Admin/ExportDoner?${filterQuery}`)
+    .then((res) => {
+      donerData.value = res.data;
+    })
+    .catch((err) => {});
+}
 
 // ...............filters ............
 const bloodGroups = ref([
@@ -232,9 +262,14 @@ const ChronicDisease = ref([
   { name: "يوجد", value: true },
   { name: "لا يوجد", value: false },
 ]);
-watch(() => {
-  filter;
-});
+watch(
+  () => filter,
+  (newVal, oldVal) => {
+    ExportDoner();
+  },
+
+  { deep: true }
+);
 </script>
 <style scoped>
 .select-don-date {
@@ -258,7 +293,7 @@ watch(() => {
 }
 .filters {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 125px);
+  grid-template-columns: repeat(auto-fit, 130px);
   gap: 1rem;
   margin-right: 15px;
   margin-top: 1rem;
