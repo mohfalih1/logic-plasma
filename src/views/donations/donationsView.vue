@@ -270,6 +270,7 @@ const bloodGroups = ref([
 const donorTypes = ref([
   { name: "دم", value: 0 },
   { name: "بلازما", value: 1 },
+  { name: "كلاهما", value: 2 },
 ]);
 
 const ChronicDisease = ref([

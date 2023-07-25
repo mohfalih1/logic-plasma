@@ -265,7 +265,7 @@
                     <v-autocomplete
                       v-if="editUser.role === 1"
                       :items="MainRole"
-                      v-model="editUser.cliams[0].privliages"
+                      v-model="(editUser.cliams ?? [])[0].privliages"
                       :rules="roleRules"
                       item-title="name"
                       item-value="value"
@@ -348,7 +348,7 @@
     <v-snackbar v-model="isSnackBarBlock" timeout="2000">
       <p>{{ deleteRes }}</p>
       <template v-slot:actions>
-        <v-btn color="pink" variant="text" @click="isSnackBarBlock = false" >
+        <v-btn color="pink" variant="text" @click="isSnackBarBlock = false">
           اغلاق
         </v-btn>
       </template>
@@ -405,7 +405,16 @@ const showModel = (type, item) => {
   editUser.value.email = item.email;
   editUser.value.role = item.role;
   editUser.value.password = item.password;
-  // editUser.value.cliams[0].privliages = item.cliams[0].privliages;
+  // editUser.value.cliams[0].privliages = item.value;
+  if (item.cliams.length > 0) {
+    const arrayPriv = [];
+    for (let i = 0; i < item.cliams.length; i++) {
+      arrayPriv.push(item.cliams[i].privliages);
+      console.log(arrayPriv, "arrayPriv");
+    }
+    console.log(arrayPriv, "this is arrayPriv");
+    editUser.value.cliams[0].privliages = arrayPriv;
+  }
 };
 // .............pagination.............
 function nextPage() {
