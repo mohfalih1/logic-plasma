@@ -349,4 +349,8 @@ watch(
   background: #ffc0cc;
   border-radius: 8px;
 }
+.table-body {
+  background-color: rgba(255, 44, 84, 0.05);
+  text-align: center;
+}
 </style>

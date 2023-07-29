@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 export function createExcelTemplate() {
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.aoa_to_sheet([
-    ["name", "number", "blood_type"],
+    ["Full Name", "Phone Number", "Blood Type"],
     ["", "", ""],
   ]);
 

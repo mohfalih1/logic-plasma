@@ -91,7 +91,7 @@
           رفع البيانات المستخدمين
         </v-btn>
         <v-btn
-          @click="downloadTemplate()"
+          @click="downloadFile()"
           class="import-edit-button"
           color="white"
           variant="text"
@@ -152,8 +152,9 @@
   <!--start snackbar  -->
   <div class="text-center ma-2">
     <v-snackbar v-model="snackbar" timeout="2000">
-      <p v-if="file">تم رفع الفايل بنجاح</p>
+      <p v-if="file">{{ resUploadSuc }}</p>
       <p v-else>يجب اختيار ملف</p>
+      <p v-if="resUpload">{{ resUpload }} عدد</p>
       <template v-slot:actions>
         <v-btn color="pink" variant="text" @click="snackbar = false">
           Close
@@ -166,12 +167,15 @@
 <script setup>
 import Loader from "@/components/Loader.vue";
 import axios from "@/server/axios";
-import { createExcelTemplate } from "@/utils/excel-template";
-import { downloadExcelFile } from "@/utils/download-excel";
+// import { createExcelTemplate } from "@/utils/excel-template";
+// import { downloadExcelFile } from "@/utils/download-excel";
+// import { saveAs } from "file-saver";
 import { ref, reactive, onMounted } from "vue";
 const isLoading = ref(false);
 const isuplaodDialog = ref(false);
 const snackbar = ref(false);
+const resUpload = ref();
+const resUploadSuc = ref();
 
 onMounted(() => {
   getGovernorates();
@@ -201,6 +205,9 @@ function uploadExcelFileForDoner() {
     )
     .then((res) => {
       isuplaodDialog.value = false;
+      resUploadSuc.value = res.data.message;
+      resUpload.value = res.data.totalUpload;
+      console.log(res, "thids fjsdfndsk");
     })
     .catch((err) => {})
     .finally(() => {
@@ -209,11 +216,19 @@ function uploadExcelFileForDoner() {
       snackbar.value = true;
     });
 }
-function downloadTemplate() {
-  const workbook = createExcelTemplate();
-  downloadExcelFile(workbook, "temDoners.xlsx");
-}
 
+async function downloadFile() {
+  try {
+    const response = await axios.get("Admin/ExcelLink");
+    const downloadLink = response.data;
+    const anchor = document.createElement("a");
+    anchor.href = downloadLink;
+    anchor.download = "DonorsForm.xlsx";
+    anchor.click();
+  } catch (error) {
+    console.error("Error downloading the file:", error);
+  }
+}
 const donorTypes = ref([
   { name: "دم", value: 0 },
   { name: "بلازما", value: 1 },
